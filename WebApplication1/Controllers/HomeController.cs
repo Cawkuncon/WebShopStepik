@@ -29,4 +29,13 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+
+    public class CalculatorController : Controller
+    {
+        public string Index(double a, double b)
+        {
+            return $"{a} + {b} = {a + b}";
+        }
+    }
 }
