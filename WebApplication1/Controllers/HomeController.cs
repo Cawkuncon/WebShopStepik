@@ -29,4 +29,34 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+    public class CalculatorController : Controller
+    {
+        public string index(double a, double b, string operation)
+        {
+            operation = operation is null ? "+" : operation;
+            var chars = new string[4] { "-", "+", "*", "/" };
+            if (!chars.Contains(operation))
+            {
+                return "Неправильная операция";
+            }
+            else
+            {
+                switch (operation)
+                {
+                    case "+":
+                        return $"{a} + {b} = {a + b}";
+                    case "-":
+                        return $"{a} - {b} = {a - b}";
+                    case "*":
+                        return $"{a} * {b} = {a * b}";
+                    case "/":
+                        return $"{a} / {b} = {a / b}";
+                    default:
+                        break;
+                }
+            }
+            return string.Empty;
+        }
+    }
 }
