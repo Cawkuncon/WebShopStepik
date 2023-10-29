@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
         public string index(double a, double b, string operation)
         {
             operation = operation is null ? "+" : operation;
-            var chars = new string[4] { "-", "+", "*", "/" };
+            var chars = new string[4] { "-", "+", "*"};
             if (!chars.Contains(operation))
             {
                 return "Неправильная операция";
@@ -50,8 +50,6 @@ namespace WebApplication1.Controllers
                         return $"{a} - {b} = {a - b}";
                     case "*":
                         return $"{a} * {b} = {a * b}";
-                    case "/":
-                        return $"{a} / {b} = {a / b}";
                     default:
                         break;
                 }
