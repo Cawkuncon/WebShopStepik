@@ -13,6 +13,7 @@ namespace WebApplication1.Controllers
             _logger = logger;
         }
 
+
         public IActionResult Index(int a, int b)
         {
             return View();
@@ -27,6 +28,33 @@ namespace WebApplication1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+
+    public class startController : Controller
+    {
+        public string hello()
+        {
+            string hello = string.Empty;
+            DateTime dateTime = DateTime.Now;
+            var time = dateTime.Hour;
+            if (time >= 0 && time < 6)
+            {
+                return "Доброй ночи";
+            }
+            else if (time >= 6 && time < 12)
+            {
+                return "Доброе утро";
+            }
+            else if (time >= 12 && time < 18)
+            {
+                return "Добрый день";
+            }
+            else if (time >= 18 && time <= 23)
+            {
+                return "Добрый вечер";
+            }
+            return "Приветствую";
         }
     }
 }
