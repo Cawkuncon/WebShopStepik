@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return $"{Id}\n{Name}\n{Cost}\n\n";
+            return $"{Id}\n{Name}\n{Cost}\n{Description}\n\n";
         }
 
     }
