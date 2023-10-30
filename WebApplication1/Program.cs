@@ -30,6 +30,9 @@ namespace WebApplication1
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}");
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Calc}/{action=Index}");
 
             app.Run();
         }

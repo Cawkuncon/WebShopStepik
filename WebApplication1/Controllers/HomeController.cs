@@ -29,4 +29,32 @@ namespace WebApplication1.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+    public class CalcController : Controller
+    {
+        public string Index(double a, double b, string c)
+        {
+            var chars = new string[4] { "+", "-", "/", "*" };
+            if (c is not null && !chars.Contains(c))
+            {
+                return "Неверная операция";
+            }
+            switch (c)
+            {
+                case "+":
+                    return $"{a} + {b} = {a + b}";
+                case "-":
+                    return $"{a} - {b} = {a - b}";
+                case "*":
+                    return $"{a} * {b} = {a * b}";
+                case "/":
+                    return $"{a} / {b} = {a / b}";
+                case null:
+                    goto case "+";
+                default:
+                    break;
+            }
+            return string.Empty;
+        }
+    }
 }
