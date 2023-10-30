@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
         public string index(double a, double b, string operation)
         {
             operation = operation is null ? "+" : operation;
-            var chars = new string[4] { "-", "+", "*"};
+            var chars = new string[3] { "-", "+", "*"};
             if (!chars.Contains(operation))
             {
                 return "Неправильная операция";
