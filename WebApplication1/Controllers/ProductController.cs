@@ -1,35 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class ProductController : Controller
     {
-
-        public string Index(string id)
+        readonly ProductRepository productsRepository;
+        public ProductController()
         {
-            var listProducts = new List<Product>()
-            {
-                new Product(1, 11, "Name1", "Descr1"),
-                new Product(2, 22, "Name2", "Descr2"),
-                new Product(3, 33, "Name3", "Descr3"),
-            };
+            productsRepository = new ProductRepository();
+        }
+        public IActionResult Index(string id)
+        {
+            var ID = -1;
             if (int.TryParse(id, out var productId))
             {
-                try
-                {
-                    var result = listProducts.Where(x => x.Id == productId).Single();
-                    return result.ToString();
-                }
-                catch (Exception eex)
-                {
-                    return $"{eex.Message}";
-                }
+                ID = productId;
             }
-            else
-            {
-                return $"Неверный формат Id";
-            }
-            return string.Empty;
+            var products = productsRepository.GetAll();
+            var product = products.FirstOrDefault(pr => pr.Id == ID);
+            return View(product);
         }
     }
 }
