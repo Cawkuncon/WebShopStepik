@@ -12,13 +12,17 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Index(string id)
         {
-            var ID = -1;
-            if (int.TryParse(id, out var productId))
-            {
-                ID = productId;
-            }
             var products = productsRepository.GetAll();
+            var ID = -1;
+            if (id != null)
+            {
+                if (int.TryParse(id, out var productId))
+                {
+                    ID = productId;
+                }
+            }
             var product = products.FirstOrDefault(pr => pr.Id == ID);
+
             return View(product);
         }
     }

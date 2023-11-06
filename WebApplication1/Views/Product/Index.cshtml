@@ -4,14 +4,32 @@
 @model Product
 
 @if (@Model != null)
-{
-    <h1>@Model.Name</h1>
-    <h2>@Model.Cost</h2>
-    <p>@Model.Description</p>
-}
-else
-{
-    <h1>Нет такого ID</h1>
-}
+{   
+    @*    <div class="row">
+        <div class="col-3">1</div>
+        <div class="col-6">2</div>
+        <div class="col-3">3</div>
+
+    </div>*@
+        <div class="row">
+            <div class="col-3 card shadow">
+                <div class="card-body">
+                            <img class="card-img-top col-3" src="https://adpass.ru/wp-content/uploads/2022/02/1200px-YAndeks.svg.png">
+
+                        <a href="/product/index/@Model.Id">@Model.Name</a>
+                        <h2>@Model.Cost</h2>
+                        <p id="1" class="cl1">@Model.Description</p>
+                        <a href="/cart/add/@Model.Id" class="btn btn-dark">Добавить в корзину</a>
+
+                </div>
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+        <h1>Нет такого ID</h1>
+    }
 
 
