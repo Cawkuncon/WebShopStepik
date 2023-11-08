@@ -4,6 +4,7 @@ namespace WebApplication1
 {
     public class ProductRepository
     {
+        public static List<Product> prodCart = new List<Product>();
         private List<Product> listProducts = new List<Product>()
         {
             new Product(1, 11, "Name1", "Descr1"),
