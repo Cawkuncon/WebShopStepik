@@ -7,11 +7,11 @@ namespace WebApplication1.Controllers
     public class BasketController : Controller
     {
 
-        public IActionResult Add(int Id)
+        public IActionResult Adds(int Id)
         {
             var Prod = ProductRepository.GetAll().Where(x => x.Id == Id).SingleOrDefault();
             ProductRepository.prodCart.Add(new Product(Prod.Id, Prod.Cost, Prod.Name, Prod.Description));
-            return View();
+            return RedirectToActionPermanent("Index");
         }
         public IActionResult Index()
         {

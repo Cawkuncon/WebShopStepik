@@ -34,6 +34,19 @@ namespace WebApplication1
                 name: "default",
                 pattern: "{controller=Product}/{action=Index}/{id}");
 
+            app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Basket}/{action=Add}/{id}");
+
+            app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Basket}/{action=Index}");
+
+            app.MapControllerRoute(
+name: "default",
+pattern: "{controller=Basket}/{action=Adds}/{id}");
+
+
             app.Run();
         }
     }
