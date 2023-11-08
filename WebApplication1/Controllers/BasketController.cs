@@ -1,20 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Immutable;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class BasketController : Controller
     {
-        public IActionResult Index()
-        {
-            var r = ProductRepository.prodCart;
-            return View(r);
-        }
 
         public IActionResult Add(int Id)
         {
-            var Prod = new ProductRepository().GetAll().Where(x=> x.Id == Id).SingleOrDefault();
-            ProductRepository.prodCart.Add(Prod);
-            return View("Views/Basket/Index.cshtml", ProductRepository.prodCart);
+            var Prod = ProductRepository.GetAll().Where(x => x.Id == Id).SingleOrDefault();
+            ProductRepository.prodCart.Add(new Product(Prod.Id, Prod.Cost, Prod.Name, Prod.Description));
+            return View();
+        }
+        public IActionResult Index()
+        {
+            var r = ProductRepository.prodCart.GroupBy(x=>x.Id);
+            var newListProd = new List<Product>();
+            foreach (var item in r)
+            {
+                var key = item.Key;
+                var resultSum = item.Sum(x => x.Cost);
+                var name = item.First().Name;
+                var description = item.First().Description;
+                var count = item.Count();
+                var newProd = new Product(key, resultSum, name, description, count);
+                newListProd.Add(newProd);
+            }
+            return View(newListProd);
         }
     }
 }

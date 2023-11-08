@@ -5,14 +5,9 @@ namespace WebApplication1.Controllers
 {
     public class ProductController : Controller
     {
-        readonly ProductRepository productsRepository;
-        public ProductController()
-        {
-            productsRepository = new ProductRepository();
-        }
         public IActionResult Index(string id)
         {
-            var products = productsRepository.GetAll();
+            var products = ProductRepository.GetAll();
             var ID = -1;
             if (id != null)
             {

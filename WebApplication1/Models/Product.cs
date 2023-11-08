@@ -6,6 +6,7 @@
         public string Name { get; set; }
         public int Cost { get; set; }
         public string Description { get; set; }
+        public int Count { get; set; }
 
         public Product(int id, int cost, string name, string description)
         {
@@ -13,6 +14,16 @@
             Name = name;
             Cost = cost;
             Description = description;
+            Count = 1;
+        }
+
+        public Product(int id, int cost, string name, string description, int count)
+        {
+            Id = id;
+            Name = name;
+            Cost = cost;
+            Description = description;
+            Count = count;
         }
 
         public override string ToString()
