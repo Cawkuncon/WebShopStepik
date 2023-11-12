@@ -6,10 +6,16 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
+		private readonly ProductRepository productRepository;
+
+		public HomeController(ProductRepository productRepository)
+        {
+			this.productRepository = productRepository;
+		}
 
         public IActionResult Index()
         {
-            var products = ProductRepository.GetAll();
+            var products = productRepository.GetAll();
 
             return View(products);
         }

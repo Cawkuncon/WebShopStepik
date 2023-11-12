@@ -7,20 +7,24 @@ namespace WebApplication1.Controllers
 
     public class BasketController : Controller
     {
+		private readonly ProductRepository productRepository;
+		private readonly Bask bask;
 
+		public BasketController(ProductRepository productRepository, Bask bask)
+        {
+			this.productRepository = productRepository;
+			this.bask = bask;
+		}
         public IActionResult Adds(string productId)
         {
             var id = int.Parse(productId);
-            var Prod = ProductRepository.GetAll().Where(x=>x.Id == id).First();
-            Bask.prodCart.Add(Prod);
-            var k = Bask.prodCart;
-
+            var Prod = productRepository.GetAll().Where(x=>x.Id == id).First();
+            bask.AddToBask(Prod);
             return RedirectToAction("Index");
         }
         public IActionResult Index()
         {
-            var k = Bask.prodCart.GroupBy(x=>x.Id);
-            var newList = new List<Product>();
+            var k = bask.GetBask().GroupBy(x=>x.Id);
             foreach (var item in k)
             {
                 var id = item.Key;
@@ -29,9 +33,9 @@ namespace WebApplication1.Controllers
                 var cost = item.First().Cost;
                 var descr = item.First().Description;
                 var newProd = new Product(id, cost, name, descr, count);
-                newList.Add(newProd);
+                bask.AddToResultCart(newProd);
             }
-            return View(newList);
+            return View(bask.GetResultCart());
         }
     }
 }

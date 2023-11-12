@@ -2,10 +2,10 @@
 
 namespace WebApplication1
 {
-    public static class ProductRepository
+    public class ProductRepository
     {
 
-        private static List<Product> listProducts = new List<Product>()
+        private List<Product> listProducts = new List<Product>()
         {
             new Product(1, 11, "Name1", "Descr1"),
             new Product(2, 22, "Name2", "Descr2"),
@@ -15,7 +15,7 @@ namespace WebApplication1
             new Product(6, 66, "Name6", "Descr6"),
         };
 
-        public static List<Product> GetAll()
+        public List<Product> GetAll()
         {
             return listProducts;
         }
