@@ -2,7 +2,7 @@
 
 namespace WebApplication1
 {
-    public class Bask
+    public class Bask: IBaskRepository
     {
         private List<Product> prodCart = new List<Product>()
         {
@@ -39,4 +39,18 @@ namespace WebApplication1
             return resultProducts;
         }
     }
+
+	public interface IBaskRepository
+	{
+        public void ClearResultProducts();
+
+        public void AddToBask(Product product);
+
+        public List<Product> GetBask();
+
+        public void AddToResultCart(Product prod);
+
+        public List<Product> GetResultCart();
+		
+	}
 }

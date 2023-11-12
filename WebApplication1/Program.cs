@@ -8,8 +8,8 @@ namespace WebApplication1
 			var services = builder.Services;
 			services.AddSingleton<ICounter, RandomCounter2>();
 			services.AddSingleton<CounterService>();
-			services.AddSingleton<Bask>();
-			services.AddTransient<ProductRepository>();
+			services.AddSingleton<IBaskRepository,Bask>();
+			services.AddTransient<IProductRepository,ProductRepository>();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 

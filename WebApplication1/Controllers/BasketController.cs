@@ -7,10 +7,10 @@ namespace WebApplication1.Controllers
 
     public class BasketController : Controller
     {
-		private readonly ProductRepository productRepository;
-		private readonly Bask bask;
+		private readonly IProductRepository productRepository;
+		private readonly IBaskRepository bask;
 
-		public BasketController(ProductRepository productRepository, Bask bask)
+		public BasketController(IProductRepository productRepository, IBaskRepository bask)
         {
 			this.productRepository = productRepository;
 			this.bask = bask;
