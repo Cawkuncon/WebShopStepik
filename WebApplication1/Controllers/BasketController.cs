@@ -25,6 +25,7 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             var k = bask.GetBask().GroupBy(x=>x.Id);
+            bask.ClearResultProducts();
             foreach (var item in k)
             {
                 var id = item.Key;
