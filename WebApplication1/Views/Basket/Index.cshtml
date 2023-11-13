@@ -13,8 +13,9 @@ else
 	<div class="row">
 		<div class="col-3">Наименование</div>
 		<div class="col-3">Описание</div>
-		<div class="col-3">Количество</div>
-		<div class="col-3">Стоимость</div>
+		<div class="col-1">Количество</div>
+		<div class="col-2">Стоимость</div>
+		<div class="col-3">Действие</div>
 		@foreach (var product in Model)
 		{
 
@@ -24,11 +25,15 @@ else
 			<div class="col-3">
 				<p>@product.Description</p>
 			</div>
-			<div class="col-3">
+			<div class="col-1">
 				<h2>@product.Count</h2>
 			</div>
-			<div class="col-3">
+			<div class="col-2">
 				<h2>@(@product.Cost * @product.Count)</h2>
+			</div>
+			<div class="col-3">
+				<a href="/basket/minus/@product.Id" class="btn btn-light">-</a>
+				<a href="/basket/plus/@product.Id" class="btn btn-light">+</a>
 			</div>
 
 		}
@@ -42,6 +47,7 @@ else
 }
 <br>
 <div class="col-3"><a href="/home/index" class="btn btn-dark">Продолжить покупки</a></div>
+<div class="col-3"><a href="/basket/clear" class="btn btn-danger">Очистить корзину</a></div>
 
 <div class="text-center">
 	<h1 class="display-4">Welcome</h1>
