@@ -1,0 +1,52 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+@model List<Product>
+
+<form>
+    <label for="name">Введите имя и фамилию</label>
+    <input type="text" id="name" placeholder="Иван Иванов">
+</form>
+
+<form>
+    <label for="number">Введите номер телефона</label>
+    <input type="tel" id="number" placeholder="+79998885522">
+</form>
+
+<form>
+    <label for="emai">Введите номер телефона</label>
+    <input type="email" id="emai" placeholder="aaa@aaa.com">
+</form>
+<br>
+
+<div class="row">
+    <div class="col-12">Ваш заказ</div>
+</div>
+<div class="row">
+    <div class="col-3">Наименование</div>
+    <div class="col-3">Описание</div>
+    <div class="col-3">Количество</div>
+    <div class="col-3">Стоимость</div>
+@foreach (var product in Model)
+{
+		<div class="col-3">
+			<a href="/product/index/@product.Id">@product.Name</a>
+		</div>
+		<div class="col-3">
+			<p>@product.Description</p>
+		</div>
+		<div class="col-3">
+			@product.Count
+		</div>
+		<div class="col-3">
+			@(@product.Cost * @product.Count)
+		</div>
+	}
+</div>
+<hr>
+<br>
+<h6>Итого: @Model.Select(x=>x.Cost*x.Count).Sum()</h6>
+<br>
+<a href="#" class="btn btn-primary">Продолжить</a>
+

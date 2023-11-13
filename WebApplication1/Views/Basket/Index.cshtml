@@ -39,7 +39,7 @@ else
 		}
 	</div>
 	<div class="row">
-		<div class="btn btn-outline-success col-3">Оформить заказ</div>
+		<div class="btn btn-outline-success col-3"><a href="/basket/registerOrder">Оформить заказ</a></div>
 		<div class="col-3"></div>
 		<div class="col-3">Итоговая сумма:</div>
 		<div class="col-3">@Model.Select(x=>x.Cost*x.Count).Sum()</div>

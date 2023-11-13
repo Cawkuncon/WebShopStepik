@@ -59,5 +59,10 @@ namespace WebApplication1.Controllers
 			bask.RemoveFromCart(Id);
 			return RedirectToAction("Index");
 		}
+
+		public IActionResult RegisterOrder()
+		{
+			return View(bask.GetResultProducts());
+		}
 	}
 }
