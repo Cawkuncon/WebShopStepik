@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Product>
+
+@if (Model.Count == 0 || Model==null)
+{
+    <h1>Нет товаров для сравнения</h1>
+}
+else
+{
+    <table>
+        <tr>
+            <td>Наименование</td>
+            @foreach (var product in Model)
+            {
+                    <td>@product.Name</td>
+            }
+        </tr>
+        <tr>
+            <td>Цена</td>
+            @foreach (var product in Model)
+            {
+                    <td>@product.Cost</td>
+            }
+        </tr>
+        <tr>
+            <td>Описание</td>
+            @foreach (var product in Model)
+            {
+                    <td>@product.Description</td>
+            }
+        </tr>
+        <tr>
+            <td>Действие</td>
+            @foreach (var product in Model)
+            {
+                    <td><a href="/home/DeleteFromComparsion?productId=@product.Id" class="btn btn-danger">Удалить из сравнения</a></td>
+            }
+
+        </tr>
+    </table>
+}

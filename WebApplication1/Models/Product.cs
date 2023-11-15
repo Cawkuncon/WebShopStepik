@@ -8,6 +8,8 @@
         public string Description { get; set; }
         public int Count { get; set; }
 
+        public bool Comparsion = false;
+
         public Product(int id, int cost, string name, string description)
         {
             Id = id;

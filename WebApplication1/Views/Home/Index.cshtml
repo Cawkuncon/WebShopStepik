@@ -17,6 +17,16 @@
                     <h2>@product.Cost</h2>
                     <p id="1" class="cl1">@product.Description</p>
                 <a href="/basket/adds?productId=@product.Id" class="btn btn-dark">Добавить в корзину</a>
+                <br>
+                @if (!product.Comparsion)
+                {
+                    <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info">Добавить в сравнение</a>
+                }
+                else
+                {
+                    <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">Добавить в сравнение</a>
+                }
+
                 </div>
             </div>
 

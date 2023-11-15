@@ -9,7 +9,7 @@ namespace WebApplication1
 			services.AddSingleton<ICounter, RandomCounter2>();
 			services.AddSingleton<CounterService>();
 			services.AddSingleton<IBaskRepository,Bask>();
-			services.AddTransient<IProductRepository,ProductRepository>();
+			services.AddSingleton<IProductRepository,ProductRepository>();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
