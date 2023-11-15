@@ -64,5 +64,12 @@ namespace WebApplication1.Controllers
 		{
 			return View(bask.GetResultProducts());
 		}
+
+		public IActionResult Success()
+		{
+			bask.ClearCart();
+			bask.ClearResultProducts();
+			return View();
+		}
 	}
 }
