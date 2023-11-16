@@ -54,7 +54,12 @@ namespace WebApplication1
         {
 			return prodCart.Count();
         }
-    }
+
+		public int GetTotalCost()
+		{
+			return prodCart.Select(x => x.Cost).Sum();
+		}
+	}
 
 	public interface IBaskRepository
 	{
@@ -69,5 +74,6 @@ namespace WebApplication1
 		public List<Product> GetResultProducts();
 		public int GetCount();
 
+		public int GetTotalCost();
 	}
 }

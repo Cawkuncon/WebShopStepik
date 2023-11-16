@@ -1,1 +1,24 @@
-﻿<h1>Заказ успешно оформлен</h1>
+﻿@model IOrder
+<h1>Заказ успешно оформлен!</h1>
+
+<h3>@Model.Name, Ваш заказ:</h3>
+<br>
+<table>
+	<tr>
+		<td>Наименование</td>
+		<td>Цена</td>
+	</tr>
+	@foreach (var item in Model.Products)
+	{
+		<tr>
+			<td>@item.Name</td>
+			<td>@item.Cost</td>
+		</tr>
+	}
+</table>
+<br>
+<hr>
+<div class="row">
+	<div class="col-3">Итого к оплате: @Model.Total</div>
+</div>
+
