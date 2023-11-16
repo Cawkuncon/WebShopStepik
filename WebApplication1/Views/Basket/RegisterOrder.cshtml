@@ -4,20 +4,17 @@
 
 @model List<Product>
 
-<form>
+<form method="post">
     <label for="name">Введите имя и фамилию</label>
-    <input type="text" id="name" placeholder="Иван Иванов">
+    <input type="text" name="name" placeholder="Иван Иванов">
+	<label for="number">Введите номер телефона</label>
+	<input type="tel" name="number" placeholder="+79998885522">
+	<label for="emai">Введите номер телефона</label>
+	<input type="email" name="email" placeholder="aaa@aaa.com">
+	<br>
+	<button type = "submit" class="btn btn-primary" asp-controller="Basket" asp-action="Success">Оформить заказ</button>
 </form>
 
-<form>
-    <label for="number">Введите номер телефона</label>
-    <input type="tel" id="number" placeholder="+79998885522">
-</form>
-
-<form>
-    <label for="emai">Введите номер телефона</label>
-    <input type="email" id="emai" placeholder="aaa@aaa.com">
-</form>
 <br>
 
 <div class="row">
@@ -47,6 +44,5 @@
 <hr>
 <br>
 <h6>Итого: @Model.Select(x=>x.Cost*x.Count).Sum()</h6>
-<br>
-<a href="/basket/success" class="btn btn-primary">Продолжить</a>
+
 

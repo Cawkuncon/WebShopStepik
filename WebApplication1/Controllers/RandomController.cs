@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-	public class RandomController : Controller
+    public class RandomController : Controller
 	{
 		private readonly ICounter randomCounter;
 		private readonly CounterService counterService;

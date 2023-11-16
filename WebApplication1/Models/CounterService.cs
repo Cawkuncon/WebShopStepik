@@ -1,6 +1,8 @@
-﻿namespace WebApplication1
+﻿using WebApplication1.Models;
+
+namespace WebApplication1
 {
-	public class CounterService
+    public class CounterService
 	{
 		public ICounter Counter { get; }
 

@@ -5,7 +5,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
 
-	public class BasketController : Controller
+    public class BasketController : Controller
 	{
 		private readonly IProductRepository productRepository;
 		private readonly IBaskRepository bask;
@@ -65,7 +65,8 @@ namespace WebApplication1.Controllers
 			return View(bask.GetResultProducts());
 		}
 
-		public IActionResult Success()
+		[HttpPost]
+		public IActionResult Success(Order order)
 		{
 			bask.ClearCart();
 			bask.ClearResultProducts();

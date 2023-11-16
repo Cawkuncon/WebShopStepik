@@ -1,6 +1,8 @@
+using WebApplication1.Models;
+
 namespace WebApplication1
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
