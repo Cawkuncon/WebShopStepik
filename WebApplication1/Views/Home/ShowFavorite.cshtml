@@ -1,0 +1,32 @@
+﻿@model List<Product>
+
+
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+
+        <div class="card shadow col-3">
+            <div class="card-body">
+                <img class="card-img-top" src="https://adpass.ru/wp-content/uploads/2022/02/1200px-YAndeks.svg.png">
+
+                <a href="/product/index/@product.Id"><h1>@product.Name</h1></a>
+                <h2>@product.Cost</h2>
+                <p id="1" class="cl1">@product.Description</p>
+                <a href="/basket/adds?productId=@product.Id" class="btn btn-dark">Добавить в корзину</a>
+                <br>
+                <br>
+                @if (!product.Favorite)
+                {
+                    <a href="/home/AddToFavorite?productId=@product.Id" class="btn btn-dark">Добавить в избранное</a>
+                }
+                else
+                {
+                    <a href="/home/DeleteFromFavorite?productId=@product.Id" class="btn btn-danger">Удалить из избранного</a>
+                }
+
+            </div>
+        </div>
+
+    }
+</div>

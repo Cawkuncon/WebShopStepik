@@ -42,6 +42,35 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Compare");
         }
 
-    }
 
+        public IActionResult AddToFavorite(string productId)
+        {
+            var id = int.Parse(productId);
+            var prodToAdd = productRepository.GetAll().Where(x => x.Id == id).First();
+            prodToAdd.Favorite = !prodToAdd.Favorite;
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteFromFavoriteIndex(string productId)
+        {
+            var id = int.Parse(productId);
+            var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
+            prodToDelete.Favorite = !prodToDelete.Favorite;
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteFromFavorite(string productId)
+        {
+            var id = int.Parse(productId);
+            var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
+            prodToDelete.Favorite = !prodToDelete.Favorite;
+            return RedirectToAction("ShowFavorite");
+        }
+
+        public IActionResult ShowFavorite()
+        {
+            var prodToShow = productRepository.GetAll().Where(x => x.Favorite).ToList();
+            return View(prodToShow);
+        }
+    }
 }

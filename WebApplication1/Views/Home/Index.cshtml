@@ -26,6 +26,15 @@
                 {
                     <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">Добавить в сравнение</a>
                 }
+                <br>
+                @if (!product.Favorite)
+                {
+                    <a href="/home/AddToFavorite?productId=@product.Id" class="btn btn-dark">Добавить в избранное</a>
+                }
+                else
+                {
+                    <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id" class="btn btn-danger">Удалить из избранного</a>
+                }
 
                 </div>
             </div>

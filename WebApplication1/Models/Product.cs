@@ -10,6 +10,8 @@
 
         public bool Comparsion = false;
 
+        public bool Favorite = false;
+
         public Product(int id, int cost, string name, string description)
         {
             Id = id;
