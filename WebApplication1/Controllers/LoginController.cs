@@ -11,9 +11,9 @@ namespace WebApplication1.Controllers
 		}
 
 		[HttpPost]
-		public string TryToLogin(IUserInfo userInfo)
+		public string TryToLogin(UserInfo userInfo)
 		{
-			return ($"{userInfo.Name} {userInfo.Password} ");
+			return ($"{userInfo.Name} {userInfo.Password} {userInfo.CheckBox} {userInfo.SaveUser} ");
 		}
 	}
 }
