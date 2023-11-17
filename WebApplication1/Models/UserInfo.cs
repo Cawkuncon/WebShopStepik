@@ -5,10 +5,10 @@ namespace WebApplication1.Models
 	{
 		public string Name { get ; set; }
 		public string Password { get ; set; }
-		public string CheckBox { get; set; }
-		public bool SaveUser { get 
+		public string SaveUser { get; set; }
+		public bool SaveUserInfo { get 
 			{ 
-				if (CheckBox == "on")
+				if (SaveUser == "on")
 				{
 					return true;
 				}
@@ -24,6 +24,6 @@ namespace WebApplication1.Models
 	{
 		string Name { get; set; }
 		string Password { get; set; }
-		string CheckBox { get; set; }
+		string SaveUser { get; set; }
 	}
 }
