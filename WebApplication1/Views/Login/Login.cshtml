@@ -1,0 +1,19 @@
+﻿<div class="text-center">
+	<h2>Вход</h2>
+	<form method="post">
+		<input type="text" name="login" required placeholder="Логин">
+		<br />
+		<br />
+		<input name="password" type="password" required placeholder="Пароль">
+		<br />
+		<br />
+@* 		<input type="checkbox" name="saveUser" id="save" />
+		<label for="save">Запомнить пользователя</label> *@
+		<br />
+		<br />
+		<button type="submit" class="btn btn-dark" asp-controller="Login" asp-action="TryToLogin">Войти</button>
+		<br /><br />
+		<h4>Регистрация нового пользователя</h4>
+
+	</form>
+</div>
