@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public string TryToLogin(UserInfo userInfo)
 		{
-			return ($"{userInfo.Name} {userInfo.Password} {userInfo.CheckBox} {userInfo.SaveUser} ");
+			return ($"{userInfo.Name} {userInfo.Password} {userInfo.SaveUserInfo} {userInfo.SaveUser} ");
 		}
 	}
 }
