@@ -1,0 +1,15 @@
+﻿@model Product
+<h2>Добавление нового продукта</h2>
+<form method="post">
+    <input type="text" name="Name" value="@Model.Name" required>
+    <br />
+    <br />
+    <input type="number" name="Cost" value="@Model.Cost" required>
+    <br />
+    <br />
+    <input type="text" name="Description" value="@Model.Description">
+    <br />
+    <br />
+    <button type="submit" asp-controller="Admin" asp-action="UpdateProduct" asp-route-id="@Model.Id">Обновить данные</button>
+    <button type="submit" asp-controller="Admin" asp-action="Product">Отменить</button>
+</form>

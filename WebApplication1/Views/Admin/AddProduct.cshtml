@@ -1,0 +1,13 @@
+﻿<h2>Добавление нового продукта</h2>
+<form method="post">
+    <input type="text" name="Name" placeholder="Название продукта" required>
+    <br />
+    <br />
+    <input type="number" name="Cost" placeholder="Цена продукта" required>
+    <br />
+    <br />
+    <input type="text" name="Description" placeholder="Описание продукта">
+    <br />
+    <br />
+    <button type="submit" asp-controller="Admin" asp-action="Add">Добавить</button>
+</form>

@@ -11,7 +11,16 @@
         public bool Comparsion = false;
 
         public bool Favorite = false;
+        public Product()
+        {
 
+        }
+        public Product(int cost, string name, string description)
+        {
+            Name = name;
+            Cost = cost;
+            Description = description;
+        }
         public Product(int id, int cost, string name, string description)
         {
             Id = id;
