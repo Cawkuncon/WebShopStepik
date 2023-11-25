@@ -1,0 +1,16 @@
+﻿<div class="text-center">
+	<h2>Регистрация</h2>
+	<form method="post">
+		<input type="text" name="name" required placeholder="Логин">
+		<br />
+		<br />
+		<input name="password" type="password" required placeholder="Пароль">
+		<br />
+		<br />
+		<input name="password2" type="password" required placeholder="Подтвердите пароль">
+		<br />
+		<br />
+		<button type="submit" class="btn btn-dark" asp-controller="Register" asp-action="RegisterUser">Регистрация нового пользователя</button>
+		<br /><br />
+	</form>
+</div>
