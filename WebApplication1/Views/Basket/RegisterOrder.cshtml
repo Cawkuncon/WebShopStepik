@@ -6,11 +6,11 @@
 
 <form method="post">
     <label for="name">Введите имя и фамилию</label>
-    <input type="text" name="name" placeholder="Иван Иванов">
+    <input type="text" name="name" placeholder="Иван Иванов" required>
 	<label for="number">Введите номер телефона</label>
-	<input type="tel" name="number" placeholder="+79998885522">
-	<label for="emai">Введите номер телефона</label>
-	<input type="email" name="email" placeholder="aaa@aaa.com">
+	<input type="number" name="number" placeholder="+79998885522" required>
+	<label for="email">Введите номер телефона</label>
+	<input type="email" name="email" placeholder="aaa@aaa.com" required>
 	<br>
 	<button type = "submit" class="btn btn-primary" asp-controller="Basket" asp-action="Success">Оформить заказ</button>
 </form>

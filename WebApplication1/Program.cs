@@ -12,6 +12,7 @@ namespace WebApplication1
 			services.AddSingleton<CounterService>();
 			services.AddSingleton<IBaskRepository,Bask>();
 			services.AddSingleton<IProductRepository,ProductRepository>();
+			services.AddTransient<IOrder, Order>();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 

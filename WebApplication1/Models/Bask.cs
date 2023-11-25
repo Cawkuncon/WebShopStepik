@@ -2,7 +2,7 @@
 
 namespace WebApplication1
 {
-	public class Bask : IBaskRepository
+    public class Bask : IBaskRepository
 	{
 		private List<Product> prodCart = new List<Product>()
 		{
@@ -49,6 +49,16 @@ namespace WebApplication1
 			var prod = prodCart.Where(x => x.Id == Id).First();
 			prodCart.Remove(prod);
 		}
+
+        public int GetCount()
+        {
+			return prodCart.Count();
+        }
+
+		public int GetTotalCost()
+		{
+			return prodCart.Select(x => x.Cost).Sum();
+		}
 	}
 
 	public interface IBaskRepository
@@ -62,6 +72,8 @@ namespace WebApplication1
 		public void AddToResultProducts(Product prod);
 		public void RemoveFromCart(int Id);
 		public List<Product> GetResultProducts();
+		public int GetCount();
 
+		public int GetTotalCost();
 	}
 }

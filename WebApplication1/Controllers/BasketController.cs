@@ -9,11 +9,13 @@ namespace WebApplication1.Controllers
 	{
 		private readonly IProductRepository productRepository;
 		private readonly IBaskRepository bask;
+		private readonly IOrder order;
 
-		public BasketController(IProductRepository productRepository, IBaskRepository bask)
+		public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrder order)
 		{
 			this.productRepository = productRepository;
 			this.bask = bask;
+			this.order = order;
 		}
 		public IActionResult Adds(string productId)
 		{
@@ -68,9 +70,16 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Success(Order order)
 		{
-			bask.ClearCart();
+			this.order.Name = order.Name;
+			this.order.Number = order.Number;
+			this.order.Email = order.Email;
+			var cart = bask.GetCart();
+			this.order.Products = new List<Product>();
+			this.order.Products.AddRange(cart);
+			this.order.Total = bask.GetTotalCost();
 			bask.ClearResultProducts();
-			return View();
+			bask.ClearCart();
+			return View(this.order);
 		}
 	}
 }
