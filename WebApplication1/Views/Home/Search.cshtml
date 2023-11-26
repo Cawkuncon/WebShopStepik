@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Product>
+
+@if (Model == null || Model.Count() == 0)
+{
+            <h2>По вашему запросу товаров нет</h2>
+            <br />
+            <a asp-controller="Home" asp-action="Index">На главную</a>
+}
+else
+{
+    @foreach (var product in Model)
+    {
+                       <div class="card shadow col-3">
+                                <div class="card-body">
+                                    <img class="card-img-top" src="https://adpass.ru/wp-content/uploads/2022/02/1200px-YAndeks.svg.png">
+
+                                    <a href="/product/index/@product.Id"><h1>@product.Name</h1></a>
+                                    <h2>@product.Cost</h2>
+                                    <p id="1" class="cl1">@product.Description</p>
+                                <a href="/basket/adds?productId=@product.Id" class="btn btn-dark">Добавить в корзину</a>
+                                <br>
+                                <br>
+                @if (!product.Comparsion)
+                {
+                                            <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info">Добавить в сравнение</a>
+                }
+                else
+                {
+                                            <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">Добавить в сравнение</a>
+                }
+                                <br>
+                                <br>
+                @if (!product.Favorite)
+                {
+                                            <a href="/home/AddToFavorite?productId=@product.Id" class="btn btn-dark">Добавить в избранное</a>
+                }
+                else
+                {
+                                            <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id" class="btn btn-danger">Удалить из избранного</a>
+                }
+
+                                </div>
+                            </div> 
+    }
+}

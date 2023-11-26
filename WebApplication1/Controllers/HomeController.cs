@@ -72,5 +72,20 @@ namespace WebApplication1.Controllers
             var prodToShow = productRepository.GetAll().Where(x => x.Favorite).ToList();
             return View(prodToShow);
         }
+        [HttpPost]
+        public IActionResult Search(string search)
+        {
+            search = search.ToLower();
+            IEnumerable<Product> result;
+            if (search == null || search == string.Empty)
+            {
+                result = null;
+            }
+            else
+            {
+                result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
+            }
+            return View(result);
+        }
     }
 }

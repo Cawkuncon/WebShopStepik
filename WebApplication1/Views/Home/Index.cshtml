@@ -4,7 +4,10 @@
 
 @model List<Product>
 
-
+    <form method="post">
+        <input name="search", placeholder="Поиск по названию" type="search" required>
+        <button type="submit" class="btn btn-dark" asp-controller="Home" asp-action="Search">Поиск</button>
+    </form>
     <div class="row">
         @foreach (var product in Model)
         {
@@ -40,9 +43,10 @@
 
                 </div>
             </div>
-
         }
     </div>
+
+
 
 
 
