@@ -9,10 +9,20 @@ namespace WebApplication1.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public string RegisterUser(UserReg user)
+        public IActionResult RegisterUser(UserReg user)
         {
-            return $"{user.Name} {user.Password} {user.PassCheck()}";
+            if (user.Name == user.Password)
+            {
+                ModelState.AddModelError("", "Имя и пароль не должны совпадать");
+            }
+
+            if (ModelState.IsValid)
+            {
+                return Content($"{user.Name} {user.Password} {user.PassCheck()}");
+            }
+            return Content(user.ToString());
         }
     }
 }
