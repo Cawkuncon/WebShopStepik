@@ -6,9 +6,11 @@ namespace WebApplication1.Controllers
     public class AdminController : Controller
     {
         private IProductRepository productRepository;
-        public AdminController(IProductRepository productRepository)
+        private IOrderRepository orderRepository;
+        public AdminController(IProductRepository productRepository, IOrderRepository orderRepository)
         {
             this.productRepository = productRepository;
+            this.orderRepository = orderRepository;
         }
         public IActionResult Index()
         {
@@ -16,7 +18,8 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Orders()
         {
-            return View();
+            var orders = orderRepository.GetAll();
+            return View(orders);
         }
         public IActionResult Users()
         {

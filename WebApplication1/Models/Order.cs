@@ -2,9 +2,9 @@
 
 namespace WebApplication1.Models
 {
-	public class Order: IOrder
-	{
-		public List<Product> Products { get; set; }
+    public class Order : IOrder
+    {
+        public List<Product> Products { get; set; }
 
 
         [Required(ErrorMessage = "Не указано имя")]
@@ -20,23 +20,30 @@ namespace WebApplication1.Models
         [Required(ErrorMessage = "Не указан адрес")]
         [EmailAddress(ErrorMessage = "Введите валидный email")]
         public string Email { get; set; }
-		public int Total { get; set; }
+        public int Total { get; set; }
 
-		public void SaveOrder()
-		{
-			
-		}
-	}
+        public DateTime CreationDate { get; set; }
 
-	public interface IOrder
-	{
-		public List<Product> Products { get; set; }
-		public string Name { get; set; }
-		public string Number { get; set; }
-		public string Email { get; set; }
-		public int Total { get; set; }
+        public void SaveOrder()
+        {
 
-		public void SaveOrder();
+        }
 
-	}
+        public Order()
+        {
+            CreationDate = DateTime.Now;
+        }
+    }
+
+    public interface IOrder
+    {
+        public List<Product> Products { get; set; }
+        public string Name { get; set; }
+        public string Number { get; set; }
+        public string Email { get; set; }
+        public int Total { get; set; }
+        public DateTime CreationDate { get; set; }
+        public void SaveOrder();
+
+    }
 }

@@ -1,8 +1,45 @@
-﻿<div class="row">
+﻿@model List<Order>
+@{
+    int i = 1;
+}
+<div class="row">
     <div class="col-3">
         @await Html.PartialAsync("Index")
     </div>
     <div class="col-9">
         <h2>Список заказов</h2>
+        <div class="row">
+            <div class="col-1">№</div>
+            <div class="col-1">Сумма</div>
+            <div class="col-2">Статус</div>
+            <div class="col-2">Пользователь</div>
+            <div class="col-2">Дата</div>
+            <div class="col-1">Время</div>
+        </div>
+<hr />
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col-1">
+                    @i
+                </div>
+                <div class="col-2">
+                    @item.Total
+                </div>
+                <div class="col-2">
+                    Создан    
+                </div>
+                <div class="col-2">
+                    @item.Name    
+                </div>
+                <div class="col-2">
+                    @item.CreationDate
+                </div>
+                <div class="col-2">
+                    @item.CreationDate
+                </div>
+            </div>
+            i += 1;
+        }
     </div>
 </div>
