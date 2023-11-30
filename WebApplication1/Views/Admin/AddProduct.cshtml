@@ -1,9 +1,12 @@
-﻿<h2>Добавление нового продукта</h2>
+﻿@model Product
+<h2>Добавление нового продукта</h2>
 <form method="post">
-    <input type="text" name="Name" placeholder="Название продукта" required>
+    <input asp-for="Name" placeholder="Название продукта">
+    <span asp-validation-for="Name"></span>
     <br />
     <br />
-    <input type="number" name="Cost" placeholder="Цена продукта" required>
+    <input asp-for="Cost" placeholder="Цена продукта">
+    <span asp-validation-for="Cost"></span>
     <br />
     <br />
     <input type="text" name="Description" placeholder="Описание продукта">

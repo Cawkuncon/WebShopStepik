@@ -1,10 +1,12 @@
 ﻿@model Product
 <h2>Добавление нового продукта</h2>
 <form method="post">
-    <input type="text" name="Name" value="@Model.Name" required>
+    <input asp-for="Name" value="@Model.Name">
+    <span asp-validation-for="Name"></span>
     <br />
     <br />
-    <input type="number" name="Cost" value="@Model.Cost" required>
+    <input asp-for="Cost" value="@Model.Cost">
+    <span asp-validation-for="Cost"></span>
     <br />
     <br />
     <input type="text" name="Description" value="@Model.Description">
