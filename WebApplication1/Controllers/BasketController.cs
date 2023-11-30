@@ -64,7 +64,11 @@ namespace WebApplication1.Controllers
 
 		public IActionResult RegisterOrder()
 		{
-			return View(bask.GetResultProducts());
+			var resultBask = bask.GetResultProducts();
+			ViewBag.Products = resultBask;
+			ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
+
+            return View();
 		}
 
 		[HttpPost]

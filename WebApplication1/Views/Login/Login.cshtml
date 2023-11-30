@@ -2,11 +2,11 @@
 <div class="text-center">
 	<h2>Вход</h2>
 	<form method="post">
-		<input type="text" name="name" required placeholder="Логин">
+		<input asp-for="Name" placeholder="Логин">
 		<span asp-validation-for="Name"></span>
 		<br />
 		<br />
-		<input name="password" type="password" required placeholder="Пароль">
+		<input asp-for="Password" type="password" placeholder="Пароль">
 		<span asp-validation-for="Password"></span>
 		<br />
 		<br />
