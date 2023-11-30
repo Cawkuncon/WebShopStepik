@@ -1,10 +1,13 @@
-﻿<div class="text-center">
+﻿@model IUserInfo
+<div class="text-center">
 	<h2>Вход</h2>
 	<form method="post">
 		<input type="text" name="name" required placeholder="Логин">
+		<span asp-validation-for="Name"></span>
 		<br />
 		<br />
 		<input name="password" type="password" required placeholder="Пароль">
+		<span asp-validation-for="Password"></span>
 		<br />
 		<br />
 		<input type="checkbox" name="saveUser" id="save" />
