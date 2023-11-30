@@ -1,10 +1,15 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
 namespace WebApplication1.Models
 {
 	public class UserInfo : IUserInfo
 	{
-		public string Name { get ; set; }
-		public string Password { get ; set; }
+		[Required(ErrorMessage = "Не указан логин")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 20 символов")]
+        public string Name { get ; set; }
+
+
+        [Required(ErrorMessage = "Не указан пароль")]
+        public string Password { get ; set; }
 		public string SaveUser { get; set; }
 		public bool SaveUserInfo { get 
 			{ 

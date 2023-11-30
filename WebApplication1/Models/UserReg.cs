@@ -31,7 +31,7 @@ namespace WebApplication1.Models
 
 
         [Required(ErrorMessage = "Не указан телефон")]
-        [RegularExpression(@"^\d{1}-\d{3}-\d{3}-\d{2}-\d{2}", ErrorMessage = "Неверный формат номера")]
+        [RegularExpression(@"^\d{1}-\d{3}-\d{3}-\d{2}-\d{2}", ErrorMessage = "Неверный формат номера. Введите номер в формате 8-888-888-88-88")]
         public string Number { get; set; }
 
         public bool PassCheck()
