@@ -21,22 +21,22 @@
         {
             <div class="row">
                 <div class="col-1">
-                    @i
+                    <a asp-controller="Admin" asp-action="OrderInfo" asp-route-id="@item.Id1">@item.Id1</a>
                 </div>
                 <div class="col-1">
                     @item.Total
                 </div>
                 <div class="col-2">
-                    Создан    
+                    @item.Status   
                 </div>
                 <div class="col-2">
-                    @item.Name    
+                        <a asp-controller="Admin" asp-action="OrderInfo" asp-route-id="@item.Id1">@item.Name</a>
                 </div>
                 <div class="col-2">
                     @item.CreationDate
                 </div>
                 <div class="col-1">
-                    @item.CreationDate
+                    @item.CreationTime
                 </div>
             </div>
             i += 1;

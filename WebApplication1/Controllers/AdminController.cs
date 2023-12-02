@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -70,6 +71,13 @@ namespace WebApplication1.Controllers
             product.Id = id;
             productRepository.UpdateProd(product);
             return RedirectToAction("Products");
+        }
+
+
+        public IActionResult OrderInfo(int id)
+        {
+            var order = orderRepository.GetAll().FindLast(ord => ord.Id1 == id);
+            return View(order);
         }
     }
 }

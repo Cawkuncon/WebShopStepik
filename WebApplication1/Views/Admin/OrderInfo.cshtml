@@ -1,0 +1,64 @@
+﻿@model Order
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("Index")
+    </div>
+ <div class="col-9">
+<h2>Заказ №@Model.Id1</h2>
+<hr />
+Дата и время оформления: @Model.CreationDate в @Model.CreationTime
+<br/>
+Адрес доставки:
+<br />
+Получатель: @Model.Name
+<br />
+Телефон: @Model.Number
+<br />
+Email: @Model.Email
+<br />
+Комментарии:
+<br />
+Сумма заказа: @Model.Total ₽
+<br/>
+<div class="row">
+<div class="col-3">
+Статус заказа: @switch (Model.Status)
+{
+    case Status_Order.Created:
+        <b>Создан</b>
+        ;
+        break;
+    case Status_Order.Processed:
+                <b>Обработан</b>
+        ;
+        break;
+    case Status_Order.Delivering:
+                <b>В пути</b>
+        ;
+        break;
+    case Status_Order.Canceled:
+                <b>Отменен</b>
+        ;
+        break;
+    case Status_Order.Delivered:
+                <b>Доставлен</b>
+        ;
+        break;
+
+    default:
+        break;
+}
+</div>
+<div class="col-3">
+<select class="form-select">
+  <option selected>Измените статус заказа</option>
+  <option value="@Status_Order.Created">Создан</option>
+  <option value="@Status_Order.Processed">Обработан</option>
+  <option value="@Status_Order.Delivering">В пути</option>
+  <option value="@Status_Order.Canceled">Отменен</option>
+  <option value="@Status_Order.Delivered">Доставлен</option>
+</select>
+</div>
+</div>
+</div>
+</div>

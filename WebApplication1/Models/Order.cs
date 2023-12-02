@@ -1,9 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace WebApplication1.Models
 {
+
+    public enum Status_Order
+    {
+        Created,
+        Processed,
+        Delivering,
+        Canceled,
+        Delivered,
+    }
+
     public class Order : IOrder
     {
+        private static int Id = 1;
+        public int Id1 { get; set; }
         public List<Product> Products { get; set; }
 
 
@@ -22,28 +35,37 @@ namespace WebApplication1.Models
         public string Email { get; set; }
         public int Total { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
+        public string CreationTime { get; set; }
+        public Status_Order Status { get; set; }
+
 
         public void SaveOrder()
         {
 
         }
 
-        public Order()
+        public void OrderCreation()
         {
-            CreationDate = DateTime.Now;
+            CreationDate = DateTime.Now.ToShortDateString();
+            CreationTime = DateTime.Now.ToShortTimeString();
+            Status = Status_Order.Created;
+            Id1 = Id;
+            Id++;
         }
     }
 
     public interface IOrder
     {
+        private static int Id;
         public List<Product> Products { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }
         public string Email { get; set; }
         public int Total { get; set; }
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
+        public string CreationTime { get; set; }    
         public void SaveOrder();
-
+        public Status_Order Status { get; set; }
     }
 }

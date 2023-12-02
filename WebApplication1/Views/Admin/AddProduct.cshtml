@@ -1,4 +1,10 @@
 ﻿@model Product
+
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("Index")
+    </div>
+<div class="col-9">
 <h2>Добавление нового продукта</h2>
 <form method="post">
     <input asp-for="Name" placeholder="Название продукта">
@@ -14,3 +20,5 @@
     <br />
     <button type="submit" asp-controller="Admin" asp-action="Add">Добавить</button>
 </form>
+</div>
+</div>  

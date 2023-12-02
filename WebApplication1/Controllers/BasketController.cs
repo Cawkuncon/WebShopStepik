@@ -87,6 +87,7 @@ namespace WebApplication1.Controllers
 			bask.ClearResultProducts();
 			bask.ClearCart();
 			var orderToAdd = (Order)this.order;
+			orderToAdd.OrderCreation();
 			orderRepository.Add(orderToAdd);
 			return View(this.order);
 		}
