@@ -79,5 +79,13 @@ namespace WebApplication1.Controllers
             var order = orderRepository.GetAll().FindLast(ord => ord.Id1 == id);
             return View(order);
         }
+
+        [HttpPost]
+        public IActionResult ChangeStatus(int idOrder, Status_Order Status)
+        {
+            var order = orderRepository.GetAll().FirstOrDefault(ord=> ord.Id1 == idOrder);
+            order.Status = Status;
+            return RedirectToAction("OrderInfo", new {id = idOrder});
+        }
     }
 }

@@ -38,12 +38,10 @@ namespace WebApplication1.Models
         public string CreationDate { get; set; }
         public string CreationTime { get; set; }
         public Status_Order Status { get; set; }
+        public string Comments { get; set; }
 
-
-        public void SaveOrder()
-        {
-
-        }
+        [Required(ErrorMessage = "Не указан адрес доставки")]
+        public string Address { get; set; }
 
         public void OrderCreation()
         {
@@ -65,7 +63,8 @@ namespace WebApplication1.Models
         public int Total { get; set; }
         public string CreationDate { get; set; }
         public string CreationTime { get; set; }    
-        public void SaveOrder();
         public Status_Order Status { get; set; }
+        public string Comments { get; set; }
+        public string Address { get; set; }
     }
 }

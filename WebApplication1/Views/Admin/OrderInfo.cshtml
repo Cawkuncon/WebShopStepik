@@ -8,7 +8,7 @@
 <hr />
 Дата и время оформления: @Model.CreationDate в @Model.CreationTime
 <br/>
-Адрес доставки:
+Адрес доставки: @Model.Address
 <br />
 Получатель: @Model.Name
 <br />
@@ -16,7 +16,7 @@
 <br />
 Email: @Model.Email
 <br />
-Комментарии:
+Комментарии: @Model.Comments
 <br />
 Сумма заказа: @Model.Total ₽
 <br/>
@@ -50,7 +50,8 @@ Email: @Model.Email
 }
 </div>
 <div class="col-4">
-<select class="form-select">
+<form method="post">
+<select class="form-select" name="Status">
   <option selected>Измените статус</option>
   <option value="@Status_Order.Created">Создан</option>
   <option value="@Status_Order.Processed">Обработан</option>
@@ -58,6 +59,10 @@ Email: @Model.Email
   <option value="@Status_Order.Canceled">Отменен</option>
   <option value="@Status_Order.Delivered">Доставлен</option>
 </select>
+<br />
+<br />
+<button type="submit" class="btn btn-success" asp-controller="Admin" asp-action="ChangeStatus" asp-route-idOrder="@Model.Id1">Изменить</button>
+</form>
 </div>
 </div>
 </div>
