@@ -27,6 +27,21 @@
                     @item.Total
                 </div>
                 <div class="col-2">
+                    @switch (item.Status)
+                    {
+                        case Status_Order.Created:
+                            <text>Создан</text>
+                        case Status_Order.Processed:
+                            <text>Обработан</text>
+                        case Status_Order.Delivering:
+                            <text>В пути</text>
+                        case Status_Order.Canceled:
+                            <text>Отменен</text>
+                        case Status_Order.Delivered:
+                            <text>Доставлен</text>
+                        default:
+                            break;
+                    }
                     @item.Status   
                 </div>
                 <div class="col-2">
