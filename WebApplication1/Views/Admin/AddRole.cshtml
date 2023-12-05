@@ -1,0 +1,19 @@
+﻿@model Role
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("Index")
+    </div>
+ <div class="col-9">
+             <h2>Добавить роль</h2>
+             <hr />
+             <br />
+             <br />
+             <form method="post">
+                 <label asp-for="Name">Имя роли</label>
+                 <input asp-for="Name" />
+                 <span asp-validation-for="Name"></span>
+                 <br />
+                 <br />
+                 <button asp-controller="Admin" asp-action="AddToRepository" type="submit">Добавить</button>
+             </form>
+</div>

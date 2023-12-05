@@ -8,10 +8,12 @@ namespace WebApplication1.Controllers
     {
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
-        public AdminController(IProductRepository productRepository, IOrderRepository orderRepository)
+        private IRolesRepository rolesRepository;
+        public AdminController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
+            this.rolesRepository = rolesRepository;  
         }
         public IActionResult Index()
         {
@@ -23,10 +25,6 @@ namespace WebApplication1.Controllers
             return View(orders);
         }
         public IActionResult Users()
-        {
-            return View();
-        }
-        public IActionResult Roles()
         {
             return View();
         }
@@ -86,6 +84,31 @@ namespace WebApplication1.Controllers
             var order = orderRepository.GetAll().FirstOrDefault(ord=> ord.Id1 == idOrder);
             order.Status = Status;
             return RedirectToAction("OrderInfo", new {id = idOrder});
+        }
+
+        public IActionResult Roles()
+        {
+            var roles = rolesRepository.GetAll();
+            return View(roles);
+        }
+
+        public IActionResult DeleteRole(int id)
+        {
+            var roleToDelete = rolesRepository.GetAll().FirstOrDefault(rol => rol.Id == id);
+            rolesRepository.DeleteRole(roleToDelete);
+            return RedirectToAction("Roles");
+        }
+
+        public IActionResult AddRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddToRepository(Role roleToAdd) 
+        {
+            rolesRepository.AddRole(roleToAdd);
+            return RedirectToAction("Roles");
         }
     }
 }
