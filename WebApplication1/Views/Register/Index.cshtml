@@ -3,38 +3,43 @@
 <div class="text-center">
     <h2>Регистрация</h2>
     <form method="post">
-        <div class="validation" asp-validation-summary="All">
+            <div class="text-danger" asp-validation-summary="All"></div>
+        <div>
             <label asp-for="Name">Логин</label><br />
             <input asp-for="Name">
             <span asp-validation-for="Name"></span>
+        </div>
             <br />
-            <br />
+        <div>
             <label asp-for="Email">Почта</label><br />
             <input asp-for="Email">
             <span asp-validation-for="Email"></span>
+        </div>
             <br />
-            <br />
+        <div>
             <label asp-for="Age">Возраст</label><br />
             <input asp-for="Age">
             <span asp-validation-for="Age"></span>
+        </div>
             <br />
-            <br />
+        <div>
             <label asp-for="Number">Телефон</label><br />
             <input asp-for="Number" placeholder="8-800-555-35-35">
             <span asp-validation-for="Number"></span>
+        </div>   
             <br />
-            <br />
+        <div>
             <label asp-for="Password">Пароль</label><br />
             <input type="password" asp-for="Password">
             <span asp-validation-for="Password"></span>
+        </div>    
             <br />
-            <br />
+        <div>
             <label asp-for="Password2">Подтверждение пароля</label><br />
             <input type="password" asp-for="Password2">
             <span asp-validation-for="Password2"></span>
-                <br /><br />
+        </div>    
+        <br />
             <button type="submit" class="btn btn-dark" asp-controller="Register" asp-action="RegisterUser">Регистрация нового пользователя</button>
-            <br /><br />
-        </div>
     </form>
 </div>
