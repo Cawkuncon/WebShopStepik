@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication1.Models
+namespace WebApplication1.Areas.Admin.Models
 {
-    public class Role: IRole
+    public class Role : IRole
     {
         private static int PubId = 1;
         public int Id { get; set; }

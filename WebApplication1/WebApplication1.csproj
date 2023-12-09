@@ -15,8 +15,4 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Area\" />
-  </ItemGroup>
-
 </Project>

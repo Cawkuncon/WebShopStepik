@@ -9,7 +9,7 @@
     </div>
     <div class="col-9">
         <h2>Список продуктов</h2>
-<a asp-controller="Admin" asp-action="AddProduct">Добавить продукт</a>
+<a asp-area="Admin" asp-controller="Home" asp-action="AddProduct">Добавить продукт</a>
 <br>
 <br />
 <table>
@@ -28,8 +28,8 @@
                     </td>   
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;@item.Name</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;@item.Cost</td>
-                    <td><a asp-controller="Admin" asp-action="EditProduct" asp-route-id="@item.Id" style="margin-left: 50px;">Редактировать</a></td>
-                    <td><a asp-controller="Admin" asp-action="DeleteProduct" asp-route-id="@item.Id" style="margin-left: 50px;">Удалить</a></td>
+                    <td><a asp-area="Admin" asp-controller="Home" asp-action="EditProduct" asp-route-id="@item.Id" style="margin-left: 50px;">Редактировать</a></td>
+                    <td><a asp-area="Admin" asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@item.Id" style="margin-left: 50px;">Удалить</a></td>
                 </tr>
                 i += 1;
             }

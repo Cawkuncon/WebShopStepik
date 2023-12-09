@@ -1,19 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
+using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
 
-namespace WebApplication1.Controllers
+namespace WebApplication1.Area.Controlles
 {
-    public class AdminController : Controller
+    [Area("Admin")]
+    public class HomeController : Controller
     {
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IRolesRepository rolesRepository;
-        public AdminController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository)
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
-            this.rolesRepository = rolesRepository;  
+            this.rolesRepository = rolesRepository;
         }
         public IActionResult Index()
         {
@@ -81,9 +83,9 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult ChangeStatus(int idOrder, Status_Order Status)
         {
-            var order = orderRepository.GetAll().FirstOrDefault(ord=> ord.Id1 == idOrder);
+            var order = orderRepository.GetAll().FirstOrDefault(ord => ord.Id1 == idOrder);
             order.Status = Status;
-            return RedirectToAction("OrderInfo", new {id = idOrder});
+            return RedirectToAction("OrderInfo", new { id = idOrder });
         }
 
         public IActionResult Roles()
@@ -105,7 +107,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToRepository(Role roleToAdd) 
+        public IActionResult AddToRepository(Role roleToAdd)
         {
             rolesRepository.AddRole(roleToAdd);
             return RedirectToAction("Roles");

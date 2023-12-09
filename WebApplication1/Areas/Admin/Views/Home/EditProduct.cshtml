@@ -18,8 +18,8 @@
     <input type="text" name="Description" value="@Model.Description">
     <br />
     <br />
-    <button type="submit" asp-controller="Admin" asp-action="UpdateProduct" asp-route-id="@Model.Id">Обновить данные</button>
-    <button type="submit" asp-controller="Admin" asp-action="Product">Отменить</button>
+    <button type="submit" asp-controller="Home" asp-action="UpdateProduct" asp-route-id="@Model.Id" asp-area="Admin">Обновить данные</button>
+    <button type="submit" asp-controller="Home" asp-action="Product" asp-area="Admin">Отменить</button>
 </form>
 </div>
 </div>
