@@ -1,5 +1,5 @@
 using WebApplication1.Models;
-
+using Serilog;
 namespace WebApplication1
 {
     public class Program
@@ -16,6 +16,11 @@ namespace WebApplication1
 			services.AddSingleton<IRolesRepository,RolesRepository>();
 			services.AddTransient<IOrder, Order>();
 
+
+			builder.Host.UseSerilog((context, configuration) => configuration
+			.ReadFrom.Configuration(context.Configuration)
+			.Enrich.WithProperty("ApplicationName", "WebApplication1"));
+
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
@@ -28,7 +33,7 @@ namespace WebApplication1
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-
+			app.UseSerilogRequestLogging();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
