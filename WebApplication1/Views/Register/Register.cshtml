@@ -2,8 +2,8 @@
 
 <div class="text-center">
     <h2>Регистрация</h2>
-    <form method="post">
-            <div class="text-danger" asp-validation-summary="All"></div>
+    <form asp-controller="Register" asp-action="Register">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div>
             <label asp-for="Name">Логин</label><br />
             <input asp-for="Name">
@@ -40,6 +40,7 @@
             <span asp-validation-for="Password2"></span>
         </div>    
         <br />
-            <button type="submit" class="btn btn-dark" asp-controller="Register" asp-action="RegisterUser">Регистрация нового пользователя</button>
+            <input type="submit" class="btn btn-dark" value="Регистрация нового пользователя"/>
     </form>
+
 </div>

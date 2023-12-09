@@ -11,11 +11,13 @@ namespace WebApplication1.Area.Controlles
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IRolesRepository rolesRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository)
+        private readonly IUserRepository UsersRepository;
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, IUserRepository users)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
             this.rolesRepository = rolesRepository;
+            this.UsersRepository = users;
         }
         public IActionResult Index()
         {
@@ -28,7 +30,8 @@ namespace WebApplication1.Area.Controlles
         }
         public IActionResult Users()
         {
-            return View();
+            var usersToView = UsersRepository.GetUsers();
+            return View(usersToView);
         }
         public IActionResult Products()
         {

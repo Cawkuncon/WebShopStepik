@@ -14,6 +14,7 @@ namespace WebApplication1
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IRolesRepository, RolesRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
             services.AddTransient<IOrder, Order>();
 
 

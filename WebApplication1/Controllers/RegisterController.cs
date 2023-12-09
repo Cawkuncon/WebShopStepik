@@ -5,24 +5,40 @@ namespace WebApplication1.Controllers
 {
     public class RegisterController : Controller
     {
-        public IActionResult Index()
+        private readonly IUserRepository Users;
+
+        public RegisterController(IUserRepository users)
+        {
+            Users = users;
+        }
+
+
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult RegisterUser(UserReg user)
+        public IActionResult Register(UserReg user)
         {
             if (user.Name == user.Password)
             {
                 ModelState.AddModelError("", "Имя и пароль не должны совпадать");
             }
+            var tryingToCheckExistingUser = Users.GetUsers().FirstOrDefault(use => use.Name == user.Name);
+
+            if (tryingToCheckExistingUser != null)
+            {
+                ModelState.AddModelError("", "Пользователь с таким именем уже существует!!!");
+            }
 
             if (ModelState.IsValid)
             {
-                return Content($"{user.Name} {user.Password} {user.PassCheck()}");
+                Users.Add(user);
+                return RedirectToAction("Index", "Home");
             }
-            return Content(user.ToString());
+
+            return View(user);
         }
     }
 }

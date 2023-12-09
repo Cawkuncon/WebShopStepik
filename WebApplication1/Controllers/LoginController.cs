@@ -5,15 +5,31 @@ namespace WebApplication1.Controllers
 {
 	public class LoginController : Controller
 	{
+        private readonly IUserRepository Users;
+
+        public LoginController(IUserRepository users)
+		{
+            Users = users;
+        }
 		public IActionResult Login()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		public string TryToLogin(UserInfo userInfo)
+		public IActionResult Login(UserInfo userInfo)
 		{
-			return ($"{userInfo.Name} {userInfo.Password} {userInfo.SaveUserInfo} {userInfo.SaveUser} ");
+            var ResUser = Users.GetUser(userInfo.Name);
+
+            if (ResUser == null || ResUser.Password != userInfo.Password)
+            {
+                ModelState.AddModelError("", "Неверный пароль или неверное имя пользователя");
+            }
+            if (ModelState.IsValid)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+			return View(userInfo);
 		}
 	}
 }

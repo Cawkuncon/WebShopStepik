@@ -1,21 +1,27 @@
 ﻿@model UserInfo
 <div class="text-center">
 	<h2>Вход</h2>
-	<form method="post">
+	<form asp-controller="Login" asp-action="Login">
+		<div class="text-danger font-weight-bold" asp-validation-summary="All"></div>
+		<div>
 		<input asp-for="Name" placeholder="Логин">
 		<span asp-validation-for="Name"></span>
+		</div>
 		<br />
 		<br />
+		<div>
 		<input asp-for="Password" type="password" placeholder="Пароль">
 		<span asp-validation-for="Password"></span>
+		</div>
 		<br />
 		<br />
-		<input type="checkbox" name="saveUser" id="save" />
+		<input type="checkbox" asp-for="SaveUser" id="save" />
 		<label for="save">Запомнить пользователя</label>
 		<br />
 		<br />
-		<button type="submit" class="btn btn-dark" asp-controller="Login" asp-action="TryToLogin">Войти</button>
+		<button type="submit" class="btn btn-info">Войти</button>
 		<br /><br />
+		
 	</form>
-	<a class="btn btn-info" asp-controller="Register" asp-action="Index">Регистрация нового пользователя</a>
+		<a class="btn btn-secondary" asp-area="" asp-controller="Register" asp-action="Register">Регистрация</a>
 </div>
