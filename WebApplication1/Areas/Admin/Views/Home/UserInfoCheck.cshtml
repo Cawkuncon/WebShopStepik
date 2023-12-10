@@ -1,0 +1,19 @@
+﻿@model UserReg
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("Index")
+    </div>
+    <div class="col-9">
+        <h2>Пользователь @Model.Name</h2>
+        <hr />
+        <br />
+        Имя: @Model.Name
+        <br />
+        Email: @Model.Email
+        <br />
+        Номер телефона: @Model.Number
+        <br />
+        <br />
+        
+    </div>
+</div>

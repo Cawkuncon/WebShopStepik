@@ -115,5 +115,16 @@ namespace WebApplication1.Area.Controlles
             rolesRepository.AddRole(roleToAdd);
             return RedirectToAction("Roles");
         }
+
+        public IActionResult UserInfoCheck(string Name)
+        {
+            var user = UsersRepository.GetUser(Name);
+            return View(user);
+        }
+
+        public IActionResult AddUser()
+        {
+            return View();
+        }
     }
 }
