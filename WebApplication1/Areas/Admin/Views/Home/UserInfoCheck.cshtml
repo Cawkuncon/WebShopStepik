@@ -14,6 +14,16 @@
         <h5>Номер телефона: @Model.Number</h5>
         <br />
         <br />
-        
+        <div class="dropdown">
+          <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Действие
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Смена пароля</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Редактирование данных</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Права доступа</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-user="@Model">Удалить пользователя</a></li>
+          </ul>
+        </div>
     </div>
 </div>
