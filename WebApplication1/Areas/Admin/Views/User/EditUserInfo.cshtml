@@ -2,14 +2,8 @@
 
 <div class="text-center">
     <h2>Регистрация</h2>
-    <form asp-area="" asp-controller="Register" asp-action="Register">
+    <form asp-area="Admin" asp-controller="User" asp-action="EditUserInfo">
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-        <div>
-            <label asp-for="Name">Логин</label><br />
-            <input asp-for="Name" value="@Model.Name"> 
-            <span asp-validation-for="Name"></span>
-        </div>
-            <br />
         <div>
             <label asp-for="Email">Почта</label><br />
             <input asp-for="Email" value="@Model.Email">
@@ -27,20 +21,9 @@
             <input asp-for="Number"  value="@Model.Number">
             <span asp-validation-for="Number"></span>
         </div>   
-            <br />
-        <div>
-            <label asp-for="Password" hidden>Пароль</label><br />
-            <input type="hidden" asp-for="Password" value="@Model.Password">
-            <span asp-validation-for="Password"></span>
-        </div>    
-            <br />
-        <div>
-            <label asp-for="Password2" hidden>Подтверждение пароля</label><br />
-            <input type="hidden" asp-for="Password2" value="@Model.Password2">
-            <span asp-validation-for="Password2"></span>
-        </div>    
         <br />
-            <input type="submit" class="btn btn-dark" value="Обновить данные пользователя"/>
+        <br />
+            <input type="submit" class="btn btn-dark" value="Обновить данные пользователя" asp-route-name="@Model.Name"/>
     </form>
 
 </div>
