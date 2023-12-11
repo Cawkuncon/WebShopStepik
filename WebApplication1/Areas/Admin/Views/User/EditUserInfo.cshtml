@@ -1,7 +1,7 @@
 ﻿@model UserReg
 
 <div class="text-center">
-    <h2>Регистрация</h2>
+    <h2>Редактирование данных пользователя @Model.Name</h2>
     <form asp-area="Admin" asp-controller="User" asp-action="EditUserInfo">
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div>
