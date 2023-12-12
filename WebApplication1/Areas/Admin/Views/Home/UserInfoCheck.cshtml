@@ -21,7 +21,7 @@
             Действие
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Смена пароля</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.Name">Смена пароля</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.Name">Редактирование данных</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Права доступа</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Name="@Model.Name">Удалить пользователя</a></li>

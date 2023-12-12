@@ -35,5 +35,22 @@ namespace WebApplication1.Areas.Admin.Controlles
             us.Email = user.Email;
             return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name = Name });
         }
+
+        public IActionResult EditPassword(string name)
+        {
+            var user = UsersRepository.GetUser(name);
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult EditPassword(string name, string password, string password2)
+        {
+            var user = UsersRepository.GetUser(name);
+            user.Password = password;
+            user.Password2 = password2;
+            return RedirectToAction("UserInfoCheck", "Home", new { Name = user.Name });
+
+        }
+
     }
 }
