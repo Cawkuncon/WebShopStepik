@@ -15,6 +15,15 @@
         <br />
         <h5>Номер телефона: @Model.Number</h5>
         <br />
+        @if (Model.Role != null)
+        {
+            <h5>Роль: @Model.Role.Name</h5>
+        }
+        else
+        {
+            <h5>Роль не присвоена</h5>
+        }
+        <br />
         <br />
         <div class="dropdown">
           <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,7 +32,7 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.Name">Смена пароля</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.Name">Редактирование данных</a></li>
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="">Права доступа</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="UserRole" asp-route-Name="@Model.Name">Права доступа</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Name="@Model.Name">Удалить пользователя</a></li>
           </ul>
         </div>

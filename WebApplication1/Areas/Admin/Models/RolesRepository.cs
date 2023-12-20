@@ -18,6 +18,12 @@
         {
             return _roles;
         }
+
+        public Role GetRole(string Name)
+        {
+            var role = _roles.FirstOrDefault(x => x.Name == Name);
+            return role;
+        }
     }
 
 
@@ -26,6 +32,8 @@
         public List<Role> GetAll();
         public void AddRole(Role role);
         public void DeleteRole(Role role);
+
+        public Role GetRole(string Name);
 
     }
 }

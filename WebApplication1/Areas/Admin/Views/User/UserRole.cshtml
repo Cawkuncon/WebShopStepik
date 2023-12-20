@@ -1,0 +1,26 @@
+﻿@using WebApplication1.Areas.Admin.Models;
+@model UserReg
+
+<h4>Назначение прав пользователю <b>@Model.Name</b></h4>
+<br />
+<br />
+@if(ViewBag.Roles.Count > 0)
+{
+    <form method="post">
+    <select class="form-select" name="UserRole">
+      <option selected>Измените статус</option>
+            @foreach (var item in ViewBag.Roles)
+            {
+                                     <option value="@item.Name">@item.Name</option>
+            }
+
+    </select>
+    <br />
+    <br />
+        <button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="User" asp-action="ChangeUserRole" asp-route-Name="@Model.Name">Изменить</button>
+    </form>
+}
+else
+{
+    <h5>Нет доступных ролей</h5>
+}
