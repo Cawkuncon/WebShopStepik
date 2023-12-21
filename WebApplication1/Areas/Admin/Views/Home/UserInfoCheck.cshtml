@@ -33,8 +33,27 @@
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.Name">Смена пароля</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.Name">Редактирование данных</a></li>
             <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="UserRole" asp-route-Name="@Model.Name">Права доступа</a></li>
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Name="@Model.Name">Удалить пользователя</a></li>
+            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Удалить пользователя</a></li>
           </ul>
         </div>
     </div>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Удалить пользователя <b>@Model.Name</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        Вы действительно хотите удалить пользователя <b>@Model.Name</b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <a type="button" class="btn btn-danger" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Name="@Model.Name">Удалить</a>
+      </div>
+    </div>
+  </div>
 </div>
