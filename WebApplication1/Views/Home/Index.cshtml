@@ -6,6 +6,7 @@
 
     <div class="row">
         <div class="col-md-3 my-3">
+            <div class="d-flex flex-column mb-2">
                 <form method="post">
                     <div class="d-flex my-1">
                         <div class="input-group mb-3">
@@ -16,6 +17,17 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="d-flex flex-column mb-2">
+                <div class="list-group">
+                  <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Home" asp-action="Index">
+                    Главная
+                  </a>
+                  <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Basket" asp-action="Index">Корзина<sup>@await Component.InvokeAsync("Bask")</sup></a>
+                  <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Compare">Сравнение</a>
+                  <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="ShowFavorite">Избранное</a>
+                </div>
+            </div>
         </div>
         <div class="col-md-9 my-3">
             <div class="row">
@@ -62,16 +74,16 @@
                                         </div>
                                             <div class="d-flex mt-auto">
                                                 <div class="d-inline-flex">
-                                                    <a href="/basket/adds?productId=@product.Id" class="btn"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
+                                                    <a asp-controller="Basket" asp-action="Adds" asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
                                                 </div>
                                                     <div class="d-inline-flex mx-1">
                                                     @if (!product.Comparsion)
                                                     {
-                                                        <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info text-center">Сравнение</a>
+                                                        <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info text-center btn-active">Сравнение</a>
                                                     }
                                                     else
                                                     {
-                                                         <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">Сравнение</a>
+                                                         <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-secondary disabled">Сравнение</a>
                                                     }
                                                </div>
                                                <div class="d-inline-flex">

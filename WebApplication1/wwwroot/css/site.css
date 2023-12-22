@@ -37,3 +37,9 @@ body {
 .fa-red-heart {
     color:red
 }
+
+a.btn-active:hover {
+    background-color: midnightblue;
+    color: white;
+    transition: all 1s ease;
+}

@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
             var id = int.Parse(productId);
             var Prod = productRepository.GetAll().Where(x => x.Id == id).First();
             bask.AddToCart(Prod);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Index()
         {
