@@ -9,7 +9,7 @@
                 <form method="post">
                     <div class="d-flex my-1">
                         <div class="input-group mb-3">
-                          <input type="text" class="form-control" placeholder="Поиск по названию" aria-label="Поиск по названию" aria-describedby="basic-addon2">
+                          <input type="text" class="form-control" placeholder="Поиск по названию" aria-label="Поиск по названию" aria-describedby="basic-addon2" name="search">
                           <div class="input-group-append">
                               <button class="btn btn-outline-secondary" type="submit" asp-controller="Home" asp-action="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
                           </div>
@@ -52,39 +52,43 @@
             @foreach (var product in Model)
             {
                             <div class="col-3 mx-1 mb-3 py-0 px-0 card-main">
-                                <div class="card shadow">
-                                    <div class="card-body">
-                                        <img class="card-img-top" src="https://adpass.ru/wp-content/uploads/2022/02/1200px-YAndeks.svg.png">
-                                        <a href="/product/index/@product.Id"><h1>@product.Name</h1></a>
+                                <div class="card h-100 shadow">
+                                    <div class="card-body d-flex flex-column">
+                                        <a href="/product/index/@product.Id"><img class="card-img-top" src="https://adpass.ru/wp-content/uploads/2022/02/1200px-YAndeks.svg.png"></a>
+                                        <h3>@product.Name</h3>
                                         <h4>Цена: @product.Cost &#8381</h4>
-                                        <p id="1" class="cl1">@product.Description</p>
-                                        <a href="/basket/adds?productId=@product.Id" class="btn btn-dark">Добавить в корзину</a>
-
-                                        @if (!product.Comparsion)
-                                        {
-                                            <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info">В избранное</a>
-                                        }
-                                        else
-                                        {
-                                            <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">В избранное</a>
-                                        }
-                                            <br>
-                                            <br>
-                                        @if (!product.Favorite)
-                                        {
-                                            <a href="/home/AddToFavorite?productId=@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
-                                        }
-                                        else
-                                        {
-                                             <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
-                                        }
-
+                                        <div>
+                                             <p id="1" class="cl1">@product.Description</p>
+                                        </div>
+                                            <div class="d-flex mt-auto">
+                                                <div class="d-inline-flex">
+                                                    <a href="/basket/adds?productId=@product.Id" class="btn"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
+                                                </div>
+                                                    <div class="d-inline-flex mx-1">
+                                                    @if (!product.Comparsion)
+                                                    {
+                                                        <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info text-center">Сравнение</a>
+                                                    }
+                                                    else
+                                                    {
+                                                         <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info disabled">Сравнение</a>
+                                                    }
+                                               </div>
+                                               <div class="d-inline-flex">
+                                                    @if (!product.Favorite)
+                                                    {
+                                                        <a href="/home/AddToFavorite?productId=@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                         <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
+                                                    }
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
             }
             </div>
-           
         </div>
-        
     </div>
