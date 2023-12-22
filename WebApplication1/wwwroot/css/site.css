@@ -22,3 +22,18 @@ body {
     font-size: 26px;
 }
 
+.search-input {
+    width: 100%;
+}
+
+.search-button{
+    width: 50%;
+}
+
+.card-main {
+    width:32%;
+}
+
+.fa-red-heart {
+    color:red
+}
