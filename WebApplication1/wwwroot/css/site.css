@@ -43,3 +43,38 @@ a.btn-active:hover {
     color: white;
     transition: all 1s ease;
 }
+
+a.btn-continue:hover {
+    background-color: lightseagreen;
+    color:darkslategray;
+    transition: all 800ms ease;
+    border-color: lightseagreen;
+}
+
+div.text-format {
+    overflow-x: hidden;
+    white-space: normal;
+}
+
+a.btn-mp{
+    background-color: lightslategray;
+    color: white;
+    width: 40px;
+}
+
+a.btn-plus:hover{
+    background-color: limegreen;
+    color: black;
+}
+a.btn-minus:hover{
+    background-color:orangered;
+    color:black;
+}
+a.cart-prod-name {
+    text-decoration: none;
+}
+
+a.cart-prod-name:hover {
+    color: darkorange;
+    transition: 1s all ease;
+}
