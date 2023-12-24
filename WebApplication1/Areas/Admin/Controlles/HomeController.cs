@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using System.Reflection.Metadata.Ecma335;
 using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
@@ -38,7 +39,7 @@ namespace WebApplication1.Area.Controlles
             return View(productRepository.GetAll());
         }
 
-        public IActionResult DeleteProduct(int id)
+        public IActionResult DeleteProduct(Guid id)
         {
             productRepository.Delete(id);
             return RedirectToAction("Products");
@@ -51,25 +52,17 @@ namespace WebApplication1.Area.Controlles
         [HttpPost]
         public IActionResult Add(Product product)
         {
-            if (productRepository.GetAll().Count == 0)
-            {
-                product.Id = 0;
-            }
-            else
-            {
-                product.Id = productRepository.GetAll().Last().Id + 1;
-            }
             productRepository.AddProd(product);
             return RedirectToAction("Products");
         }
 
-        public IActionResult EditProduct(int id)
+        public IActionResult EditProduct(Guid id)
         {
             var prod = productRepository.GetAll().Find(x => x.Id == id);
             return View(prod);
         }
         [HttpPost]
-        public IActionResult UpdateProduct(Product product, int id)
+        public IActionResult UpdateProduct(Product product, Guid id)
         {
             product.Id = id;
             productRepository.UpdateProd(product);

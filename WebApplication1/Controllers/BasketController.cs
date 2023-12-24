@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using System.Collections.Immutable;
 using WebApplication1.Models;
 
@@ -19,31 +20,30 @@ namespace WebApplication1.Controllers
             this.order = order;
             this.orderRepository = orderRepository;
         }
-        public IActionResult Adds(string productId)
-        {
-            var id = int.Parse(productId);
-            var Prod = productRepository.GetAll().Where(x => x.Id == id).First();
-            bask.AddToCart(Prod);
-            return RedirectToAction("Index", "Home");
-        }
-        public IActionResult Index()
-        {
-            var k = bask.GetCart().GroupBy(x => x.Id);
-            bask.ClearResultProducts();
-            foreach (var item in k)
-            {
-                var id = item.Key;
-                var name = item.First().Name;
-                var count = item.Count();
-                var cost = item.First().Cost;
-                var descr = item.First().Description;
-                var newProd = new Product(id, cost, name, descr, count);
-                bask.AddToResultProducts(newProd);
-            }
-            var relustProductsOrdered = bask.GetResultProducts();
-            relustProductsOrdered = relustProductsOrdered.OrderBy(x => x.Name).ToList();
-            return View(relustProductsOrdered);
-        }
+        //public IActionResult Adds(Guid productId)
+        //{
+        //    var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
+        //    bask.AddToCart(Prod);
+        //    return RedirectToAction("Index", "Home");
+        //}
+        //public IActionResult Index()
+        //{
+        //    var k = bask.GetCart().GroupBy(x => x.Id);
+        //    bask.ClearResultProducts();
+        //    foreach (var item in k)
+        //    {
+        //        var id = item.Key;
+        //        var name = item.First().Name;
+        //        var count = item.Count();
+        //        var cost = item.First().Cost;
+        //        var descr = item.First().Description;
+        //        var newProd = new Product(id, cost, name, descr, count);
+        //        bask.AddToResultProducts(newProd);
+        //    }
+        //    var relustProductsOrdered = bask.GetResultProducts();
+        //    relustProductsOrdered = relustProductsOrdered.OrderBy(x => x.Name).ToList();
+        //    return View(relustProductsOrdered);
+        //}
 
         public IActionResult Clear()
         {
@@ -51,14 +51,14 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Plus(int Id)
+        public IActionResult Plus(Guid Id)
         {
             var prod = bask.GetCart().Where(x => x.Id == Id).First();
             bask.AddToCart(prod);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Minus(int Id)
+        public IActionResult Minus(Guid Id)
         {
             bask.RemoveFromCart(Id);
             return RedirectToAction("Index");
@@ -80,7 +80,7 @@ namespace WebApplication1.Controllers
             this.order.Number = order.Number;
             this.order.Email = order.Email;
             var cart = bask.GetCart();
-            this.order.Products = new List<Product>();
+            this.order.Products = new List<ProductViewModel>();
             this.order.Products.AddRange(cart);
             this.order.Total = bask.GetTotalCost();
             this.order.Comments = order.Comments;

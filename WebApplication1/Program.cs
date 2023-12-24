@@ -1,6 +1,9 @@
 using WebApplication1.Models;
 using Serilog;
 using WebApplication1.Areas.Admin.Models;
+using Microsoft.EntityFrameworkCore;
+using OnlineShop.DB;
+using OnlineShop.DB.Models;
 
 namespace WebApplication1
 {
@@ -11,13 +14,14 @@ namespace WebApplication1
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
             services.AddSingleton<IBaskRepository, Bask>();
-            services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<IRolesRepository, RolesRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddTransient<IOrder, Order>();
 
-
+            string connection = builder.Configuration.GetConnectionString("onlineShop");
+            builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));
             builder.Host.UseSerilog((context, configuration) => configuration
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.WithProperty("ApplicationName", "WebApplication1"));

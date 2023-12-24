@@ -4,12 +4,12 @@ namespace WebApplication1
 {
     public class Bask : IBaskRepository
 	{
-		private List<Product> prodCart = new List<Product>()
+		private List<ProductViewModel> prodCart = new List<ProductViewModel>()
 		{
 
 		};
 
-		private List<Product> resultProducts = new List<Product>()
+		private List<ProductViewModel> resultProducts = new List<ProductViewModel>()
 		{
 
 		};
@@ -19,22 +19,22 @@ namespace WebApplication1
 			resultProducts.Clear();
 		}
 
-		public void AddToCart(Product product)
+		public void AddToCart(ProductViewModel product)
 		{
 			prodCart.Add(product);
 		}
 
-		public List<Product> GetCart()
+		public List<ProductViewModel> GetCart()
 		{
 			return prodCart;
 		}
 
-		public void AddToResultProducts(Product prod)
+		public void AddToResultProducts(ProductViewModel prod)
 		{
 			resultProducts.Add(prod);
 		}
 
-		public List<Product> GetResultProducts()
+		public List<ProductViewModel> GetResultProducts()
 		{
 			return resultProducts;
 		}
@@ -44,7 +44,7 @@ namespace WebApplication1
 			prodCart.Clear();
 		}
 
-		public void RemoveFromCart(int Id)
+		public void RemoveFromCart(Guid Id)
 		{
 			var prod = prodCart.Where(x => x.Id == Id).First();
 			prodCart.Remove(prod);
@@ -67,11 +67,11 @@ namespace WebApplication1
 
 		public void ClearCart();
 
-		public void AddToCart(Product product);
-		public List<Product> GetCart();
-		public void AddToResultProducts(Product prod);
-		public void RemoveFromCart(int Id);
-		public List<Product> GetResultProducts();
+		public void AddToCart(ProductViewModel product);
+		public List<ProductViewModel> GetCart();
+		public void AddToResultProducts(ProductViewModel prod);
+		public void RemoveFromCart(Guid Id);
+		public List<ProductViewModel> GetResultProducts();
 		public int GetCount();
 
 		public int GetTotalCost();

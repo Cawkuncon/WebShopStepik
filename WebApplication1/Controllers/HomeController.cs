@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using System.Diagnostics;
 using WebApplication1.Models;
 
@@ -20,10 +21,9 @@ namespace WebApplication1.Controllers
             return View(products);
         }
 
-        public IActionResult AddToComparsion(string productId)
+        public IActionResult AddToComparsion(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == id).First();
+            var prodToCompare = productRepository.GetAll().Where(x => x.Id == productId).First();
             prodToCompare.Comparsion = !prodToCompare.Comparsion;
             return RedirectToAction("Index");
         }
@@ -34,34 +34,30 @@ namespace WebApplication1.Controllers
             return View(products);
         }
 
-        public IActionResult DeleteFromComparsion(string productId)
+        public IActionResult DeleteFromComparsion(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == id).First();
+            var prodToCompare = productRepository.GetAll().Where(x => x.Id == productId).First();
             prodToCompare.Comparsion = !prodToCompare.Comparsion;
             return RedirectToAction("Compare");
         }
 
 
-        public IActionResult AddToFavorite(string productId)
+        public IActionResult AddToFavorite(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToAdd = productRepository.GetAll().Where(x => x.Id == id).First();
+            var prodToAdd = productRepository.GetAll().Where(x => x.Id == productId).First();
             prodToAdd.Favorite = !prodToAdd.Favorite;
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteFromFavoriteIndex(string productId)
+        public IActionResult DeleteFromFavoriteIndex(Guid id)
         {
-            var id = int.Parse(productId);
             var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
             prodToDelete.Favorite = !prodToDelete.Favorite;
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteFromFavorite(string productId)
+        public IActionResult DeleteFromFavorite(Guid id)
         {
-            var id = int.Parse(productId);
             var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
             prodToDelete.Favorite = !prodToDelete.Favorite;
             return RedirectToAction("ShowFavorite");

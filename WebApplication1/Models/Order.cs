@@ -17,7 +17,7 @@ namespace WebApplication1.Models
     {
         private static int Id = 1;
         public int Id1 { get; set; }
-        public List<Product> Products { get; set; }
+        public List<ProductViewModel> Products { get; set; }
 
 
         [Required(ErrorMessage = "Не указано имя")]
@@ -56,7 +56,7 @@ namespace WebApplication1.Models
     public interface IOrder
     {
         private static int Id;
-        public List<Product> Products { get; set; }
+        public List<ProductViewModel> Products { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }
         public string Email { get; set; }
