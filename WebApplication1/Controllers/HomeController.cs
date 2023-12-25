@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Diagnostics;
+using System.Linq.Expressions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -17,8 +18,22 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
-
-            return View(products);
+            var newProducts = new List<ProductViewModel>();
+            foreach (var product in products)
+            {
+                var prod = new ProductViewModel()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Cost = product.Cost,
+                    Count = product.Count,
+                    Description = product.Description,
+                    Comparsion = product.Comparsion,
+                    Favorite = product.Favorite,
+                };
+                newProducts.Add(prod);
+            }
+            return View(newProducts);
         }
 
         public IActionResult AddToComparsion(Guid productId)

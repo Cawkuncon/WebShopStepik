@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
@@ -36,7 +37,23 @@ namespace WebApplication1.Area.Controlles
         }
         public IActionResult Products()
         {
-            return View(productRepository.GetAll());
+            var products = productRepository.GetAll();
+            var newProducts = new List<ProductViewModel>();
+            foreach (var product in products)
+            {
+                var prod = new ProductViewModel()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Cost = product.Cost,
+                    Description = product.Description,
+                    Favorite = product.Favorite,
+                    Comparsion = product.Comparsion,
+                    Count = product.Count,
+                };
+                newProducts.Add(prod);
+            }
+            return View(newProducts);
         }
 
         public IActionResult DeleteProduct(Guid id)
