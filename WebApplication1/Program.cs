@@ -15,10 +15,10 @@ namespace WebApplication1
             var services = builder.Services;
             services.AddSingleton<IBaskRepository, Bask>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
-            services.AddSingleton<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IOrderRepository, OrderDbRepository>();
             services.AddSingleton<IRolesRepository, RolesRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddTransient<IOrder, Order>();
+            services.AddTransient<IOrder, OrderViewModel>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
             builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));

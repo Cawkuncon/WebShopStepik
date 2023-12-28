@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Collections.Immutable;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -73,9 +74,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Success(Order order)
+        public IActionResult Success(OrderViewModel order)
         {
-            this.order = new Order();
+            this.order = new OrderViewModel();
             this.order.Name = order.Name;
             this.order.Number = order.Number;
             this.order.Email = order.Email;
@@ -87,7 +88,7 @@ namespace WebApplication1.Controllers
             this.order.Address = order.Address;
             bask.ClearResultProducts();
             bask.ClearCart();
-            var orderToAdd = (Order)this.order;
+            var orderToAdd = (OrderViewModel)this.order;
             orderToAdd.OrderCreation();
             orderRepository.Add(orderToAdd);
             return View(this.order);

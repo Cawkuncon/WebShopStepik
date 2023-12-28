@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApplication1.Models;
 
 namespace OnlineShop.DB.Models
 {
@@ -13,5 +14,6 @@ namespace OnlineShop.DB.Models
         public bool Comparsion = false;
 
         public bool Favorite = false;
+        public List<Order>? Orders { get; set; }
     }
 }
