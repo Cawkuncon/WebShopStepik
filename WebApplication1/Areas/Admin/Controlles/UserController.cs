@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
 
@@ -7,10 +8,10 @@ namespace WebApplication1.Areas.Admin.Controlles
     [Area("Admin")]
     public class UserController : Controller
     {
-        private readonly IUserRepository UsersRepository;
+        private readonly IUserRegDbRepository UsersRepository;
         private readonly IRolesRepository rolesRepository;
 
-        public UserController(IUserRepository usersRepository, IRolesRepository rolesRepository)
+        public UserController(IUserRegDbRepository usersRepository, IRolesRepository rolesRepository)
         {
             UsersRepository = usersRepository;
             this.rolesRepository = rolesRepository;

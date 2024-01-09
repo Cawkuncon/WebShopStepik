@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class RegisterController : Controller
     {
-        private readonly IUserRepository Users;
+        private readonly IUserRegDbRepository Users;
 
-        public RegisterController(IUserRepository users)
+        public RegisterController(IUserRegDbRepository users)
         {
             Users = users;
         }
@@ -25,7 +26,7 @@ namespace WebApplication1.Controllers
             {
                 ModelState.AddModelError("", "Имя и пароль не должны совпадать");
             }
-            var tryingToCheckExistingUser = Users.GetUsers().FirstOrDefault(use => use.Name == user.Name);
+            var tryingToCheckExistingUser = Users.GetAll().FirstOrDefault(use => use.Name == user.Name);
 
             if (tryingToCheckExistingUser != null)
             {
@@ -34,7 +35,14 @@ namespace WebApplication1.Controllers
 
             if (ModelState.IsValid)
             {
-                Users.Add(user);
+                var userToAdd = new UserReg();
+                userToAdd.Name = user.Name;
+                userToAdd.Password = user.Password;
+                userToAdd.Age= user.Age;
+                userToAdd.Email = user.Email;
+                userToAdd.Number= user.Number;
+                userToAdd.Password2= user.Password2;
+                Users.Add(userToAdd);
                 return RedirectToAction("Index", "Home");
             }
 

@@ -18,7 +18,7 @@ namespace WebApplication1
             services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddSingleton<IOrderRepository, OrderDbRepository>();
             services.AddSingleton<IRolesRepository, RolesRepository>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserRegDbRepository, UserRegDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
