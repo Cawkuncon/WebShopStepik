@@ -11,14 +11,12 @@ namespace WebApplication1.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly IBaskRepository bask;
-        private IOrder order;
         private readonly IOrderRepository orderRepository;
 
-        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrder order, IOrderRepository orderRepository)
+        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository)
         {
             this.productRepository = productRepository;
             this.bask = bask;
-            this.order = order;
             this.orderRepository = orderRepository;
         }
         //public IActionResult Adds(Guid productId)
@@ -76,22 +74,35 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Success(OrderViewModel order)
         {
-            this.order = new OrderViewModel();
-            this.order.Name = order.Name;
-            this.order.Number = order.Number;
-            this.order.Email = order.Email;
+            var orderDB = new Order();
+            //orderDB.UserId = order.Name;
             var cart = bask.GetCart();
-            this.order.Products = new List<ProductViewModel>();
-            this.order.Products.AddRange(cart);
-            this.order.Total = bask.GetTotalCost();
-            this.order.Comments = order.Comments;
-            this.order.Address = order.Address;
+            orderDB.Products = new List<Product>();
+            foreach (var product in cart)
+            {
+                Product prod = new Product()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Cost = product.Cost,
+                    Description = product.Description,
+                    Count = product.Count,
+                    Comparsion = product.Comparsion,
+                    Favorite = product.Favorite,
+                };
+                orderDB.Products.Add(prod);
+            }
+            orderDB.Total = bask.GetTotalCost();
+            orderDB.Comments = order.Comments;
+            orderDB.Address = order.Address;
             bask.ClearResultProducts();
             bask.ClearCart();
-            var orderToAdd = (OrderViewModel)this.order;
-            orderToAdd.OrderCreation();
-            orderRepository.Add(orderToAdd);
-            return View(this.order);
+            order.OrderCreation();
+            orderDB.CreationDate = order.CreationDate;
+            orderDB.CreationTime = order.CreationTime;
+            orderDB.Status = order.Status;
+            orderRepository.Add(orderDB);
+            return View(orderDB);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult EditUserInfo(UserReg user, string Name)
+        public IActionResult EditUserInfo(UserRegViewModel user, string Name)
         {
             var us = UsersRepository.GetUser(Name);
             us.Number = user.Number;

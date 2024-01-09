@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using OnlineShop.DB;
 
-namespace WebApplication1.Models
+namespace OnlineShop.DB.Models
 {
     public class OrderDbRepository : IOrderRepository
     {

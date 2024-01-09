@@ -13,8 +13,8 @@ namespace WebApplication1.Area.Controlles
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IRolesRepository rolesRepository;
-        private readonly IUserRepository UsersRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, IUserRepository users)
+        private readonly IUserRegDbRepository UsersRepository;
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, IUserRegDbRepository users)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
@@ -32,8 +32,21 @@ namespace WebApplication1.Area.Controlles
         }
         public IActionResult Users()
         {
-            var usersToView = UsersRepository.GetUsers();
-            return View(usersToView);
+            var usersToView = UsersRepository.GetAll();
+            var newListUserRegViewModel = new List<UserRegViewModel>();
+            foreach (var user in usersToView)
+            {
+                var userViewModel = new UserRegViewModel();
+                userViewModel.Name = user.Name;
+                userViewModel.Email = user.Email;
+                userViewModel.Number = user.Number;
+                userViewModel.Age= user.Age;
+                userViewModel.UserId = user.UserId;
+                userViewModel.Password = user.Password;
+                userViewModel.Password2 = user.Password2;
+                newListUserRegViewModel.Add(userViewModel);
+            }
+            return View(newListUserRegViewModel);
         }
         public IActionResult Products()
         {

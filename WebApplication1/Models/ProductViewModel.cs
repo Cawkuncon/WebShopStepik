@@ -6,7 +6,6 @@ namespace WebApplication1.Models
     {
         public Guid Id { get; set; }
 
-
         [Required(ErrorMessage = "Не указано имя товара")]
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Имя товара должно содержать от 2 до 30 символов")]
         public string Name { get; set; }

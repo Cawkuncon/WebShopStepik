@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(UserReg user)
+        public IActionResult Register(UserRegViewModel user)
         {
             if (user.Name == user.Password)
             {
