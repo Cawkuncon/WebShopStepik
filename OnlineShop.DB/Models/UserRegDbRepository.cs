@@ -21,12 +21,12 @@ namespace OnlineShop.DB.Models
 
         public UserReg Get(Guid id) 
         {
-            return dataBaseContext.UserRegs.FirstOrDefault(x=> x.UserId == id);
+            return dataBaseContext.UserRegs.FirstOrDefault(x=> x.Id == id);
         }
 
         public void Delete(Guid id)
         {
-            var user = dataBaseContext.UserRegs.FirstOrDefault(y=> y.UserId == id);
+            var user = dataBaseContext.UserRegs.FirstOrDefault(y=> y.Id == id);
             if (user != null)
             {
                 dataBaseContext.UserRegs.Remove(user);
@@ -45,7 +45,15 @@ namespace OnlineShop.DB.Models
             foreach (var pair in arguments)
             {
                 var prop = user.GetType().GetProperty(pair.Key);
-                prop.SetValue(user, pair.Value);
+                if (prop.Name == "Age")
+                {
+                    prop.SetValue(user, int.Parse(pair.Value));
+                }
+                else
+                {
+                    prop.SetValue(user, pair.Value);
+
+                }
             }
             dataBaseContext.SaveChanges();
         }

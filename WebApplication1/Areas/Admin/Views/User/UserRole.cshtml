@@ -1,5 +1,6 @@
-﻿@using WebApplication1.Areas.Admin.Models;
-@model UserRegViewModel
+﻿@using OnlineShop.DB.Models;
+@using WebApplication1.Areas.Admin.Models;
+@model UserReg
 
 <h4>Назначение прав пользователю <b>@Model.Name</b></h4>
 <br />
@@ -11,7 +12,7 @@
       <option selected>Измените статус</option>
             @foreach (var item in ViewBag.Roles)
             {
-                                     <option value="@item.Name">@item.Name</option>
+                <option value="@item.Name">@item.Name</option>
             }
 
     </select>

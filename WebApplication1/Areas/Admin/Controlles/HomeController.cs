@@ -41,7 +41,7 @@ namespace WebApplication1.Area.Controlles
                 userViewModel.Email = user.Email;
                 userViewModel.Number = user.Number;
                 userViewModel.Age= user.Age;
-                userViewModel.UserId = user.UserId;
+                userViewModel.UserId = user.Id;
                 userViewModel.Password = user.Password;
                 userViewModel.Password2 = user.Password2;
                 newListUserRegViewModel.Add(userViewModel);
@@ -142,7 +142,15 @@ namespace WebApplication1.Area.Controlles
         public IActionResult UserInfoCheck(Guid Id)
         {
             var user = UsersRepository.Get(Id);
-            return View(user);
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.Name;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.Number;
+            userViewModel.Age = user.Age;
+            userViewModel.UserId = user.Id;
+            userViewModel.Password = user.Password;
+            userViewModel.Password2 = user.Password2;
+            return View(userViewModel);
         }
 
         public IActionResult AddUser()

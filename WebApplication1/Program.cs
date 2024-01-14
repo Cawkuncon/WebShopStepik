@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.DB;
 using OnlineShop.DB.Models;
 using WebApplication1.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApplication1
 {
@@ -16,9 +17,9 @@ namespace WebApplication1
             var services = builder.Services;
             services.AddSingleton<IBaskRepository, Bask>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
-            services.AddSingleton<IOrderRepository, OrderDbRepository>();
+            services.AddTransient<IOrderRepository, OrderDbRepository>();
             services.AddSingleton<IRolesRepository, RolesRepository>();
-            services.AddSingleton<IUserRegDbRepository, UserRegDbRepository>();
+            services.AddTransient<IUserRegDbRepository, UserRegDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");

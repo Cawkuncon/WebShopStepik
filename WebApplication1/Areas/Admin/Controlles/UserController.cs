@@ -30,7 +30,15 @@ namespace WebApplication1.Areas.Admin.Controlles
         public IActionResult EditUserInfo(Guid Id)
         {
             var user = UsersRepository.Get(Id);
-            return View(user);
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.Name;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.Number;
+            userViewModel.Age = user.Age;
+            userViewModel.UserId = user.Id;
+            userViewModel.Password = user.Password;
+            userViewModel.Password2 = user.Password2;
+            return View(userViewModel);
         }
 
         [HttpPost]
@@ -47,7 +55,15 @@ namespace WebApplication1.Areas.Admin.Controlles
         public IActionResult EditPassword(Guid Id)
         {
             var user = UsersRepository.Get(Id);
-            return View(user);
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.Name;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.Number;
+            userViewModel.Age = user.Age;
+            userViewModel.UserId = user.Id;
+            userViewModel.Password = user.Password;
+            userViewModel.Password2 = user.Password2;
+            return View(userViewModel);
         }
 
         [HttpPost]
