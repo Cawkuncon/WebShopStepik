@@ -38,6 +38,17 @@ namespace OnlineShop.DB.Models
             dataBaseContext.UserRegs.Add(userReg);
             dataBaseContext.SaveChanges();
         }
+
+        public void UpdateUserInfo(Guid Id, Dictionary<string,string> arguments)
+        {
+            var user = this.Get(Id);
+            foreach (var pair in arguments)
+            {
+                var prop = user.GetType().GetProperty(pair.Key);
+                prop.SetValue(user, pair.Value);
+            }
+            dataBaseContext.SaveChanges();
+        }
     }
 
     public interface IUserRegDbRepository
@@ -46,5 +57,6 @@ namespace OnlineShop.DB.Models
         public UserReg Get(Guid id);
         public void Delete(Guid id);
         public void Add(UserReg userReg);
+        public void UpdateUserInfo(Guid Id, Dictionary<string, string> arguments);
     }
 }

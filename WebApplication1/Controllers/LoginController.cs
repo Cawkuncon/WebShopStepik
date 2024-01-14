@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
 	public class LoginController : Controller
 	{
-        private readonly IUserRepository Users;
+        private readonly IUserRegDbRepository Users;
 
-        public LoginController(IUserRepository users)
+        public LoginController(IUserRegDbRepository users)
 		{
             Users = users;
         }
@@ -19,7 +20,8 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Login(UserInfo userInfo)
 		{
-            var ResUser = Users.GetUser(userInfo.Name);
+            var DBUsers = Users.GetAll();
+			var ResUser = DBUsers.FirstOrDefault(x => x.Name == userInfo.Name);
 
             if (ResUser == null || ResUser.Password != userInfo.Password)
             {

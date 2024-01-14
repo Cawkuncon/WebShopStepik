@@ -100,19 +100,19 @@ namespace WebApplication1.Area.Controlles
         }
 
 
-        public IActionResult OrderInfo(int id)
-        {
-            var order = orderRepository.GetAll().FindLast(ord => ord.Id1 == id);
-            return View(order);
-        }
+        //public IActionResult OrderInfo(int id)
+        //{
+        //    var order = orderRepository.GetAll().FindLast(ord => ord.Id1 == id);
+        //    return View(order);
+        //}
 
-        [HttpPost]
-        public IActionResult ChangeStatus(int idOrder, Status_Order Status)
-        {
-            var order = orderRepository.GetAll().FirstOrDefault(ord => ord.Id1 == idOrder);
-            order.Status = Status;
-            return RedirectToAction("OrderInfo", new { id = idOrder });
-        }
+        //[HttpPost]
+        //public IActionResult ChangeStatus(int idOrder, Status_Order Status)
+        //{
+        //    var order = orderRepository.GetAll().FirstOrDefault(ord => ord.Id1 == idOrder);
+        //    order.Status = Status;
+        //    return RedirectToAction("OrderInfo", new { id = idOrder });
+        //}
 
         public IActionResult Roles()
         {
@@ -139,9 +139,9 @@ namespace WebApplication1.Area.Controlles
             return RedirectToAction("Roles");
         }
 
-        public IActionResult UserInfoCheck(string Name)
+        public IActionResult UserInfoCheck(Guid Id)
         {
-            var user = UsersRepository.GetUser(Name);
+            var user = UsersRepository.Get(Id);
             return View(user);
         }
 
