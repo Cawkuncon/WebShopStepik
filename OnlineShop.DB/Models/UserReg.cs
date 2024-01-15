@@ -26,7 +26,8 @@ namespace OnlineShop.DB.Models
 
         public List<Order> Order { get; set; }
 
-        //public Role? Role { get; set; }
+        public Role Role { get; set; }
+
 
     }
 }

@@ -13,6 +13,7 @@ namespace OnlineShop.DB
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<UserReg> UserRegs { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DataBaseContext(DbContextOptions<DataBaseContext> options): base(options) 
         { 
             Database.EnsureCreated();

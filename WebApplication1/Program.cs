@@ -18,7 +18,7 @@ namespace WebApplication1
             services.AddSingleton<IBaskRepository, Bask>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddTransient<IOrderRepository, OrderDbRepository>();
-            services.AddSingleton<IRolesRepository, RolesRepository>();
+            services.AddTransient<IRolesRepository, RolesRepository>();
             services.AddTransient<IUserRegDbRepository, UserRegDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
 

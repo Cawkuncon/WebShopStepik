@@ -57,6 +57,12 @@ namespace OnlineShop.DB.Models
             }
             dataBaseContext.SaveChanges();
         }
+        public void AddRole(Guid UserId, Role role)
+        {
+            var user = this.Get(UserId);
+            user.Role = role;
+            dataBaseContext.SaveChanges();
+        }
     }
 
     public interface IUserRegDbRepository
@@ -66,5 +72,6 @@ namespace OnlineShop.DB.Models
         public void Delete(Guid id);
         public void Add(UserReg userReg);
         public void UpdateUserInfo(Guid Id, Dictionary<string, string> arguments);
+        public void AddRole (Guid UserId, Role role);
     }
 }

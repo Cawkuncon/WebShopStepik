@@ -10,15 +10,15 @@
     <form method="post">
     <select class="form-select" name="UserRole">
       <option selected>Измените статус</option>
-            @foreach (var item in ViewBag.Roles)
+            @foreach (Role item in ViewBag.Roles)
             {
-                <option value="@item.Name">@item.Name</option>
+                <option value="@item.Id">@item.Name</option>
             }
 
     </select>
     <br />
     <br />
-        <button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="User" asp-action="ChangeUserRole" asp-route-Name="@Model.Name">Изменить</button>
+        <button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="User" asp-action="ChangeUserRole" asp-route-UserId="@Model.Id">Изменить</button>
     </form>
 }
 else

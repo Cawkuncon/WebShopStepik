@@ -36,7 +36,7 @@ namespace WebApplication1.Models
         [RegularExpression(@"^\d{1}-\d{3}-\d{3}-\d{2}-\d{2}", ErrorMessage = "Неверный формат номера. Введите номер в формате 8-888-888-88-88")]
         public string Number { get; set; }
 
-        public Role? Role { get; set; }
+        public RoleViewModel? Role { get; set; }
 
         public bool PassCheck()
         {

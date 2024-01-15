@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
+using System.Data;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using WebApplication1.Areas.Admin.Models;
@@ -117,13 +118,20 @@ namespace WebApplication1.Area.Controlles
         public IActionResult Roles()
         {
             var roles = rolesRepository.GetAll();
-            return View(roles);
+            var listRoles = new List<RoleViewModel>();
+            foreach (var role in roles)
+            {
+                var newRole = new RoleViewModel();
+                newRole.Id = role.Id;
+                newRole.Name = role.Name;
+                listRoles.Add(newRole);
+            }
+            return View(listRoles);
         }
 
-        public IActionResult DeleteRole(int id)
+        public IActionResult DeleteRole(Guid Id)
         {
-            var roleToDelete = rolesRepository.GetAll().FirstOrDefault(rol => rol.Id == id);
-            rolesRepository.DeleteRole(roleToDelete);
+            rolesRepository.DeleteRole(Id);
             return RedirectToAction("Roles");
         }
 
@@ -133,9 +141,12 @@ namespace WebApplication1.Area.Controlles
         }
 
         [HttpPost]
-        public IActionResult AddToRepository(Role roleToAdd)
+        public IActionResult AddToRepository(RoleViewModel role)
         {
-            rolesRepository.AddRole(roleToAdd);
+            var roleDb = new Role();
+            roleDb.Id = role.Id;
+            roleDb.Name = role.Name;
+            rolesRepository.AddRole(roleDb);
             return RedirectToAction("Roles");
         }
 
