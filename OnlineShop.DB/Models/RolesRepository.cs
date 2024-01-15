@@ -26,7 +26,7 @@
             return dataBaseContext.Roles.ToList();
         }
 
-        public Role GetRole(Guid Id)
+        public Role GetRole(Guid? Id)
         {
             var role = dataBaseContext.Roles.FirstOrDefault(x => x.Id == Id);
             return role;
@@ -39,7 +39,7 @@
         public List<Role> GetAll();
         public void AddRole(Role role);
         public void DeleteRole(Guid Id);
-        public Role GetRole(Guid Id);
+        public Role GetRole(Guid? Id);
 
     }
 }

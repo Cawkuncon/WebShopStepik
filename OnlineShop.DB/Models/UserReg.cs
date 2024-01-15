@@ -24,9 +24,9 @@ namespace OnlineShop.DB.Models
 
         public string Number { get; set; }
 
-        public List<Order> Order { get; set; }
-
-        public Role Role { get; set; }
+        public List<Order>? Order { get; set; }
+        public Guid? RoleId { get; set; }
+        public Role? Role { get; set; }
 
 
     }

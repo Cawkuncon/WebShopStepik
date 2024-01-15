@@ -9,10 +9,14 @@
 {
     <form method="post">
     <select class="form-select" name="UserRole">
-      <option selected>Измените статус</option>
+      <option selected>@Model.Role.Name</option>
             @foreach (Role item in ViewBag.Roles)
             {
-                <option value="@item.Id">@item.Name</option>
+                @if (item.Id != Model.RoleId)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+
             }
 
     </select>

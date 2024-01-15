@@ -89,7 +89,7 @@ namespace WebApplication1.Areas.Admin.Controlles
         {
             var role = rolesRepository.GetRole(UserRole);
             UsersRepository.AddRole(UserId, role);
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Guid = UserId });
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id = UserId });
 
         }
 

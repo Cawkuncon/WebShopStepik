@@ -41,7 +41,7 @@ namespace WebApplication1.Area.Controlles
                 userViewModel.Name = user.Name;
                 userViewModel.Email = user.Email;
                 userViewModel.Number = user.Number;
-                userViewModel.Age= user.Age;
+                userViewModel.Age = user.Age;
                 userViewModel.UserId = user.Id;
                 userViewModel.Password = user.Password;
                 userViewModel.Password2 = user.Password2;
@@ -161,6 +161,14 @@ namespace WebApplication1.Area.Controlles
             userViewModel.UserId = user.Id;
             userViewModel.Password = user.Password;
             userViewModel.Password2 = user.Password2;
+            if (user.RoleId != null)
+            {
+                var role = new RoleViewModel();
+                var userRole = rolesRepository.GetRole(user.RoleId);
+                role.Name = userRole.Name;
+                role.Id = userRole.Id;
+                userViewModel.Role = role;
+            }
             return View(userViewModel);
         }
 
