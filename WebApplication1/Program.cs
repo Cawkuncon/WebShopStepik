@@ -16,6 +16,7 @@ namespace WebApplication1
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
             services.AddSingleton<IBaskRepository, Bask>();
+            services.AddSingleton<IUserAuth, UserAuthSession>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddTransient<IOrderRepository, OrderDbRepository>();
             services.AddTransient<IRolesRepository, RolesRepository>();

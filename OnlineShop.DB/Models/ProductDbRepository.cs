@@ -9,7 +9,6 @@ namespace OnlineShop.DB.Models
         {
             this.dataBaseContext = dataBaseContext;
         }
-
         public List<Product> GetAll()
         {
             return dataBaseContext.Products.ToList();
@@ -35,6 +34,7 @@ namespace OnlineShop.DB.Models
             product.Cost = prod.Cost;
             dataBaseContext.SaveChanges();
         }
+
     }
 
     public interface IProductRepository

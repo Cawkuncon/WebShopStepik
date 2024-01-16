@@ -14,7 +14,7 @@ namespace WebApplication1.Models
 
     public class OrderViewModel: IOrder
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public List<ProductViewModel> Products { get; set; }
         public int? Status { get; set; }
 
@@ -62,7 +62,7 @@ namespace WebApplication1.Models
 
     public interface IOrder
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public List<ProductViewModel> Products { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }

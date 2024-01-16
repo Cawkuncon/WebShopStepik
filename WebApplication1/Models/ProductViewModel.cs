@@ -20,5 +20,17 @@ namespace WebApplication1.Models
 
         public bool Favorite = false;
 
+        public ProductViewModel()
+        {
+
+        }
+
+        public ProductViewModel(Guid id, int cost, string name, string descr, int count)
+        {
+            Id = id;
+            Cost = cost;
+            Name = name;
+            Count = count;
+        }
     }
 }
