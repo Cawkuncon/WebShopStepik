@@ -89,7 +89,6 @@ namespace WebApplication1.Controllers
             var orderDB = new Order();
             //orderDB.UserReg = users.Get(userAuthSession.UserId);
             var cart = bask.GetCart();
-            orderDB.Products = new List<Product>();
             foreach (var product in cart)
             {
                 Product prod = new Product()
@@ -102,7 +101,7 @@ namespace WebApplication1.Controllers
                     Comparsion = product.Comparsion,
                     Favorite = product.Favorite,
                 };
-                orderDB.Products.Add(prod);
+                //orderDB.Prods.Add(prod);
             }
             orderDB.Total = bask.GetTotalCost();
             orderDB.Comments = order.Comments;

@@ -13,6 +13,6 @@ namespace OnlineShop.DB.Models
         public bool Comparsion = false;
 
         public bool Favorite = false;
-        public List<Order> Orders { get; set; }
+        public List<Order> Ords { get; set; } = new List<Order>();
     }
 }

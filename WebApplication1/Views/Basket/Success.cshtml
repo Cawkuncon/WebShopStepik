@@ -1,14 +1,15 @@
-﻿@model IOrder
+﻿@using OnlineShop.DB.Models;
+@model Order
 <h1>Заказ успешно оформлен!</h1>
 
-<h3>@Model.Name, Ваш заказ:</h3>
+<h3>Model.Name, Ваш заказ:</h3>
 <br>
 <table>
 	<tr>
 		<td>Наименование</td>
 		<td>Цена</td>
 	</tr>
-	@foreach (var item in Model.Products)
+	@foreach (var item in Model.Prods)
 	{
 		<tr>
 			<td>@item.Name</td>
