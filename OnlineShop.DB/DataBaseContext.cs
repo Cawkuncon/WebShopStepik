@@ -14,6 +14,7 @@ namespace OnlineShop.DB
         public DbSet<Order> Orders { get; set; }
         public DbSet<UserReg> UserRegs { get; set; }
         public DbSet<Role> Roles { get; set; }
+        //public DbSet<OrderProduct> OrderProducts { get; set; }
         public DataBaseContext(DbContextOptions<DataBaseContext> options): base(options) 
         { 
             Database.EnsureCreated();

@@ -13,8 +13,8 @@ namespace OnlineShop.DB.Models
         public int? Status { get; set; }
         public string? Comments { get; set; }
         public string Address { get; set; }
-        public List<Product> Prods { get; set; } = new List<Product>();
-
+        public List<Product> Products { get; set; } = new();
+        //public Guid UserId { get; set; }
         //public UserReg User { get; set; }
     }
 

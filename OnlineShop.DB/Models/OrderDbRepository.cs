@@ -18,6 +18,12 @@ namespace OnlineShop.DB.Models
             dataBaseContext.SaveChanges();
         }
 
+        public void AddProduct(Order order, Product product)
+        {
+            order.Products.Add(product);
+            dataBaseContext.SaveChanges();
+        }
+
         public List<Order> GetAll()
         {
             return dataBaseContext.Orders.ToList();
@@ -29,6 +35,7 @@ namespace OnlineShop.DB.Models
 
         public List<Order> GetAll();
         public void Add(Order order);
+        public void AddProduct(Order order, Product product);
 
     }
 }

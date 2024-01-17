@@ -35,11 +35,16 @@ namespace OnlineShop.DB.Models
             dataBaseContext.SaveChanges();
         }
 
+        public Product GetProduct(Guid id)
+        {
+            return dataBaseContext.Products.FirstOrDefault(x => x.Id == id);
+        }
     }
 
     public interface IProductRepository
     {
         public List<Product> GetAll();
+        public Product GetProduct(Guid id);
         public void Delete(Guid id);
         public void AddProd(Product prod);
         public void UpdateProd(Product prod);

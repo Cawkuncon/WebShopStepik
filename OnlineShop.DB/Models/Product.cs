@@ -10,9 +10,8 @@ namespace OnlineShop.DB.Models
         public string? Description { get; set; }
         public int Count { get; set; }
 
-        public bool Comparsion = false;
-
-        public bool Favorite = false;
-        public List<Order> Ords { get; set; } = new List<Order>();
+        public List<Order> Orders { get; set; } = new();
+        public bool Favorite { get; set; }
+        public bool Comparsion { get; set; }    
     }
 }

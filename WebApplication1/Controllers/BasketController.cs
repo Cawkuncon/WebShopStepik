@@ -14,6 +14,7 @@ namespace WebApplication1.Controllers
         private readonly IOrderRepository orderRepository;
         private readonly IUserAuth userAuthSession;
         private readonly IUserRegDbRepository users;
+        //private readonly IOrderProductDbRepository ordProd;
 
         public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, IUserRegDbRepository users)
         {
@@ -22,6 +23,7 @@ namespace WebApplication1.Controllers
             this.orderRepository = orderRepository;
             this.userAuthSession = userAuthSession;
             this.users = users;
+            //this.ordProd = ordProd;
         }
         public IActionResult Adds(Guid productId)
         {
@@ -32,8 +34,8 @@ namespace WebApplication1.Controllers
             newProd.Cost = Prod.Cost;
             newProd.Count = Prod.Count;
             newProd.Description = Prod.Description;
-            newProd.Comparsion = Prod.Comparsion;
-            newProd.Favorite = Prod.Favorite;
+            //newProd.Comparsion = Prod.Comparsion;
+            //newProd.Favorite = Prod.Favorite;
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");
         }
@@ -89,30 +91,22 @@ namespace WebApplication1.Controllers
             var orderDB = new Order();
             //orderDB.UserReg = users.Get(userAuthSession.UserId);
             var cart = bask.GetCart();
-            foreach (var product in cart)
-            {
-                Product prod = new Product()
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Cost = product.Cost,
-                    Description = product.Description,
-                    Count = product.Count,
-                    Comparsion = product.Comparsion,
-                    Favorite = product.Favorite,
-                };
-                //orderDB.Prods.Add(prod);
-            }
             orderDB.Total = bask.GetTotalCost();
             orderDB.Comments = order.Comments;
             orderDB.Address = order.Address;
-            bask.ClearResultProducts();
-            bask.ClearCart();
             order.OrderCreation();
             orderDB.CreationDate = order.CreationDate;
             orderDB.CreationTime = order.CreationTime;
             orderDB.Status = order.Status;
             orderRepository.Add(orderDB);
+            foreach (var product in cart)
+            {
+                Product prod = productRepository.GetProduct(product.Id);
+                orderRepository.AddProduct(orderDB, prod);
+                //ordProd.AddOrderProd(prod.Id, orderDB.Id);
+            }
+            bask.ClearResultProducts();
+            bask.ClearCart();
             return View(orderDB);
         }
     }
