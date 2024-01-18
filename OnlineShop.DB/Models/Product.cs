@@ -8,10 +8,25 @@ namespace OnlineShop.DB.Models
         public string Name { get; set; }
         public int Cost { get; set; }
         public string? Description { get; set; }
-        public int Count { get; set; }
+        //public List<CartItem> CartItems { get; set; }
 
-        public List<Order> Orders { get; set; } = new();
+
+
+        //public List<Order> Orders { get; set; } = new();
+
+
+
+
+
+
+
+
+
+
+
         public bool Favorite { get; set; }
         public bool Comparsion { get; set; }    
+
+
     }
 }

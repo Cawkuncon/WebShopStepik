@@ -63,7 +63,6 @@ namespace WebApplication1.Area.Controlles
                     Description = product.Description,
                     Favorite = product.Favorite,
                     Comparsion = product.Comparsion,
-                    Count = product.Count,
                 };
                 newProducts.Add(prod);
             }

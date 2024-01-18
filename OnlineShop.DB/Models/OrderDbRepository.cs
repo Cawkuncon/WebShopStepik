@@ -11,16 +11,9 @@ namespace OnlineShop.DB.Models
             this.dataBaseContext = dataBaseContext;
         }
 
-
         public void Add(Order order)
         {
             dataBaseContext.Orders.Add(order);
-            dataBaseContext.SaveChanges();
-        }
-
-        public void AddProduct(Order order, Product product)
-        {
-            order.Products.Add(product);
             dataBaseContext.SaveChanges();
         }
 
@@ -35,7 +28,6 @@ namespace OnlineShop.DB.Models
 
         public List<Order> GetAll();
         public void Add(Order order);
-        public void AddProduct(Order order, Product product);
 
     }
 }

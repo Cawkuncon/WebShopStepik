@@ -22,7 +22,7 @@ namespace WebApplication1
             services.AddTransient<IRolesRepository, RolesRepository>();
             services.AddTransient<IUserRegDbRepository, UserRegDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
-            //services.AddTransient<IOrderProductDbRepository, OrderProductDbRepository>();
+            services.AddTransient<ICartItemDbRepository, CartItemDbRepository>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
             builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));

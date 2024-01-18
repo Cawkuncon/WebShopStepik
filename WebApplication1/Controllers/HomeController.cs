@@ -26,7 +26,6 @@ namespace WebApplication1.Controllers
                     Id = product.Id,
                     Name = product.Name,
                     Cost = product.Cost,
-                    Count = product.Count,
                     Description = product.Description,
                     Comparsion = product.Comparsion,
                     Favorite = product.Favorite,

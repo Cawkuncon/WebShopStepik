@@ -16,7 +16,7 @@ namespace WebApplication1.Models
     {
         public Guid Id { get; set; }
         public List<ProductViewModel> Products { get; set; }
-        public int? Status { get; set; }
+        public int Status { get; set; }
 
         [Required(ErrorMessage = "Не указано имя")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 20 символов")]
@@ -35,7 +35,7 @@ namespace WebApplication1.Models
 
         public string CreationDate { get; set; }
         public string CreationTime { get; set; }
-        public Status_Order? StatusOrder
+        public Status_Order StatusOrder
         {
             get
             {
@@ -70,7 +70,7 @@ namespace WebApplication1.Models
         public int Total { get; set; }
         public string CreationDate { get; set; }
         public string CreationTime { get; set; }
-        public int? Status { get; set; }
+        public int Status { get; set; }
         public string? Comments { get; set; }
         public string Address { get; set; }
     }

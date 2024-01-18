@@ -14,16 +14,16 @@ namespace WebApplication1.Controllers
         private readonly IOrderRepository orderRepository;
         private readonly IUserAuth userAuthSession;
         private readonly IUserRegDbRepository users;
-        //private readonly IOrderProductDbRepository ordProd;
+        private readonly ICartItemDbRepository carts;
 
-        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, IUserRegDbRepository users)
+        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, IUserRegDbRepository users, ICartItemDbRepository carts)
         {
             this.productRepository = productRepository;
             this.bask = bask;
             this.orderRepository = orderRepository;
             this.userAuthSession = userAuthSession;
             this.users = users;
-            //this.ordProd = ordProd;
+            this.carts = carts;
         }
         public IActionResult Adds(Guid productId)
         {
@@ -32,7 +32,6 @@ namespace WebApplication1.Controllers
             newProd.Name = Prod.Name;
             newProd.Id = Prod.Id;
             newProd.Cost = Prod.Cost;
-            newProd.Count = Prod.Count;
             newProd.Description = Prod.Description;
             //newProd.Comparsion = Prod.Comparsion;
             //newProd.Favorite = Prod.Favorite;
@@ -101,9 +100,7 @@ namespace WebApplication1.Controllers
             orderRepository.Add(orderDB);
             foreach (var product in cart)
             {
-                Product prod = productRepository.GetProduct(product.Id);
-                orderRepository.AddProduct(orderDB, prod);
-                //ordProd.AddOrderProd(prod.Id, orderDB.Id);
+                carts.Add(orderDB.Id, product.Id);
             }
             bask.ClearResultProducts();
             bask.ClearCart();
