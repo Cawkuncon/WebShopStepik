@@ -85,9 +85,13 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult ChangeUserRole(Guid UserId, Guid UserRole) 
+        public IActionResult ChangeUserRole(Guid UserId, Guid? UserRole) 
         {
-            var role = rolesRepository.GetRole(UserRole);
+            Role role = null;
+            if (UserRole != null)
+            {
+                role = rolesRepository.GetRole(UserRole);
+            }
             UsersRepository.AddRole(UserId, role);
             return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id = UserId });
 

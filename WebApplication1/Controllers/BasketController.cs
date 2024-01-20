@@ -88,7 +88,7 @@ namespace WebApplication1.Controllers
         public IActionResult Success(OrderViewModel order)
         {
             var orderDB = new Order();
-            //orderDB.UserReg = users.Get(userAuthSession.UserId);
+            orderDB.User = users.Get(userAuthSession.UserId);
             var cart = bask.GetCart();
             orderDB.Total = bask.GetTotalCost();
             orderDB.Comments = order.Comments;

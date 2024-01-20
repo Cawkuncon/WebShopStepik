@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,7 +59,7 @@ namespace OnlineShop.DB.Models
             }
             dataBaseContext.SaveChanges();
         }
-        public void AddRole(Guid UserId, Role role)
+        public void AddRole(Guid UserId, Role? role)
         {
             var user = this.Get(UserId);
             user.Role = role;
