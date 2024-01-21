@@ -33,9 +33,17 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
 			{
 				UserAuthId.UserId = ResUser.Id;
+				UserAuthSession.Auth = true;
 				return RedirectToAction("Index", "Home");
 			}
 			return View(userInfo);
 		}
+
+		public ActionResult Logout()
+		{
+			UserAuthSession.Auth = false;
+			UserAuthId.UserId = Guid.Empty;
+            return RedirectToAction("Index", "Home");
+        }
 	}
 }

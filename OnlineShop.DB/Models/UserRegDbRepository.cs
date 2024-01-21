@@ -21,7 +21,7 @@ namespace OnlineShop.DB.Models
             return dataBaseContext.UserRegs.ToList();
         }
 
-        public UserReg Get(Guid id) 
+        public UserReg Get(Guid? id) 
         {
             return dataBaseContext.UserRegs.FirstOrDefault(x=> x.Id == id);
         }
@@ -70,7 +70,7 @@ namespace OnlineShop.DB.Models
     public interface IUserRegDbRepository
     {
         public List<UserReg> GetAll();
-        public UserReg Get(Guid id);
+        public UserReg Get(Guid? id);
         public void Delete(Guid id);
         public void Add(UserReg userReg);
         public void UpdateUserInfo(Guid Id, Dictionary<string, string> arguments);

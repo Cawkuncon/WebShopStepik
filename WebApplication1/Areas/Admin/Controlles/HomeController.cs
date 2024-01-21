@@ -2,8 +2,10 @@
 using OnlineShop.DB.Models;
 using System.Data;
 using System.Linq.Expressions;
+using System.Net;
 using System.Reflection.Metadata.Ecma335;
 using WebApplication1.Areas.Admin.Models;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Area.Controlles
@@ -29,7 +31,15 @@ namespace WebApplication1.Area.Controlles
         public IActionResult Orders()
         {
             var orders = orderRepository.GetAll();
-            return View(orders);
+            var listOrders = new List<OrderViewModel>();
+
+            foreach (var order in orders)
+            {
+                var us = UsersRepository.Get(order.User?.Id);
+                OrderViewModel ordView = OrderTransformation.orderDBtoView(order, us);
+                listOrders.Add(ordView);
+            }
+            return View(listOrders);
         }
         public IActionResult Users()
         {
@@ -100,19 +110,21 @@ namespace WebApplication1.Area.Controlles
         }
 
 
-        //public IActionResult OrderInfo(int id)
-        //{
-        //    var order = orderRepository.GetAll().FindLast(ord => ord.Id1 == id);
-        //    return View(order);
-        //}
+        public IActionResult OrderInfo(Guid id)
+        {
+            var order = orderRepository.GetOrder(id);
+            var us = UsersRepository.Get(order.User?.Id);
+            OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, us);
+            return View(orderInfo);
+        }
 
-        //[HttpPost]
-        //public IActionResult ChangeStatus(int idOrder, Status_Order Status)
-        //{
-        //    var order = orderRepository.GetAll().FirstOrDefault(ord => ord.Id1 == idOrder);
-        //    order.Status = Status;
-        //    return RedirectToAction("OrderInfo", new { id = idOrder });
-        //}
+
+        [HttpPost]
+        public IActionResult ChangeStatus(Guid idOrder, Status_Order Status)
+        {
+            orderRepository.UpdateStatus(idOrder, (int)Status);
+            return RedirectToAction("OrderInfo", new { id = idOrder });
+        }
 
         public IActionResult Roles()
         {
@@ -162,8 +174,11 @@ namespace WebApplication1.Area.Controlles
             userViewModel.Password2 = user.Password2;
             var role = new RoleViewModel();
             var userRole = rolesRepository.GetRole(user.RoleId);
-            role.Name = userRole.Name;
-            role.Id = userRole.Id;
+            if (userRole != null)
+            {
+                role.Name = userRole.Name;
+                role.Id = userRole.Id;
+            }
             userViewModel.Role = role;
             return View(userViewModel);
         }

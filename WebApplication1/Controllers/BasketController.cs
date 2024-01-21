@@ -81,6 +81,8 @@ namespace WebApplication1.Controllers
             var resultBask = bask.GetResultProducts();
             ViewBag.Products = resultBask;
             ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
+            var us = users.Get(userAuthSession.UserId);
+            ViewBag.user = us;
             return View();
         }
 
@@ -89,6 +91,18 @@ namespace WebApplication1.Controllers
         {
             var orderDB = new Order();
             orderDB.User = users.Get(userAuthSession.UserId);
+            if (orderDB.User == null)
+            {
+                orderDB.Name = order.Name;
+                orderDB.Number = order.Number;
+                orderDB.Email= order.Email;
+            }
+            else
+            {
+                orderDB.Name = orderDB.User.Name;
+                orderDB.Number = orderDB.User.Number;
+                orderDB.Email = orderDB.User.Email;
+            }
             var cart = bask.GetCart();
             orderDB.Total = bask.GetTotalCost();
             orderDB.Comments = order.Comments;

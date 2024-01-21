@@ -6,19 +6,38 @@
 
 
 <form method="post">
-    <label asp-for="Name">Введите имя и фамилию</label>
-    <input asp-for="Name" placeholder="Иван Иванов" />
-    <span asp-validation-for="Name"></span>
-    <br />
-    <br />
-    <label asp-for="Number">Введите номер телефона</label>
-    <input asp-for="Number" placeholder="8-888-888-88-88">
-    <span asp-validation-for="Number"></span>
-    <br />
-    <br />
-    <label asp-for="Email">Почта</label>
-    <input asp-for="Email">
-    <span asp-validation-for="Email"></span>
+    @if (ViewBag.user != null)
+    {
+        <label asp-for="Name">Введите имя и фамилию</label>
+        <input asp-for="Name" value="@ViewBag.user.Name" disabled/>
+        <span asp-validation-for="Name"></span>
+        <br />
+        <br />
+        <label asp-for="Number">Введите номер телефона</label>
+        <input asp-for="Number" value="@ViewBag.user.Number" disabled>
+        <span asp-validation-for="Number"></span>
+        <br />
+        <br />
+        <label asp-for="Email">Почта</label>
+        <input asp-for="Email" value="@ViewBag.user.Email" disabled>
+        <span asp-validation-for="Email" ></span>
+    }
+    else
+    {
+        <label asp-for="Name">Введите имя и фамилию</label>
+        <input asp-for="Name" placeholder="Иван Иванов" />
+        <span asp-validation-for="Name"></span>
+        <br />
+        <br />
+        <label asp-for="Number">Введите номер телефона</label>
+        <input asp-for="Number" placeholder="8-888-888-88-88">
+        <span asp-validation-for="Number"></span>
+        <br />
+        <br />
+        <label asp-for="Email">Почта</label>
+        <input asp-for="Email">
+        <span asp-validation-for="Email"></span>
+    }
     <br />
     <br />
     <label asp-for="Address">Адрес</label>
