@@ -15,6 +15,7 @@ namespace OnlineShop.DB
         public DbSet<UserReg> UserRegs { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<CartItem> Carts { get; set; }
+        public DbSet<CompareProduct> CompareProducts { get; set; }
         public DataBaseContext(DbContextOptions<DataBaseContext> options): base(options) 
         { 
             Database.EnsureCreated();

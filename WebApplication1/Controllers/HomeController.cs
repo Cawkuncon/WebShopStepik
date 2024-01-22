@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -9,16 +11,23 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly IProductRepository productRepository;
+        private readonly ICompareProductDbRepository prodCompare;
+        private readonly IUserAuth user;
+        private readonly ICompareProductDbRepository compareProducts;
 
-        public HomeController(IProductRepository productRepository)
+        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, IUserAuth user, ICompareProductDbRepository compareProducts)
         {
             this.productRepository = productRepository;
+            this.prodCompare = prodCompare;
+            this.user = user;
+            this.compareProducts = compareProducts;
         }
 
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
             var newProducts = new List<ProductViewModel>();
+            var idCompareProds = compareProducts.GetCompareProducts(user.UserId);
             foreach (var product in products)
             {
                 var prod = new ProductViewModel()
@@ -27,9 +36,11 @@ namespace WebApplication1.Controllers
                     Name = product.Name,
                     Cost = product.Cost,
                     Description = product.Description,
-                    Comparsion = product.Comparsion,
-                    Favorite = product.Favorite,
                 };
+                if (idCompareProds.Contains(product.Id))
+                {
+                    prod.Compare = true;
+                }
                 newProducts.Add(prod);
             }
             return View(newProducts);
@@ -37,8 +48,10 @@ namespace WebApplication1.Controllers
 
         public IActionResult AddToComparsion(Guid productId)
         {
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == productId).First();
-            prodToCompare.Comparsion = !prodToCompare.Comparsion;
+            if (UserAuthSession.Auth)
+            {
+                prodCompare.Add(productId, user.UserId);
+            }
             return RedirectToAction("Index");
         }
 
@@ -50,9 +63,8 @@ namespace WebApplication1.Controllers
 
         public IActionResult DeleteFromComparsion(Guid productId)
         {
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == productId).First();
-            prodToCompare.Comparsion = !prodToCompare.Comparsion;
-            return RedirectToAction("Compare");
+            compareProducts.DeleteFromComparsion(productId, user.UserId);
+            return RedirectToAction("Index");
         }
 
 

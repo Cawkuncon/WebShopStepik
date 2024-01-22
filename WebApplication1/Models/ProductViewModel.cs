@@ -15,10 +15,8 @@ namespace WebApplication1.Models
         public int Cost { get; set; }
         public string Description { get; set; }
         public int Count { get; set; }
+        public bool Compare { get; set; } = false;
 
-        public bool Comparsion = false;
-
-        public bool Favorite = false;
 
         public ProductViewModel()
         {

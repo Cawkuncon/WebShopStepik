@@ -2,21 +2,21 @@
 @model Order
 <h1>Заказ успешно оформлен!</h1>
 
-<h3>Model.Name, Ваш заказ:</h3>
+<h3>@Model.Name, Ваш заказ:</h3>
 <br>
-@*<table>
+<table>
 	<tr>
 		<td>Наименование</td>
 		<td>Цена</td>
 	</tr>
-	@foreach (var item in Model.Prods)
+	@foreach (CartItem item in ViewBag.Products)
 	{
 		<tr>
-			<td>@item.Name</td>
-			<td>@item.Cost</td>
+			<td>@item.Product.Name</td>
+			<td>@item.Product.Cost</td>
 		</tr>
 	}
-</table>*@
+</table>
 <br>
 <hr>
 <div class="row">

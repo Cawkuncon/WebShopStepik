@@ -118,6 +118,7 @@ namespace WebApplication1.Controllers
             }
             bask.ClearResultProducts();
             bask.ClearCart();
+            ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
             return View(orderDB);
         }
     }

@@ -30,11 +30,17 @@ namespace OnlineShop.DB.Models
         {
             return dataBaseContext.Carts.FirstOrDefault(x=>x.Id == CartId);
         }
+
+        public List<CartItem> GetOrdersCarts(Guid orderId)
+        {
+            return dataBaseContext.Carts.Where(cart => cart.OrderId == orderId).ToList();
+        }
     }
 
     public interface ICartItemDbRepository
     {
         public void Add(Guid orderId, Guid productId);
         public CartItem GetCartItem(int CartId);
+        public List<CartItem> GetOrdersCarts(Guid orderId);
     }
 }

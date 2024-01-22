@@ -71,8 +71,6 @@ namespace WebApplication1.Area.Controlles
                     Name = product.Name,
                     Cost = product.Cost,
                     Description = product.Description,
-                    Favorite = product.Favorite,
-                    Comparsion = product.Comparsion,
                 };
                 newProducts.Add(prod);
             }
