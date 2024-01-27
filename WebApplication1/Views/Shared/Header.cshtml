@@ -12,14 +12,14 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Basket" asp-action="Index">Корзина<sup>@await Component.InvokeAsync("Bask")</sup></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Compare">Сравнение</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ShowFavorite">Избранное</a>
-                    </li>
                     @if (UserAuthSession.Auth)
                     {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Compare">Сравнение</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ShowFavorite">Избранное</a>
+                        </li>
                          <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Выйти</a>
                         </li>

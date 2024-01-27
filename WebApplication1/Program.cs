@@ -24,6 +24,7 @@ namespace WebApplication1
             services.AddTransient<IOrder, OrderViewModel>();
             services.AddTransient<ICartItemDbRepository, CartItemDbRepository>();
             services.AddTransient<ICompareProductDbRepository, CompareProductDbRepository>();
+            services.AddTransient<IFavoriteProductDbRepository, FavoriteProductDbRepository>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
             builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));

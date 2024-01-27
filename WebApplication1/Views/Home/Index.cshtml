@@ -87,17 +87,17 @@
                                                             }
                                                             else
                                                             {
-                                                                             <a asp-controller="Home" asp-action="DeleteFromComparsion" asp-route-productId="@product.Id" class="btn btn-danger btn-active">Удалить из сравнения</a>
+                                                                <a asp-controller="Home" asp-action="DeleteFromComparsion" asp-route-productId="@product.Id" class="btn btn-danger btn-active">Удалить из сравнения</a>
                                                             }
                                                        </div>
                                                        <div class="d-inline-flex">
-                                                            @if (true)
+                                                            @if (!product.Favorite)
                                                             {
                                                                 <a asp-controller="Home" asp-action="AddToFavorite" asp-route-productId="@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
                                                             }
                                                             else
                                                             {
-                                                                 <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id"  asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
+                                                                 <a asp-controller="Home" asp-action="DeleteFromFavoriteIndex"  asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
                                                             }
                                                         </div>
                                                     }

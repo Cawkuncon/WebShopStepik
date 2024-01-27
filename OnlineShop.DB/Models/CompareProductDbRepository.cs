@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,9 +25,10 @@ namespace OnlineShop.DB.Models
             dataBaseContext.SaveChanges();
         }
 
-        public List<Guid> GetCompareProducts(Guid userId)
+        public List<Product> GetCompareProducts(Guid userId)
         {
-            return dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(x=> x.Product.Id).ToList();
+            var prods = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(prd=>prd.Product).ToList();
+            return prods;
         }
 
         public void DeleteFromComparsion(Guid productId, Guid userId)
@@ -40,7 +42,7 @@ namespace OnlineShop.DB.Models
     public interface ICompareProductDbRepository
     {
         public void Add(Guid productId, Guid userId);
-        public List<Guid> GetCompareProducts(Guid userId);
+        public List<Product> GetCompareProducts(Guid userId);
         public void DeleteFromComparsion(Guid productId, Guid userId);
     }
 }

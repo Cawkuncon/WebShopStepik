@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.DB.Models
 {
-    public class FavoriteProducts
+    public class FavoriteProduct
     {
         [Key]
-        public int Id;
+        public int Id { get; set; }
         public Product Product { get; set; }
+        public Guid UserId { get; set; }    
         
     }
 }
