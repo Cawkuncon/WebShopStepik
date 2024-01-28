@@ -8,9 +8,16 @@ namespace OnlineShop.DB.Models
         public string Name { get; set; }
         public int Cost { get; set; }
         public string? Description { get; set; }
-        public bool Favorite { get; set; }
-        public bool Comparsion { get; set; }    
+        public Product()
+        {
 
-
+        }
+        public Product(string name, int cost, string description)
+        {
+            Id = Guid.NewGuid();
+            Name= name;
+            Cost= cost;
+            Description= description;
+        }
     }
 }
