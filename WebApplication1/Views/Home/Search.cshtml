@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<ProductViewModel>
 
 @if (Model == null || Model.Count() == 0)
 {   
@@ -55,7 +55,7 @@ else
                                                     <a asp-controller="Basket" asp-action="Adds" asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
                                                 </div>
                                                     <div class="d-inline-flex mx-1">
-                                                    @if (!product.Comparsion)
+                                                    @if (true)
                                                     {
                                                         <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info text-center btn-active">Сравнение</a>
                                                     }
@@ -65,7 +65,7 @@ else
                                                     }
                                                </div>
                                                <div class="d-inline-flex">
-                                                    @if (!product.Favorite)
+                                                    @if (true)
                                                     {
                                                         <a href="/home/AddToFavorite?productId=@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
                                                     }

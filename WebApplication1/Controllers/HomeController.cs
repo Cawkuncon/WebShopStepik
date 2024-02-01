@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -7,70 +11,134 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly IProductRepository productRepository;
+        private readonly ICompareProductDbRepository prodCompare;
+        private readonly IUserAuth user;
+        private readonly ICompareProductDbRepository compareProducts;
+        private readonly IFavoriteProductDbRepository favoriteProducts;
 
-        public HomeController(IProductRepository productRepository)
+        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, IUserAuth user, ICompareProductDbRepository compareProducts, IFavoriteProductDbRepository favoriteProducts)
         {
             this.productRepository = productRepository;
+            this.prodCompare = prodCompare;
+            this.user = user;
+            this.compareProducts = compareProducts;
+            this.favoriteProducts = favoriteProducts;
         }
 
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
-
-            return View(products);
+            var newProducts = new List<ProductViewModel>();
+            var idCompareProds = compareProducts.GetCompareProducts(user.UserId).Select(pr => pr.Id);
+            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(user.UserId).Select(pr => pr.Id);
+            foreach (var product in products)
+            {
+                var prod = new ProductViewModel()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Cost = product.Cost,
+                    Description = product.Description,
+                };
+                if (idCompareProds.Contains(product.Id))
+                {
+                    prod.Compare = true;
+                }
+                if (idFavoriteProds.Contains(product.Id))
+                {
+                    prod.Favorite = true;
+                }
+                newProducts.Add(prod);
+            }
+            return View(newProducts);
         }
 
-        public IActionResult AddToComparsion(string productId)
+        public IActionResult AddToComparsion(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == id).First();
-            prodToCompare.Comparsion = !prodToCompare.Comparsion;
+            if (UserAuthSession.Auth)
+            {
+                prodCompare.Add(productId, user.UserId);
+            }
             return RedirectToAction("Index");
         }
 
         public IActionResult Compare()
         {
-            var products = productRepository.GetAll().Where(x => x.Comparsion).OrderBy(x => x.Name).ToList();
-            return View(products);
+            var products = compareProducts.GetCompareProducts(user.UserId);
+            var prods = new List<ProductViewModel>();
+            foreach (var item in products)
+            {
+                var newProd = new ProductViewModel();
+                newProd.Id = item.Id;
+                newProd.Name = item.Name;
+                newProd.Cost = item.Cost;
+                newProd.Description = item.Description;
+                prods.Add(newProd);
+            }
+            return View(prods);
         }
 
-        public IActionResult DeleteFromComparsion(string productId)
+        public IActionResult DeleteFromComparsion(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToCompare = productRepository.GetAll().Where(x => x.Id == id).First();
-            prodToCompare.Comparsion = !prodToCompare.Comparsion;
-            return RedirectToAction("Compare");
-        }
-
-
-        public IActionResult AddToFavorite(string productId)
-        {
-            var id = int.Parse(productId);
-            var prodToAdd = productRepository.GetAll().Where(x => x.Id == id).First();
-            prodToAdd.Favorite = !prodToAdd.Favorite;
+            if (UserAuthSession.Auth)
+            {
+                compareProducts.DeleteFromComparsion(productId, user.UserId);
+            }
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteFromFavoriteIndex(string productId)
+
+        public IActionResult AddToFavorite(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
-            prodToDelete.Favorite = !prodToDelete.Favorite;
+            if (UserAuthSession.Auth)
+            {
+                favoriteProducts.AddProdToFavor(productId, user.UserId);
+            }
             return RedirectToAction("Index");
         }
 
-        public IActionResult DeleteFromFavorite(string productId)
+        public IActionResult DeleteFromFavoriteIndex(Guid productId)
         {
-            var id = int.Parse(productId);
-            var prodToDelete = productRepository.GetAll().Where(x => x.Id == id).First();
-            prodToDelete.Favorite = !prodToDelete.Favorite;
+            if (UserAuthSession.Auth)
+            {
+                favoriteProducts.DeleteFromFavorite(productId, user.UserId);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteFromFavorite(Guid productId)
+        {
+            if (UserAuthSession.Auth)
+            {
+                favoriteProducts.DeleteFromFavorite(productId, user.UserId);
+            }
             return RedirectToAction("ShowFavorite");
         }
 
         public IActionResult ShowFavorite()
         {
-            var prodToShow = productRepository.GetAll().Where(x => x.Favorite).ToList();
-            return View(prodToShow);
+            var prodToShow = favoriteProducts.GetFavoriteProducts(user.UserId);
+            var newListProd = new List<ProductViewModel>();
+            var idCompareProds = compareProducts.GetCompareProducts(user.UserId).Select(pr => pr.Id);
+            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(user.UserId).Select(pr => pr.Id);
+            foreach (var product in prodToShow)
+            {
+                var newProd = new ProductViewModel();
+                newProd.Id = product.Id;
+                newProd.Cost = product.Cost;
+                newProd.Name = product.Name;
+                newProd.Description = product.Description;
+                if (idCompareProds.Contains(product.Id))
+                {
+                    newProd.Compare = true;
+                }
+                if (idFavoriteProds.Contains(product.Id))
+                {
+                    newProd.Favorite = true;
+                }
+                newListProd.Add(newProd);
+            }
+            return View(newListProd);
         }
         [HttpPost]
         public IActionResult Search(string search)

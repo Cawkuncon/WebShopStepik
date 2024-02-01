@@ -1,4 +1,4 @@
-﻿@model UserReg
+﻿@model UserRegViewModel
 <div class="row">
     <div class="col-3">
         @await Html.PartialAsync("Index")
@@ -30,9 +30,9 @@
             Действие
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.Name">Смена пароля</a></li>
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.Name">Редактирование данных</a></li>
-            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="UserRole" asp-route-Name="@Model.Name">Права доступа</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditPassword" asp-route-Id="@Model.UserId">Смена пароля</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="EditUserInfo" asp-route-Id="@Model.UserId">Редактирование данных</a></li>
+            <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="UserRole" asp-route-Id="@Model.UserId">Права доступа</a></li>
             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Удалить пользователя</a></li>
           </ul>
         </div>
@@ -52,7 +52,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-        <a type="button" class="btn btn-danger" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Name="@Model.Name">Удалить</a>
+        <a type="button" class="btn btn-danger" asp-area="Admin" asp-controller="User" asp-action="DeleteUser" asp-route-Id="@Model.UserId">Удалить</a>
       </div>
     </div>
   </div>

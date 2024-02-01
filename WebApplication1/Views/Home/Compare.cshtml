@@ -1,7 +1,7 @@
-﻿@*
+﻿1@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<Product>
+@model List<ProductViewModel>
 
 @if (Model == null || Model.Count() == 0)
 {   
@@ -42,7 +42,7 @@ else
             <td>Действие</td>
             @foreach (var product in Model)
             {
-                    <td><a href="/home/DeleteFromComparsion?productId=@product.Id" class="btn btn-danger">Удалить из сравнения</a></td>
+                <td><a asp-controller="Home" asp-action="DeleteFromComparsion" asp-route-productId="@product.Id" class="btn btn-danger">Удалить из сравнения</a></td>
             }
 
         </tr>

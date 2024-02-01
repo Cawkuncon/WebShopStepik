@@ -1,4 +1,4 @@
-﻿@model List<Product>
+﻿@model List<ProductViewModel>
 
 
 
@@ -58,24 +58,24 @@ else
                                                     <a asp-controller="Basket" asp-action="Adds" asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-cart-shopping fa-2x"></i></a>
                                                 </div>
                                                     <div class="d-inline-flex mx-1">
-                                                    @if (!product.Comparsion)
-                                                    {
-                                                        <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-info text-center btn-active">Сравнение</a>
-                                                    }
-                                                    else
-                                                    {
-                                                         <a href="/home/addToComparsion?productId=@product.Id" class="btn btn-secondary disabled">Сравнение</a>
-                                                    }
+                                                            @if (!product.Compare)
+                                                            {
+                                                                <a asp-controller="Home" asp-action="AddToComparsion" asp-route-productId="@product.Id" class="btn btn-info text-center btn-active">Сравнение</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a asp-controller="Home" asp-action="DeleteFromComparsion" asp-route-productId="@product.Id" class="btn btn-danger btn-active">Удалить из сравнения</a>
+                                                            }
                                                </div>
                                                <div class="d-inline-flex">
-                                                    @if (!product.Favorite)
-                                                    {
-                                                        <a href="/home/AddToFavorite?productId=@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
-                                                    }
-                                                    else
-                                                    {
-                                                         <a href="/home/DeleteFromFavoriteIndex?productId=@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
-                                                    }
+                                                            @if (!product.Favorite)
+                                                            {
+                                                                <a asp-controller="Home" asp-action="AddToFavorite" asp-route-productId="@product.Id" class="btn"><i class="fa-regular fa-heart fa-2x"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                 <a asp-controller="Home" asp-action="DeleteFromFavorite"  asp-route-productId="@product.Id" class="btn"><i class="fa-solid fa-heart fa-red-heart fa-2x"></i></a>
+                                                            }
                                                 </div>
                                             </div>
                                     </div>

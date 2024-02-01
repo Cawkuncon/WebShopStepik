@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
 	public class LoginController : Controller
 	{
-        private readonly IUserRepository Users;
+        private readonly IUserRegDbRepository Users;
+		private readonly IUserAuth UserAuthId;
 
-        public LoginController(IUserRepository users)
+        public LoginController(IUserRegDbRepository users, IUserAuth userId)
 		{
             Users = users;
+			UserAuthId = userId;
         }
 		public IActionResult Login()
 		{
@@ -19,7 +23,8 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Login(UserInfo userInfo)
 		{
-            var ResUser = Users.GetUser(userInfo.Name);
+            var DBUsers = Users.GetAll();
+			var ResUser = DBUsers.FirstOrDefault(x => x.Name == userInfo.Name);
 
             if (ResUser == null || ResUser.Password != userInfo.Password)
             {
@@ -27,9 +32,18 @@ namespace WebApplication1.Controllers
             }
             if (ModelState.IsValid)
 			{
+				UserAuthId.UserId = ResUser.Id;
+				UserAuthSession.Auth = true;
 				return RedirectToAction("Index", "Home");
 			}
 			return View(userInfo);
 		}
+
+		public ActionResult Logout()
+		{
+			UserAuthSession.Auth = false;
+			UserAuthId.UserId = Guid.Empty;
+            return RedirectToAction("Index", "Home");
+        }
 	}
 }

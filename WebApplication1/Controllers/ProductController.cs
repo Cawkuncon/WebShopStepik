@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -11,18 +12,10 @@ namespace WebApplication1.Controllers
         {
 			this.productRepository = productRepository;
 		}
-        public IActionResult Index(string id)
+        public IActionResult Index(Guid id)
         {
             var products = productRepository.GetAll();
-            var ID = -1;
-            if (id != null)
-            {
-                if (int.TryParse(id, out var productId))
-                {
-                    ID = productId;
-                }
-            }
-            var product = products.FirstOrDefault(pr => pr.Id == ID);
+            var product = products.FirstOrDefault(pr => pr.Id == id);
 
             return View(product);
         }

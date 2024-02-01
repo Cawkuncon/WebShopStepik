@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-
+﻿using OnlineShop.DB.Models;
+using System.ComponentModel.DataAnnotations;
 namespace WebApplication1.Models
 {
 
@@ -13,12 +12,11 @@ namespace WebApplication1.Models
         Delivered,
     }
 
-    public class Order : IOrder
+    public class OrderViewModel: IOrder
     {
-        private static int Id = 1;
-        public int Id1 { get; set; }
-        public List<Product> Products { get; set; }
-
+        public Guid Id { get; set; }
+        public List<ProductViewModel> Products { get; set; }
+        public int Status { get; set; }
 
         [Required(ErrorMessage = "Не указано имя")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 20 символов")]
@@ -37,8 +35,18 @@ namespace WebApplication1.Models
 
         public string CreationDate { get; set; }
         public string CreationTime { get; set; }
-        public Status_Order Status { get; set; }
-        public string Comments { get; set; }
+        public Status_Order StatusOrder
+        {
+            get
+            {
+                return (Status_Order)this.Status;
+            }
+            set
+            {
+                this.Status = (int)value;
+            }
+        }
+        public string? Comments { get; set; }
 
         [Required(ErrorMessage = "Не указан адрес доставки")]
         public string Address { get; set; }
@@ -47,24 +55,23 @@ namespace WebApplication1.Models
         {
             CreationDate = DateTime.Now.ToShortDateString();
             CreationTime = DateTime.Now.ToShortTimeString();
-            Status = Status_Order.Created;
-            Id1 = Id;
-            Id++;
+            Status = (int)Status_Order.Created;
         }
     }
 
+
     public interface IOrder
     {
-        private static int Id;
-        public List<Product> Products { get; set; }
+        public Guid Id { get; set; }
+        public List<ProductViewModel> Products { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }
         public string Email { get; set; }
         public int Total { get; set; }
         public string CreationDate { get; set; }
-        public string CreationTime { get; set; }    
-        public Status_Order Status { get; set; }
-        public string Comments { get; set; }
+        public string CreationTime { get; set; }
+        public int Status { get; set; }
+        public string? Comments { get; set; }
         public string Address { get; set; }
     }
 }

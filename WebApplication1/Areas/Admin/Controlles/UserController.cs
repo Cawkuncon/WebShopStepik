@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB.Models;
 using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
 
@@ -7,68 +8,93 @@ namespace WebApplication1.Areas.Admin.Controlles
     [Area("Admin")]
     public class UserController : Controller
     {
-        private readonly IUserRepository UsersRepository;
+        private readonly IUserRegDbRepository UsersRepository;
         private readonly IRolesRepository rolesRepository;
 
-        public UserController(IUserRepository usersRepository, IRolesRepository rolesRepository)
+        public UserController(IUserRegDbRepository usersRepository, IRolesRepository rolesRepository)
         {
             UsersRepository = usersRepository;
             this.rolesRepository = rolesRepository;
         }
 
-        public IActionResult DeleteUser(string Name)
+        public IActionResult DeleteUser(Guid Id)
         {
-            var user = UsersRepository.GetUser(Name);
-            UsersRepository.DeleteUser(user);
+            var user = UsersRepository.Get(Id);
+            if (user != null)
+            {
+                UsersRepository.Delete(Id);
+            }
             return RedirectToAction("Index", "Home", new { Area = "Admin" });
         }
 
-        public IActionResult EditUserInfo(string Name)
+        public IActionResult EditUserInfo(Guid Id)
         {
-            var user = UsersRepository.GetUser(Name);
-            return View(user);
+            var user = UsersRepository.Get(Id);
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.Name;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.Number;
+            userViewModel.Age = user.Age;
+            userViewModel.UserId = user.Id;
+            userViewModel.Password = user.Password;
+            userViewModel.Password2 = user.Password2;
+            return View(userViewModel);
         }
 
         [HttpPost]
-        public IActionResult EditUserInfo(UserReg user, string Name)
+        public IActionResult EditUserInfo(UserRegViewModel user, Guid Id)
         {
-            var us = UsersRepository.GetUser(Name);
-            us.Number = user.Number;
-            us.Age = user.Age;
-            us.Email = user.Email;
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name = Name });
+            var DictArgUser = new Dictionary<string, string>();
+            DictArgUser["Number"] = user.Number;
+            DictArgUser["Age"] = user.Age.ToString();
+            DictArgUser["Email"] = user.Email;
+            UsersRepository.UpdateUserInfo(Id, DictArgUser);
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id });
         }
 
-        public IActionResult EditPassword(string name)
+        public IActionResult EditPassword(Guid Id)
         {
-            var user = UsersRepository.GetUser(name);
-            return View(user);
+            var user = UsersRepository.Get(Id);
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.Name;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.Number;
+            userViewModel.Age = user.Age;
+            userViewModel.UserId = user.Id;
+            userViewModel.Password = user.Password;
+            userViewModel.Password2 = user.Password2;
+            return View(userViewModel);
         }
 
         [HttpPost]
-        public IActionResult EditPassword(string name, string password, string password2)
+        public IActionResult EditPassword(Guid Id, string password, string password2)
         {
-            var user = UsersRepository.GetUser(name);
-            user.Password = password;
-            user.Password2 = password2;
-            return RedirectToAction("UserInfoCheck", "Home", new { Name = user.Name });
+            var DictArgUser = new Dictionary<string,string>();
+            DictArgUser["Password"] = password;
+            DictArgUser["Password2"] = password2;
+            UsersRepository.UpdateUserInfo(Id, DictArgUser);
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id });
 
         }
 
-        public IActionResult UserRole(string Name)
+        public IActionResult UserRole(Guid Id)
         {
-            var user = UsersRepository.GetUser(Name);
+            var user = UsersRepository.Get(Id);
             ViewBag.Roles = rolesRepository.GetAll();
             return View(user);
         }
 
         [HttpPost]
-        public IActionResult ChangeUserRole(string Name, string UserRole) 
+        public IActionResult ChangeUserRole(Guid UserId, Guid? UserRole) 
         {
-            var user = UsersRepository.GetUser(Name);
-            var UsRole = rolesRepository.GetRole(UserRole);
-            user.Role = UsRole;
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name = Name });
+            Role role = null;
+            if (UserRole != null)
+            {
+                role = rolesRepository.GetRole(UserRole);
+            }
+            UsersRepository.AddRole(UserId, role);
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id = UserId });
+
         }
 
     }

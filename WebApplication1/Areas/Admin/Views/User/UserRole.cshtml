@@ -1,4 +1,5 @@
-﻿@using WebApplication1.Areas.Admin.Models;
+﻿@using OnlineShop.DB.Models;
+@using WebApplication1.Areas.Admin.Models;
 @model UserReg
 
 <h4>Назначение прав пользователю <b>@Model.Name</b></h4>
@@ -8,16 +9,33 @@
 {
     <form method="post">
     <select class="form-select" name="UserRole">
-      <option selected>Измените статус</option>
-            @foreach (var item in ViewBag.Roles)
+      @if(Model.Role != null)
+      {
+        <option selected>@Model.Role.Name</option>
+      }
+      else
+      {
+        <option selected>Выберите роль</option>
+      }
+            @foreach (Role item in ViewBag.Roles)
             {
-                                     <option value="@item.Name">@item.Name</option>
+                @if (Model.Role == null)
+                {
+                     <option value="@item.Id">@item.Name</option>
+                }
+                else
+                {
+                    @if (item.Id != Model.Role.Id)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
             }
-
-    </select>
+            @if (Model.Role != null ) {<option>Удалить роль</option>}
+        </select>
     <br />
     <br />
-        <button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="User" asp-action="ChangeUserRole" asp-route-Name="@Model.Name">Изменить</button>
+        <button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="User" asp-action="ChangeUserRole" asp-route-UserId="@Model.Id">Изменить</button>
     </form>
 }
 else

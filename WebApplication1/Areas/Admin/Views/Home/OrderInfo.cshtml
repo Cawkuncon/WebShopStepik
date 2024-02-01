@@ -1,10 +1,10 @@
-﻿@model Order
+﻿@model OrderViewModel
 <div class="row">
     <div class="col-3">
         @await Html.PartialAsync("Index")
     </div>
  <div class="col-9">
-<h2>Заказ №@Model.Id1</h2>
+<h2>Заказ №@Model.Id</h2>
 <hr />
 Дата и время оформления: @Model.CreationDate в @Model.CreationTime
 <br/>
@@ -22,7 +22,7 @@ Email: @Model.Email
 <br/>
 <div class="row">
 <div class="col-3">
-Статус заказа: @switch (Model.Status)
+Статус заказа: @switch (Model.StatusOrder)
 {
     case Status_Order.Created:
         <b>Создан</b>
@@ -61,7 +61,7 @@ Email: @Model.Email
 </select>
 <br />
 <br />
-<button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="Home" asp-action="ChangeStatus" asp-route-idOrder="@Model.Id1">Изменить</button>
+<button type="submit" class="btn btn-success" asp-area="Admin" asp-controller="Home" asp-action="ChangeStatus" asp-route-idOrder="@Model.Id">Изменить</button>
 </form>
 </div>
 </div>
