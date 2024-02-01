@@ -67,13 +67,13 @@ namespace WebApplication1
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //using (var serviceScope = app.Services.CreateScope())
-            //{
-            //    var servicess = serviceScope.ServiceProvider;
-            //    var userManager = servicess.GetRequiredService<UserManager<User>>();
-            //    var rolesManager = servicess.GetRequiredService<RoleManager<IdentityRole>>();
-            //    IdentityInitializer.Initialize(userManager, rolesManager);
-            //}
+            using (var serviceScope = app.Services.CreateScope())
+            {
+                var servicess = serviceScope.ServiceProvider;
+                var userManager = servicess.GetRequiredService<UserManager<User>>();
+                var rolesManager = servicess.GetRequiredService<RoleManager<IdentityRole>>();
+                IdentityInitializer.Initialize(userManager, rolesManager);
+            }
 
             app.MapControllerRoute(
                 name: "MyArea",
