@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB;
 using OnlineShop.DB.Models;
 using WebApplication1.Areas.Admin.Models;
 using WebApplication1.Models;
@@ -6,6 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Areas.Admin.Controlles
 {
     [Area("Admin")]
+    [Authorize(Roles = Constants.AdminRoleName)]
     public class UserController : Controller
     {
         private readonly IUserRegDbRepository UsersRepository;

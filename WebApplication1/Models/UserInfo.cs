@@ -20,6 +20,7 @@ namespace WebApplication1.Models
 				return false;
 			} 
 		}
+		public string ReturnUrl { get; set; }
 	}
 
 	public interface IUserInfo
@@ -27,5 +28,6 @@ namespace WebApplication1.Models
 		string Name { get; set; }
 		string Password { get; set; }
 		string SaveUser { get; set; }
+		string ReturnUrl { get; set; }
 	}
 }

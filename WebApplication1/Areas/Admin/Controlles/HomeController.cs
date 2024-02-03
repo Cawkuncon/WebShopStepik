@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.DB;
 using OnlineShop.DB.Models;
 using System.Data;
 using System.Linq.Expressions;
@@ -11,6 +13,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Area.Controlles
 {
     [Area("Admin")]
+    [Authorize(Roles = Constants.AdminRoleName)]
     public class HomeController : Controller
     {
         private IProductRepository productRepository;

@@ -42,6 +42,7 @@ namespace WebApplication1.Models
         {
             return Password == Password2 && Password != null;
         }
+        public string ReturnUrl { get; set; }
     }
 
     public interface IUserReg
@@ -52,5 +53,6 @@ namespace WebApplication1.Models
         public int Age { get; set; }
         public string Email { get; set; }
         public string Number { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

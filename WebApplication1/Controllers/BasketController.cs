@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Collections.Immutable;
 using WebApplication1.Helpers;
@@ -6,7 +7,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-
+    [Authorize]
     public class BasketController : Controller
     {
         private readonly IProductRepository productRepository;

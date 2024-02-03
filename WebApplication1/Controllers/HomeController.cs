@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.CookiePolicy;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Diagnostics;
@@ -52,16 +53,13 @@ namespace WebApplication1.Controllers
             }
             return View(newProducts);
         }
-
+        [Authorize]
         public IActionResult AddToComparsion(Guid productId)
         {
-            if (UserAuthSession.Auth)
-            {
-                prodCompare.Add(productId, user.UserId);
-            }
+            prodCompare.Add(productId, user.UserId);
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult Compare()
         {
             var products = compareProducts.GetCompareProducts(user.UserId);
@@ -77,7 +75,7 @@ namespace WebApplication1.Controllers
             }
             return View(prods);
         }
-
+        [Authorize]
         public IActionResult DeleteFromComparsion(Guid productId)
         {
             if (UserAuthSession.Auth)
@@ -87,7 +85,7 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize]
         public IActionResult AddToFavorite(Guid productId)
         {
             if (UserAuthSession.Auth)
@@ -96,7 +94,7 @@ namespace WebApplication1.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult DeleteFromFavoriteIndex(Guid productId)
         {
             if (UserAuthSession.Auth)
@@ -105,7 +103,7 @@ namespace WebApplication1.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult DeleteFromFavorite(Guid productId)
         {
             if (UserAuthSession.Auth)
@@ -114,7 +112,7 @@ namespace WebApplication1.Controllers
             }
             return RedirectToAction("ShowFavorite");
         }
-
+        [Authorize]
         public IActionResult ShowFavorite()
         {
             var prodToShow = favoriteProducts.GetFavoriteProducts(user.UserId);
@@ -140,6 +138,7 @@ namespace WebApplication1.Controllers
             }
             return View(newListProd);
         }
+
         [HttpPost]
         public IActionResult Search(string search)
         {

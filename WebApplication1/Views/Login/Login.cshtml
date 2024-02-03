@@ -21,7 +21,7 @@
 		<br />
 		<button type="submit" class="btn btn-info">Войти</button>
 		<br /><br />
-		
+		<input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
 	</form>
-		<a class="btn btn-secondary" asp-area="" asp-controller="Register" asp-action="Register">Регистрация</a>
+		<a class="btn btn-secondary" asp-area="" asp-controller="Login" asp-action="Login" asp-route-ReturnUrl="@Model.ReturnUrl">Регистрация</a>
 </div>
