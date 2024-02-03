@@ -20,7 +20,7 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Login(string ReturnUrl)
 		{
-			return View(new UserInfo() { ReturnUrl = ReturnUrl ?? "Home"});
+			return View(new UserInfo() { ReturnUrl = ReturnUrl});
 		}
 
 		[HttpPost]
@@ -43,7 +43,7 @@ namespace WebApplication1.Controllers
 
         public IActionResult Register(string ReturnUrl)
         {
-            return View(new UserRegViewModel() { ReturnUrl = ReturnUrl ?? "/Home"});
+            return View(new UserRegViewModel() { ReturnUrl = ReturnUrl});
         }
 
         [HttpPost]
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers
                 {
                     _signInManager.SignInAsync(user, false).Wait();
                     _usersManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
-                    return Redirect(register.ReturnUrl ?? "/Home");
+                    return Redirect(register.ReturnUrl ?? "Home");
                 }
                 else
                 {

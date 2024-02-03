@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -14,9 +15,9 @@ namespace WebApplication1.Controllers
 		}
         public IActionResult Index(Guid id)
         {
-            var products = productRepository.GetAll();
-            var product = products.FirstOrDefault(pr => pr.Id == id);
-
+            var products = productRepository.GetAll().ToList();
+            var prods = ProductToProductView.Transform(products);
+            var product = prods.FirstOrDefault(pr => pr.Id == id);
             return View(product);
         }
     }

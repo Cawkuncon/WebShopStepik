@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB;
 using OnlineShop.DB.Models;
@@ -16,11 +17,11 @@ namespace WebApplication1.Area.Controlles
     [Authorize(Roles = Constants.AdminRoleName)]
     public class HomeController : Controller
     {
+        private UserManager<User> UsersRepository;
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IRolesRepository rolesRepository;
-        private readonly IUserRegDbRepository UsersRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, IUserRegDbRepository users)
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, UserManager<User> users)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
@@ -46,18 +47,16 @@ namespace WebApplication1.Area.Controlles
         }
         public IActionResult Users()
         {
-            var usersToView = UsersRepository.GetAll();
+            var usersToView = UsersRepository.Users;
             var newListUserRegViewModel = new List<UserRegViewModel>();
             foreach (var user in usersToView)
             {
                 var userViewModel = new UserRegViewModel();
-                userViewModel.Name = user.Name;
-                userViewModel.Email = user.Email;
-                userViewModel.Number = user.Number;
+                userViewModel.Name = user.UserName;
                 userViewModel.Age = user.Age;
+                userViewModel.Email = user.Email;
+                userViewModel.Number = user.PhoneNumber;
                 userViewModel.UserId = user.Id;
-                userViewModel.Password = user.Password;
-                userViewModel.Password2 = user.Password2;
                 newListUserRegViewModel.Add(userViewModel);
             }
             return View(newListUserRegViewModel);
@@ -65,18 +64,7 @@ namespace WebApplication1.Area.Controlles
         public IActionResult Products()
         {
             var products = productRepository.GetAll();
-            var newProducts = new List<ProductViewModel>();
-            foreach (var product in products)
-            {
-                var prod = new ProductViewModel()
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Cost = product.Cost,
-                    Description = product.Description,
-                };
-                newProducts.Add(prod);
-            }
+            var newProducts = ProductToProductView.Transform(products);
             return View(newProducts);
         }
 

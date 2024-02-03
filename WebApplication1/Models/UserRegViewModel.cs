@@ -5,7 +5,7 @@ namespace WebApplication1.Models
 {
     public class UserRegViewModel : IUserReg
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [Required(ErrorMessage = "Не указано имя")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 20 символов")]
         public string Name { get; set; }
