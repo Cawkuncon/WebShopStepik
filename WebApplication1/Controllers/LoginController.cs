@@ -54,13 +54,13 @@ namespace WebApplication1.Controllers
             }
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email, UserName=register.Name, PhoneNumber = register.Number };
+                User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number };
                 var result = _usersManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {
                     _signInManager.SignInAsync(user, false).Wait();
                     _usersManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
-                    //return Redirect(register.ReturnUrl ?? /"Home");
+                    return Redirect(register.ReturnUrl ?? / "Home");
                 }
                 else
                 {
