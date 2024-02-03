@@ -14,16 +14,14 @@ namespace WebApplication1.Controllers
         private readonly IBaskRepository bask;
         private readonly IOrderRepository orderRepository;
         private readonly IUserAuth userAuthSession;
-        private readonly IUserRegDbRepository users;
         private readonly ICartItemDbRepository carts;
 
-        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, IUserRegDbRepository users, ICartItemDbRepository carts)
+        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, ICartItemDbRepository carts)
         {
             this.productRepository = productRepository;
             this.bask = bask;
             this.orderRepository = orderRepository;
             this.userAuthSession = userAuthSession;
-            this.users = users;
             this.carts = carts;
         }
         public IActionResult Adds(Guid productId)
@@ -82,8 +80,8 @@ namespace WebApplication1.Controllers
             var resultBask = bask.GetResultProducts();
             ViewBag.Products = resultBask;
             ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
-            var us = users.Get(userAuthSession.UserId);
-            ViewBag.user = us;
+            //var us = users.Get(userAuthSession.UserId);
+            //ViewBag.user = us;
             return View();
         }
 
@@ -91,35 +89,35 @@ namespace WebApplication1.Controllers
         public IActionResult Success(OrderViewModel order)
         {
             var orderDB = new Order();
-            orderDB.User = users.Get(userAuthSession.UserId);
-            if (orderDB.User == null)
-            {
-                orderDB.Name = order.Name;
-                orderDB.Number = order.Number;
-                orderDB.Email= order.Email;
-            }
-            else
-            {
-                orderDB.Name = orderDB.User.Name;
-                orderDB.Number = orderDB.User.Number;
-                orderDB.Email = orderDB.User.Email;
-            }
-            var cart = bask.GetCart();
-            orderDB.Total = bask.GetTotalCost();
-            orderDB.Comments = order.Comments;
-            orderDB.Address = order.Address;
-            order.OrderCreation();
-            orderDB.CreationDate = order.CreationDate;
-            orderDB.CreationTime = order.CreationTime;
-            orderDB.Status = order.Status;
-            orderRepository.Add(orderDB);
-            foreach (var product in cart)
-            {
-                carts.Add(orderDB.Id, product.Id);
-            }
-            bask.ClearResultProducts();
-            bask.ClearCart();
-            ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
+            //orderDB.User = users.Get(userAuthSession.UserId);
+            //if (orderDB.User == null)
+            //{
+            //    orderDB.Name = order.Name;
+            //    orderDB.Number = order.Number;
+            //    orderDB.Email= order.Email;
+            //}
+            //else
+            //{
+            //    orderDB.Name = orderDB.User.Name;
+            //    orderDB.Number = orderDB.User.Number;
+            //    orderDB.Email = orderDB.User.Email;
+            //}
+            //var cart = bask.GetCart();
+            //orderDB.Total = bask.GetTotalCost();
+            //orderDB.Comments = order.Comments;
+            //orderDB.Address = order.Address;
+            //order.OrderCreation();
+            //orderDB.CreationDate = order.CreationDate;
+            //orderDB.CreationTime = order.CreationTime;
+            //orderDB.Status = order.Status;
+            //orderRepository.Add(orderDB);
+            //foreach (var product in cart)
+            //{
+            //    carts.Add(orderDB.Id, product.Id);
+            //}
+            //bask.ClearResultProducts();
+            //bask.ClearCart();
+            //ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
             return View(orderDB);
         }
     }

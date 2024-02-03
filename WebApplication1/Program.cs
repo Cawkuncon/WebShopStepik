@@ -20,8 +20,6 @@ namespace WebApplication1
             services.AddSingleton<IUserAuth, UserAuthSession>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddTransient<IOrderRepository, OrderDbRepository>();
-            services.AddTransient<IRolesRepository, RolesRepository>();
-            services.AddTransient<IUserRegDbRepository, UserRegDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
             services.AddTransient<ICartItemDbRepository, CartItemDbRepository>();
             services.AddTransient<ICompareProductDbRepository, CompareProductDbRepository>();

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,35 @@ namespace OnlineShop.DB.Models
     public class CompareProductDbRepository : ICompareProductDbRepository
     {
         private readonly DataBaseContext dataBaseContext;
-        public CompareProductDbRepository(DataBaseContext dataBaseContext)
+        private readonly UserManager<User> userManager;
+        public CompareProductDbRepository(DataBaseContext dataBaseContext, UserManager<User> userManager)
         {
             this.dataBaseContext = dataBaseContext;
+            this.userManager = userManager;
         }
 
-        public void Add(Guid productId, Guid userId)
+        public void Add(Guid productId, string UserName)
         {
             var newComp = new CompareProduct();
             var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
-            newComp.UserId = userId;
+            var user = userManager.FindByNameAsync(UserName).Result;
+            newComp.User = user;
             newComp.Product = product;
             dataBaseContext.CompareProducts.Add(newComp);
             dataBaseContext.SaveChanges();
         }
 
-        public List<Product> GetCompareProducts(Guid userId)
+        public List<Product> GetCompareProducts(string UserName)
         {
-            var prods = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(prd=>prd.Product).ToList();
+            var user = userManager.FindByNameAsync(UserName).Result;
+            var prods = dataBaseContext.CompareProducts.Where(prd => prd.User == user).Select(prd=>prd.Product).ToList();
             return prods;
         }
 
-        public void DeleteFromComparsion(Guid productId, Guid userId)
+        public void DeleteFromComparsion(Guid productId, string UserName)
         {
-            var prdComp = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefault();
+            var user = userManager.FindByNameAsync(UserName).Result;
+            var prdComp = dataBaseContext.CompareProducts.Where(prd => prd.User == user && prd.Product.Id == productId).FirstOrDefault();
             dataBaseContext.CompareProducts.Remove(prdComp);
             dataBaseContext.SaveChanges();
         }
@@ -41,8 +47,8 @@ namespace OnlineShop.DB.Models
 
     public interface ICompareProductDbRepository
     {
-        public void Add(Guid productId, Guid userId);
-        public List<Product> GetCompareProducts(Guid userId);
-        public void DeleteFromComparsion(Guid productId, Guid userId);
+        public void Add(Guid productId, string UserName);
+        public List<Product> GetCompareProducts(string UserName);
+        public void DeleteFromComparsion(Guid productId, string UserName);
     }
 }

@@ -20,12 +20,10 @@ namespace WebApplication1.Area.Controlles
         private UserManager<User> UsersRepository;
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
-        private IRolesRepository rolesRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, IRolesRepository rolesRepository, UserManager<User> users)
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
-            this.rolesRepository = rolesRepository;
             this.UsersRepository = users;
         }
         public IActionResult Index()
@@ -39,8 +37,8 @@ namespace WebApplication1.Area.Controlles
 
             foreach (var order in orders)
             {
-                var us = UsersRepository.Get(order.User?.Id);
-                OrderViewModel ordView = OrderTransformation.orderDBtoView(order, us);
+                //var us = UsersRepository.Get(order.User?.Id);
+                OrderViewModel ordView = OrderTransformation.orderDBtoView(order, null);
                 listOrders.Add(ordView);
             }
             return View(listOrders);
@@ -102,8 +100,8 @@ namespace WebApplication1.Area.Controlles
         public IActionResult OrderInfo(Guid id)
         {
             var order = orderRepository.GetOrder(id);
-            var us = UsersRepository.Get(order.User?.Id);
-            OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, us);
+            //var us = UsersRepository.Get(order.User?.Id);
+            OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, null);
             return View(orderInfo);
         }
 
@@ -117,21 +115,21 @@ namespace WebApplication1.Area.Controlles
 
         public IActionResult Roles()
         {
-            var roles = rolesRepository.GetAll();
+            //var roles = rolesRepository.GetAll();
             var listRoles = new List<RoleViewModel>();
-            foreach (var role in roles)
-            {
-                var newRole = new RoleViewModel();
-                newRole.Id = role.Id;
-                newRole.Name = role.Name;
-                listRoles.Add(newRole);
-            }
+            //foreach (var role in roles)
+            //{
+            //    var newRole = new RoleViewModel();
+            //    newRole.Id = role.Id;
+            //    newRole.Name = role.Name;
+            //    listRoles.Add(newRole);
+            //}
             return View(listRoles);
         }
 
         public IActionResult DeleteRole(Guid Id)
         {
-            rolesRepository.DeleteRole(Id);
+            //rolesRepository.DeleteRole(Id);
             return RedirectToAction("Roles");
         }
 
@@ -143,33 +141,34 @@ namespace WebApplication1.Area.Controlles
         [HttpPost]
         public IActionResult AddToRepository(RoleViewModel role)
         {
-            var roleDb = new Role();
-            roleDb.Id = role.Id;
-            roleDb.Name = role.Name;
-            rolesRepository.AddRole(roleDb);
+            //var roleDb = new Role();
+            //roleDb.Id = role.Id;
+            //roleDb.Name = role.Name;
+            //rolesRepository.AddRole(roleDb);
             return RedirectToAction("Roles");
         }
 
         public IActionResult UserInfoCheck(Guid Id)
         {
-            var user = UsersRepository.Get(Id);
-            var userViewModel = new UserRegViewModel();
-            userViewModel.Name = user.Name;
-            userViewModel.Email = user.Email;
-            userViewModel.Number = user.Number;
-            userViewModel.Age = user.Age;
-            userViewModel.UserId = user.Id;
-            userViewModel.Password = user.Password;
-            userViewModel.Password2 = user.Password2;
-            var role = new RoleViewModel();
-            var userRole = rolesRepository.GetRole(user.RoleId);
-            if (userRole != null)
-            {
-                role.Name = userRole.Name;
-                role.Id = userRole.Id;
-            }
-            userViewModel.Role = role;
-            return View(userViewModel);
+            //var user = UsersRepository.Get(Id);
+            //var userViewModel = new UserRegViewModel();
+            //userViewModel.Name = user.Name;
+            //userViewModel.Email = user.Email;
+            //userViewModel.Number = user.Number;
+            //userViewModel.Age = user.Age;
+            //userViewModel.UserId = user.Id;
+            //userViewModel.Password = user.Password;
+            //userViewModel.Password2 = user.Password2;
+            //var role = new RoleViewModel();
+            //var userRole = rolesRepository.GetRole(user.RoleId);
+            //if (userRole != null)
+            //{
+            //    role.Name = userRole.Name;
+            //    role.Id = userRole.Id;
+            //}
+            //userViewModel.Role = role;
+            //return View(userViewModel);
+            return View();
         }
 
         public IActionResult AddUser()

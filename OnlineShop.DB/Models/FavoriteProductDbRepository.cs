@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +11,33 @@ namespace OnlineShop.DB.Models
     public class FavoriteProductDbRepository : IFavoriteProductDbRepository
     {
         private readonly DataBaseContext dataBaseContext;
+        private readonly UserManager<User> userManager;
 
-        public FavoriteProductDbRepository(DataBaseContext dataBaseContext)
+        public FavoriteProductDbRepository(DataBaseContext dataBaseContext, UserManager<User> userManager)
         {
             this.dataBaseContext = dataBaseContext;
+            this.userManager = userManager;
         }
-        public void AddProdToFavor(Guid productId, Guid userId)
+        public void AddProdToFavor(Guid productId, string UserName)
         {
             var newFavor = new FavoriteProduct();
             var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
-            newFavor.UserId = userId;
+            newFavor.User = userManager.FindByNameAsync(UserName).Result;
             newFavor.Product = product;
             dataBaseContext.FavoriteProducts.Add(newFavor);
             dataBaseContext.SaveChanges();
         }
-        public List<Product> GetFavoriteProducts(Guid userId)
+        public List<Product> GetFavoriteProducts(string UserName)
         {
-            var prods = dataBaseContext.FavoriteProducts.Where(prd => prd.UserId == userId).Select(prd => prd.Product).ToList();
+            var user = userManager.FindByNameAsync(UserName).Result;
+            var prods = dataBaseContext.FavoriteProducts.Where(prd => prd.User == user).Select(prd => prd.Product).ToList();
             return prods;
         }
 
-        public void DeleteFromFavorite(Guid productId, Guid userId)
+        public void DeleteFromFavorite(Guid productId, string UserName)
         {
-            var prdFav = dataBaseContext.FavoriteProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefault();
+            var user = userManager.FindByNameAsync(UserName).Result;
+            var prdFav = dataBaseContext.FavoriteProducts.Where(prd => prd.User == user && prd.Product.Id == productId).FirstOrDefault();
             dataBaseContext.FavoriteProducts.Remove(prdFav);
             dataBaseContext.SaveChanges();
         }
@@ -40,9 +45,9 @@ namespace OnlineShop.DB.Models
 
     public interface IFavoriteProductDbRepository
     {
-        public void AddProdToFavor(Guid productId, Guid userId);
-        public List<Product> GetFavoriteProducts(Guid userId);
-        public void DeleteFromFavorite(Guid productId, Guid userId);
+        public void AddProdToFavor(Guid productId, string UserName);
+        public List<Product> GetFavoriteProducts(string UserName);
+        public void DeleteFromFavorite(Guid productId, string UserName);
 
     }
 }

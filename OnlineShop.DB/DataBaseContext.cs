@@ -12,8 +12,6 @@ namespace OnlineShop.DB
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<UserReg> UserRegs { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<CartItem> Carts { get; set; }
         public DbSet<CompareProduct> CompareProducts { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }

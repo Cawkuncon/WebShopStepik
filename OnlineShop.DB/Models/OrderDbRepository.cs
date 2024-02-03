@@ -1,14 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OnlineShop.DB.Models
 {
     public class OrderDbRepository : IOrderRepository
     {
         private readonly DataBaseContext dataBaseContext;
+        private readonly UserManager<User> usserManager;
 
-        public OrderDbRepository(DataBaseContext dataBaseContext)
+        public OrderDbRepository(DataBaseContext dataBaseContext, UserManager<User> usserManager)
         {
             this.dataBaseContext = dataBaseContext;
+            this.usserManager = usserManager;
         }
 
         public void Add(Order order)
