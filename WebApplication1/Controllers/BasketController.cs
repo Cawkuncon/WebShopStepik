@@ -32,6 +32,7 @@ namespace WebApplication1.Controllers
             newProd.Id = Prod.Id;
             newProd.Cost = Prod.Cost;
             newProd.Description = Prod.Description;
+
             //newProd.Comparsion = Prod.Comparsion;
             //newProd.Favorite = Prod.Favorite;
             bask.AddToCart(newProd);
