@@ -24,6 +24,16 @@ namespace WebApplication1.Models
 
         }
 
+        public void ChangeCompare()
+        {
+            Compare = !Compare;
+        }
+
+        public void ChangeFavorite()
+        {
+            Favorite = !Favorite;
+        }
+
         public ProductViewModel(Guid id, int cost, string name, string descr, int count)
         {
             Id = id;

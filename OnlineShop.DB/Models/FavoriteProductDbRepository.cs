@@ -29,6 +29,10 @@ namespace OnlineShop.DB.Models
         }
         public List<Product> GetFavoriteProducts(string UserName)
         {
+            if (UserName == null)
+            {
+                return null;
+            }
             var user = userManager.FindByNameAsync(UserName).Result;
             var prods = dataBaseContext.FavoriteProducts.Where(prd => prd.User == user).Select(prd => prd.Product).ToList();
             return prods;

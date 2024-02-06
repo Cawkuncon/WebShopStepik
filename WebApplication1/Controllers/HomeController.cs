@@ -29,9 +29,13 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
-            var newProducts = new List<ProductViewModel>();
-            //var idCompareProds = compareProducts.GetCompareProducts(user.UserId).Select(pr => pr.Id);
-            //var idFavoriteProds = favoriteProducts.GetFavoriteProducts(user.UserId).Select(pr => pr.Id);
+            var newProducts = ProductToProductView.Transform(products);
+            var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
+            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
+            //newProducts = newProducts.ForEach(prod =>
+            //{
+            //    if (idCompar)
+            //});
             //foreach (var product in products)
             //{
             //    var prod = new ProductViewModel()
