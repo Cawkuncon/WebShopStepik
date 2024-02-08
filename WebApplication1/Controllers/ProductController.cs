@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         public IActionResult Index(Guid id)
         {
             var products = productRepository.GetAll().ToList();
-            var prods = ProductToProductView.Transform(products);
+            var prods = ProductToProductView.TransformList(products);
             var product = prods.FirstOrDefault(pr => pr.Id == id);
             return View(product);
         }

@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
-            var newProducts = ProductToProductView.Transform(products);
+            var newProducts = ProductToProductView.TransformList(products);
             var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
             var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
             newProducts.ForEach(prod =>
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
         public IActionResult Compare()
         {
             var products = compareProducts.GetCompareProducts(User.Identity.Name);
-            var prods = ProductToProductView.Transform(products);
+            var prods = ProductToProductView.TransformList(products);
             return View(prods);
         }
         [Authorize]
@@ -91,7 +91,7 @@ namespace WebApplication1.Controllers
         public IActionResult ShowFavorite()
         {
             var prodToShow = favoriteProducts.GetFavoriteProducts(User.Identity.Name);
-            var newListProd = ProductToProductView.Transform(prodToShow);
+            var newListProd = ProductToProductView.TransformList(prodToShow);
             var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
             var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
             newListProd.ForEach(prod =>

@@ -62,7 +62,7 @@ namespace WebApplication1.Area.Controlles
         public IActionResult Products()
         {
             var products = productRepository.GetAll();
-            var newProducts = ProductToProductView.Transform(products);
+            var newProducts = ProductToProductView.TransformList(products);
             return View(newProducts);
         }
 

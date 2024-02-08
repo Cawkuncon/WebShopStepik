@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
 using System.Collections.Immutable;
@@ -13,27 +14,25 @@ namespace WebApplication1.Controllers
         private readonly IProductRepository productRepository;
         private readonly IBaskRepository bask;
         private readonly IOrderRepository orderRepository;
-        private readonly IUserAuth userAuthSession;
         private readonly ICartItemDbRepository carts;
+        private readonly ICompareProductDbRepository compareProducts;
+        private readonly IFavoriteProductDbRepository favoriteProducts;
+        private readonly UserManager<User> users;
 
-        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, IUserAuth userAuthSession, ICartItemDbRepository carts)
+        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, ICartItemDbRepository carts, UserManager<User> users)
         {
             this.productRepository = productRepository;
             this.bask = bask;
             this.orderRepository = orderRepository;
-            this.userAuthSession = userAuthSession;
             this.carts = carts;
+            this.users = users;
         }
         public IActionResult Adds(Guid productId)
         {
             var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
-            var newProd = new ProductViewModel();
-            newProd.Name = Prod.Name;
-            newProd.Id = Prod.Id;
-            newProd.Cost = Prod.Cost;
-            newProd.Description = Prod.Description;
-            //newProd.Comparsion = Prod.Comparsion;
-            //newProd.Favorite = Prod.Favorite;
+            var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
+            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
+            var newProd = ProductToProductView.Transform(Prod);
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");
         }
@@ -80,8 +79,8 @@ namespace WebApplication1.Controllers
             var resultBask = bask.GetResultProducts();
             ViewBag.Products = resultBask;
             ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
-            //var us = users.Get(userAuthSession.UserId);
-            //ViewBag.user = us;
+            var user = users.GetUserAsync(User).Result;
+            ViewBag.user = user;
             return View();
         }
 
@@ -89,35 +88,35 @@ namespace WebApplication1.Controllers
         public IActionResult Success(OrderViewModel order)
         {
             var orderDB = new Order();
-            //orderDB.User = users.Get(userAuthSession.UserId);
-            //if (orderDB.User == null)
-            //{
-            //    orderDB.Name = order.Name;
-            //    orderDB.Number = order.Number;
-            //    orderDB.Email= order.Email;
-            //}
-            //else
-            //{
-            //    orderDB.Name = orderDB.User.Name;
-            //    orderDB.Number = orderDB.User.Number;
-            //    orderDB.Email = orderDB.User.Email;
-            //}
-            //var cart = bask.GetCart();
-            //orderDB.Total = bask.GetTotalCost();
-            //orderDB.Comments = order.Comments;
-            //orderDB.Address = order.Address;
-            //order.OrderCreation();
-            //orderDB.CreationDate = order.CreationDate;
-            //orderDB.CreationTime = order.CreationTime;
-            //orderDB.Status = order.Status;
-            //orderRepository.Add(orderDB);
-            //foreach (var product in cart)
-            //{
-            //    carts.Add(orderDB.Id, product.Id);
-            //}
-            //bask.ClearResultProducts();
-            //bask.ClearCart();
-            //ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
+            orderDB.User = users.GetUserAsync(User).Result;
+            if (orderDB.User == null)
+            {
+                orderDB.Name = order.Name;
+                orderDB.Number = order.Number;
+                orderDB.Email = order.Email;
+            }
+            else
+            {
+                orderDB.Name = orderDB.User.UserName;
+                orderDB.Number = orderDB.User.PhoneNumber;
+                orderDB.Email = orderDB.User.Email;
+            }
+            var cart = bask.GetCart();
+            orderDB.Total = bask.GetTotalCost();
+            orderDB.Comments = order.Comments;
+            orderDB.Address = order.Address;
+            order.OrderCreation();
+            orderDB.CreationDate = order.CreationDate;
+            orderDB.CreationTime = order.CreationTime;
+            orderDB.Status = order.Status;
+            orderRepository.Add(orderDB);
+            foreach (var product in cart)
+            {
+                carts.Add(orderDB.Id, product.Id);
+            }
+            bask.ClearResultProducts();
+            bask.ClearCart();
+            ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
             return View(orderDB);
         }
     }
