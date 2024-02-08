@@ -15,7 +15,6 @@ namespace WebApplication1.Helpers
                 prodView.Name = prod.Name;
                 prodView.Cost = prod.Cost;
                 prodView.Description = prod.Description;
-                prodView.imageProdPath = prod.imageProdPath;
                 listProductView.Add(prodView);
             }
             return listProductView;
@@ -27,7 +26,6 @@ namespace WebApplication1.Helpers
             productView.Name = product.Name;
             productView.Cost = product.Cost;
             productView.Description = product.Description;
-            productView.imageProdPath = product.imageProdPath;
             return productView;
         }
     }

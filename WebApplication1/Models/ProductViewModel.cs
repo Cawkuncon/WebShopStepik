@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineShop.DB.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication1.Models
 {
@@ -17,7 +18,7 @@ namespace WebApplication1.Models
         public int Count { get; set; }
         public bool Compare { get; set; } = false;
         public bool Favorite { get; set; } = false;
-        public List<string> imageProdPath { get; set; }
+        public List<Image> Images { get; set; }
 
         public ProductViewModel()
         {

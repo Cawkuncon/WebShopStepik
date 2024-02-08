@@ -43,14 +43,25 @@ namespace OnlineShop.DB.Models
         public void UpdateProdImage(Guid id, string path)
         {
             var prod = this.GetProduct(id);
-            prod.imageProdPath.Add(path);
+            var image = new Image()
+            {
+                Product = prod,
+                Path = path
+            };
+            dataBaseContext.Images.Add(image);
+            dataBaseContext.Products.FirstOrDefault();
             dataBaseContext.SaveChanges();
         }
         public void DeleteImage(Guid id, string path)
         {
-            var prod = this.GetProduct(id);
-            prod.imageProdPath.Remove(path);
+            var image = dataBaseContext.Images.FirstOrDefault(img => img.Path == path && img.Product.Id == id);
+            dataBaseContext.Images.Remove(image);
             dataBaseContext.SaveChanges();
+        }
+
+        public List<Image> GetProductImages(Guid id)
+        {
+            return dataBaseContext.Images.Where(img => img.Product.Id == id).ToList();
         }
     }
 
@@ -63,5 +74,6 @@ namespace OnlineShop.DB.Models
         public void UpdateProd(Product prod);
         public void UpdateProdImage(Guid id, string path);
         public void DeleteImage(Guid id, string path);
+        public List<Image> GetProductImages(Guid id);
     }
 }

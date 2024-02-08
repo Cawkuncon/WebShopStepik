@@ -28,6 +28,7 @@ namespace WebApplication1.Controllers
         {
             var products = productRepository.GetAll();
             var newProducts = ProductToProductView.TransformList(products);
+            newProducts.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             if (User.Identity.IsAuthenticated)
             {
                 var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
@@ -95,6 +96,7 @@ namespace WebApplication1.Controllers
         {
             var prodToShow = favoriteProducts.GetFavoriteProducts(User.Identity.Name);
             var newListProd = ProductToProductView.TransformList(prodToShow);
+            newListProd.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
             var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
             newListProd.ForEach(prod =>

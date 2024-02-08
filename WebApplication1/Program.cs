@@ -17,13 +17,13 @@ namespace WebApplication1
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
             services.AddSingleton<IBaskRepository, Bask>();
-            services.AddSingleton<IUserAuth, UserAuthSession>();
             services.AddTransient<IProductRepository, ProductDbRepository>();
             services.AddTransient<IOrderRepository, OrderDbRepository>();
             services.AddTransient<IOrder, OrderViewModel>();
             services.AddTransient<ICartItemDbRepository, CartItemDbRepository>();
             services.AddTransient<ICompareProductDbRepository, CompareProductDbRepository>();
             services.AddTransient<IFavoriteProductDbRepository, FavoriteProductDbRepository>();
+            services.AddTransient<IImageDbRepository, ImageDbRepository>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
             builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));

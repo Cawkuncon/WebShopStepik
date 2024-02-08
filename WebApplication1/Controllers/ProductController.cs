@@ -17,6 +17,7 @@ namespace WebApplication1.Controllers
         {
             var products = productRepository.GetAll().ToList();
             var prods = ProductToProductView.TransformList(products);
+            prods.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             var product = prods.FirstOrDefault(pr => pr.Id == id);
             return View(product);
         }

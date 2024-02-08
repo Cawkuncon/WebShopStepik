@@ -31,6 +31,7 @@ namespace WebApplication1.Controllers
         {
             var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
             var newProd = ProductToProductView.Transform(Prod);
+            newProd.Images = productRepository.GetProductImages(newProd.Id);
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");
         }

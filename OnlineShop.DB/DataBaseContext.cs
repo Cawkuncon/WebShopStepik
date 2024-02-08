@@ -15,6 +15,7 @@ namespace OnlineShop.DB
         public DbSet<CartItem> Carts { get; set; }
         public DbSet<CompareProduct> CompareProducts { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
         {
             Database.Migrate();
