@@ -43,7 +43,13 @@ namespace OnlineShop.DB.Models
         public void UpdateProdImage(Guid id, string path)
         {
             var prod = this.GetProduct(id);
-            prod.imageProdPath = path;
+            prod.imageProdPath.Add(path);
+            dataBaseContext.SaveChanges();
+        }
+        public void DeleteImage(Guid id, string path)
+        {
+            var prod = this.GetProduct(id);
+            prod.imageProdPath.Remove(path);
             dataBaseContext.SaveChanges();
         }
     }
@@ -56,5 +62,6 @@ namespace OnlineShop.DB.Models
         public void AddProd(Product prod);
         public void UpdateProd(Product prod);
         public void UpdateProdImage(Guid id, string path);
+        public void DeleteImage(Guid id, string path);
     }
 }

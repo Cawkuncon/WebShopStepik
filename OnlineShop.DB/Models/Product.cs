@@ -8,7 +8,7 @@ namespace OnlineShop.DB.Models
         public string Name { get; set; }
         public int Cost { get; set; }
         public string? Description { get; set; }
-        public string? imageProdPath { get; set; }
+        public List<string>? imageProdPath { get; set; }
         public Product()
         {
 

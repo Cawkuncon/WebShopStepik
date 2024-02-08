@@ -27,6 +27,7 @@ namespace WebApplication1.Helpers
             productView.Name = product.Name;
             productView.Cost = product.Cost;
             productView.Description = product.Description;
+            productView.imageProdPath = product.imageProdPath;
             return productView;
         }
     }

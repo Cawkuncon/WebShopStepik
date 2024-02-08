@@ -246,5 +246,10 @@ namespace WebApplication1.Area.Controlles
             }
             return RedirectToAction(nameof(Products));
         }
+        public IActionResult DeleteImage(Guid productId, string imgSrc)
+        {
+            productRepository.DeleteImage(productId, imgSrc);
+            return RedirectToAction(nameof(EditProductImage), new { id = productId });
+        }
     }
 }

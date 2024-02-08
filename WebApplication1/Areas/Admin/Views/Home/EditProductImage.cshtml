@@ -12,15 +12,20 @@
     </div>
 </form>
 @if (@Model.imageProdPath != null)
-{   
-            <div class="row">
-                <div class="col-3 card shadow">
-                    <div class="card-body">
-                            <h6>Текущее изображдение для @Model.Name</h6>
-                            <img class="card-img-top col-3" src="@Model.imageProdPath">
-                    </div>
+{
+    <h6>Текущее изображдение для @Model.Name</h6>
+    foreach (var image in Model.imageProdPath)
+    {
+        <div class="row">
+            <div class="col-3 card shadow">
+                <div class="card-body">
+                    <img class="card-img-top col-3" src="image">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="DeleteImage" asp-route-productId="@Model.Id" asp-route-imgSrc="image" class="btn btn-danger">Удалить</a> 
                 </div>
             </div>
+        </div>
+
+    }
 }
 else
 {
