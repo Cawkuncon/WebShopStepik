@@ -18,13 +18,15 @@ namespace WebApplication1.Area.Controlles
     public class HomeController : Controller
     {
         private UserManager<User> UsersRepository;
+        private RoleManager<IdentityRole> RolesRepository;
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users)
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users, RoleManager<IdentityRole> rolesRepository = null)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
-            this.UsersRepository = users;
+            UsersRepository = users;
+            RolesRepository = rolesRepository;
         }
         public IActionResult Index()
         {
@@ -37,8 +39,8 @@ namespace WebApplication1.Area.Controlles
 
             foreach (var order in orders)
             {
-                //var us = UsersRepository.Get(order.User?.Id);
-                OrderViewModel ordView = OrderTransformation.orderDBtoView(order, null);
+                var user = UsersRepository.FindByNameAsync(order.Name).Result;
+                OrderViewModel ordView = OrderTransformation.orderDBtoView(order, user);
                 listOrders.Add(ordView);
             }
             return View(listOrders);
@@ -97,11 +99,11 @@ namespace WebApplication1.Area.Controlles
         }
 
 
-        public IActionResult OrderInfo(Guid id)
+        public IActionResult OrderInfo(Guid id, string name)
         {
             var order = orderRepository.GetOrder(id);
-            //var us = UsersRepository.Get(order.User?.Id);
-            OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, null);
+            var user = UsersRepository.FindByNameAsync(order.Name).Result;
+            OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, user);
             return View(orderInfo);
         }
 
@@ -115,19 +117,19 @@ namespace WebApplication1.Area.Controlles
 
         public IActionResult Roles()
         {
-            //var roles = rolesRepository.GetAll();
+            var roles = RolesRepository.Roles;
             var listRoles = new List<RoleViewModel>();
-            //foreach (var role in roles)
-            //{
-            //    var newRole = new RoleViewModel();
-            //    newRole.Id = role.Id;
-            //    newRole.Name = role.Name;
-            //    listRoles.Add(newRole);
-            //}
+            foreach (var role in roles)
+            {
+                var newRole = new RoleViewModel();
+                newRole.Id = role.Id;
+                newRole.Name = role.Name;
+                listRoles.Add(newRole);
+            }
             return View(listRoles);
         }
 
-        public IActionResult DeleteRole(Guid Id)
+        public IActionResult DeleteRole(string Id)
         {
             //rolesRepository.DeleteRole(Id);
             return RedirectToAction("Roles");
