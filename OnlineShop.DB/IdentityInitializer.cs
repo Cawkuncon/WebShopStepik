@@ -12,8 +12,8 @@ namespace OnlineShop.DB
     {
         public static void Initialize(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var adminEmail = "cawka@ru.ru";
-            var password = "_Cawka1234";
+            var adminEmail = "awka@ru.ru";
+            var password = "Cawka1234";
             if (roleManager.FindByNameAsync(Constants.AdminRoleName).Result == null)
             {
                 roleManager.CreateAsync(new IdentityRole(Constants.AdminRoleName)).Wait();

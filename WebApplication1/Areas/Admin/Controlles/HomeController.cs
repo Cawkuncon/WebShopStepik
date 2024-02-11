@@ -169,12 +169,38 @@ namespace WebApplication1.Area.Controlles
             //}
             //userViewModel.Role = role;
             //return View(userViewModel);
-            return View();
+            return View(userViewModel);
         }
 
         public IActionResult AddUser()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddUser(UserRegViewModel register)
+        {
+            if (register.Name == register.Password)
+            {
+                ModelState.AddModelError("", "Имя и пароль не должны совпадать");
+            }
+            if (ModelState.IsValid)
+            {
+                User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number, Age = register.Age };
+                var result = UsersRepository.CreateAsync(user, register.Password).Result;
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Users");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            return View(register);
         }
     }
 }

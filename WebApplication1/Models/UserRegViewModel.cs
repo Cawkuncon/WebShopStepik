@@ -14,7 +14,6 @@ namespace WebApplication1.Models
 
         [Required(ErrorMessage = "Не указан пароль")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Пароль должен содержать от 8 символов. При этом обязательно в пароле должна быть хотя бы одна цифра, одна буква в нижнем регистре и одна буква в верхнем регистре.")]
-
         public string Password { get; set; }
 
 

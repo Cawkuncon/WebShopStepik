@@ -55,7 +55,7 @@ namespace WebApplication1.Controllers
             }
             if (ModelState.IsValid)
             {
-                User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number };
+                User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number, Age = register.Age };
                 var result = _usersManager.CreateAsync(user, register.Password).Result;
                 if (result.Succeeded)
                 {

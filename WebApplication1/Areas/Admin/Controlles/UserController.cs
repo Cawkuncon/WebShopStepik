@@ -20,42 +20,14 @@ namespace WebApplication1.Areas.Admin.Controlles
             RolesRepository = rolesRepository;
         }
 
-        public IActionResult DeleteUser(Guid Id)
+        public IActionResult DeleteUser(string Name)
         {
-            //var user = UsersRepository.Get(Id);
-            //if (user != null)
-            //{
-            //    UsersRepository.Delete(Id);
-            //}
+            var user = UsersRepository.FindByNameAsync(Name).Result;
+            UsersRepository.DeleteAsync(user).Wait();
             return RedirectToAction("Index", "Home", new { Area = "Admin" });
         }
 
-        public IActionResult EditUserInfo(Guid Id)
-        {
-            //var user = UsersRepository.Get(Id);
-            var userViewModel = new UserRegViewModel();
-            //userViewModel.Name = user.Name;
-            //userViewModel.Email = user.Email;
-            //userViewModel.Number = user.Number;
-            //userViewModel.Age = user.Age;
-            //userViewModel.UserId = user.Id;
-            //userViewModel.Password = user.Password;
-            //userViewModel.Password2 = user.Password2;
-            return View(userViewModel);
-        }
-
-        [HttpPost]
-        public IActionResult EditUserInfo(UserRegViewModel user, Guid Id)
-        {
-            var DictArgUser = new Dictionary<string, string>();
-            //DictArgUser["Number"] = user.Number;
-            //DictArgUser["Age"] = user.Age.ToString();
-            //DictArgUser["Email"] = user.Email;
-            //UsersRepository.UpdateUserInfo(Id, DictArgUser);
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id });
-        }
-
-        public IActionResult EditPassword(string Name)
+        public IActionResult EditUserInfo(string Name)
         {
             var user = UsersRepository.FindByNameAsync(Name).Result;
             var userViewModel = new UserRegViewModel();
@@ -63,10 +35,24 @@ namespace WebApplication1.Areas.Admin.Controlles
             userViewModel.Email = user.Email;
             userViewModel.Number = user.PhoneNumber;
             userViewModel.Age = user.Age;
-            //userViewModel.UserId = user.Id;
-            //userViewModel.Password = user.Password;
-            //userViewModel.Password2 = user.Password2;
             return View(userViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditUserInfo(UserRegViewModel user, string Name)
+        {
+            var userDB = UsersRepository.FindByNameAsync(Name).Result;
+            userDB.Age = user.Age;
+            userDB.PhoneNumber = user.Number;
+            userDB.Email = user.Email;
+            UsersRepository.UpdateAsync(userDB).Wait();
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name });
+        }
+
+        public IActionResult EditPassword(string Name)
+        {
+            ViewBag.Name = Name;
+            return View();
         }
 
         [HttpPost]
