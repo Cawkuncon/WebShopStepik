@@ -70,17 +70,21 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult EditPassword(string Name, string password, string password2)
+        public IActionResult EditPassword(ChangePassword changePassword)
         {
-            if (password == Name)
+            var user = UsersRepository.FindByNameAsync(changePassword.Name).Result;
+            if (changePassword.Name == changePassword.Password)
             {
                 ModelState.AddModelError("", "Пароли не должен совпадать с именем");
             }
             if (ModelState.IsValid)
             {
-
+                var newPasswordHash = UsersRepository.PasswordHasher.HashPassword(user, changePassword.Password);
+                user.PasswordHash = newPasswordHash;
+                UsersRepository.UpdateAsync(user).Wait();
+                return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", changePassword.Name });
             }
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name });
+            return View(changePassword);
 
         }
 
