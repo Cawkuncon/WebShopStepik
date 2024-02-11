@@ -131,7 +131,8 @@ namespace WebApplication1.Area.Controlles
 
         public IActionResult DeleteRole(string Id)
         {
-            //rolesRepository.DeleteRole(Id);
+            var role = RolesRepository.Roles.Where(role => role.Id == Id).FirstOrDefault();
+            RolesRepository.DeleteAsync(role).Wait();
             return RedirectToAction("Roles");
         }
 
@@ -143,25 +144,23 @@ namespace WebApplication1.Area.Controlles
         [HttpPost]
         public IActionResult AddToRepository(RoleViewModel role)
         {
-            //var roleDb = new Role();
-            //roleDb.Id = role.Id;
-            //roleDb.Name = role.Name;
-            //rolesRepository.AddRole(roleDb);
+            RolesRepository.CreateAsync(new IdentityRole(role.Name)).Wait();
             return RedirectToAction("Roles");
         }
 
-        public IActionResult UserInfoCheck(Guid Id)
+        public IActionResult UserInfoCheck(string Name)
         {
-            //var user = UsersRepository.Get(Id);
-            //var userViewModel = new UserRegViewModel();
-            //userViewModel.Name = user.Name;
-            //userViewModel.Email = user.Email;
-            //userViewModel.Number = user.Number;
-            //userViewModel.Age = user.Age;
+            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var userViewModel = new UserRegViewModel();
+            userViewModel.Name = user.UserName;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.PhoneNumber;
+            userViewModel.Age = user.Age;
             //userViewModel.UserId = user.Id;
             //userViewModel.Password = user.Password;
             //userViewModel.Password2 = user.Password2;
-            //var role = new RoleViewModel();
+            var role = new RoleViewModel();
+            
             //var userRole = rolesRepository.GetRole(user.RoleId);
             //if (userRole != null)
             //{

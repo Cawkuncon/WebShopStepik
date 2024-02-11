@@ -31,7 +31,7 @@ namespace WebApplication1.Controllers
                 var result = _signInManager.PasswordSignInAsync(login.Name, login.Password, login.SaveUserInfo, false).Result;
                 if (result.Succeeded)
                 {
-                    return Redirect(login.ReturnUrl ?? "Home");
+                    return Redirect(login.ReturnUrl ?? "/Home");
                 }
                 else
                 {
@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
             return View(login);
         }
 
-        public IActionResult Register(string ReturnUrl)
+        public IActionResult Register(string? ReturnUrl)
         {
             return View(new UserRegViewModel() { ReturnUrl = ReturnUrl});
         }
@@ -61,7 +61,7 @@ namespace WebApplication1.Controllers
                 {
                     _signInManager.SignInAsync(user, false).Wait();
                     _usersManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
-                    return Redirect(register.ReturnUrl ?? "Home");
+                    return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else
                 {

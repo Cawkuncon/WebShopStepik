@@ -28,25 +28,28 @@ namespace WebApplication1.Controllers
         {
             var products = productRepository.GetAll();
             var newProducts = ProductToProductView.TransformList(products);
-            var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
-            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
-            newProducts.ForEach(prod =>
+            if (User.Identity.IsAuthenticated)
             {
-                if (idCompareProds != null)
+                var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
+                var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
+                newProducts.ForEach(prod =>
                 {
-                    if (idCompareProds.Contains(prod.Id))
+                    if (idCompareProds != null)
                     {
-                        prod.ChangeCompare();
+                        if (idCompareProds.Contains(prod.Id))
+                        {
+                            prod.ChangeCompare();
+                        }
                     }
-                }
-                if (idFavoriteProds != null)
-                {
-                    if (idFavoriteProds.Contains(prod.Id))
+                    if (idFavoriteProds != null)
                     {
-                        prod.ChangeFavorite();
+                        if (idFavoriteProds.Contains(prod.Id))
+                        {
+                            prod.ChangeFavorite();
+                        }
                     }
-                }
-            });
+                });
+            }
             return View(newProducts);
         }
         [Authorize]

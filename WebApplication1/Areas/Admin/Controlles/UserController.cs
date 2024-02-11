@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB;
 using OnlineShop.DB.Models;
@@ -11,9 +12,12 @@ namespace WebApplication1.Areas.Admin.Controlles
     [Authorize(Roles = Constants.AdminRoleName)]
     public class UserController : Controller
     {
-
-        public UserController()
+        private UserManager<User> UsersRepository;
+        private RoleManager<IdentityRole> RolesRepository;
+        public UserController(UserManager<User> users, RoleManager<IdentityRole> rolesRepository)
         {
+            UsersRepository = users;
+            RolesRepository = rolesRepository;
         }
 
         public IActionResult DeleteUser(Guid Id)
@@ -51,14 +55,14 @@ namespace WebApplication1.Areas.Admin.Controlles
             return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id });
         }
 
-        public IActionResult EditPassword(Guid Id)
+        public IActionResult EditPassword(string Name)
         {
-            //var user = UsersRepository.Get(Id);
+            var user = UsersRepository.FindByNameAsync(Name).Result;
             var userViewModel = new UserRegViewModel();
-            //userViewModel.Name = user.Name;
-            //userViewModel.Email = user.Email;
-            //userViewModel.Number = user.Number;
-            //userViewModel.Age = user.Age;
+            userViewModel.Name = user.UserName;
+            userViewModel.Email = user.Email;
+            userViewModel.Number = user.PhoneNumber;
+            userViewModel.Age = user.Age;
             //userViewModel.UserId = user.Id;
             //userViewModel.Password = user.Password;
             //userViewModel.Password2 = user.Password2;
@@ -66,13 +70,17 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult EditPassword(Guid Id, string password, string password2)
+        public IActionResult EditPassword(string Name, string password, string password2)
         {
-            var DictArgUser = new Dictionary<string,string>();
-            //DictArgUser["Password"] = password;
-            //DictArgUser["Password2"] = password2;
-            //UsersRepository.UpdateUserInfo(Id, DictArgUser);
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id });
+            if (password == Name)
+            {
+                ModelState.AddModelError("", "Пароли не должен совпадать с именем");
+            }
+            if (ModelState.IsValid)
+            {
+
+            }
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name });
 
         }
 

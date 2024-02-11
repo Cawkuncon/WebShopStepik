@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using WebApplication1.Areas.Admin.Models;
 
 namespace WebApplication1.Models
 {
     public class UserRegViewModel : IUserReg
     {
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         [Required(ErrorMessage = "Не указано имя")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя должно содержать от 3 до 20 символов")]
         public string Name { get; set; }
@@ -42,7 +43,7 @@ namespace WebApplication1.Models
         {
             return Password == Password2 && Password != null;
         }
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
     }
 
     public interface IUserReg

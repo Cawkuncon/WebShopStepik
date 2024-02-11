@@ -32,6 +32,10 @@ namespace WebApplication1
             builder.Host.UseSerilog((context, configuration) => configuration
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.WithProperty("ApplicationName", "WebApplication1"));
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+            });
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
