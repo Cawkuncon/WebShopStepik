@@ -22,7 +22,7 @@ namespace OnlineShop.DB.Models
         {
             var newFavor = new FavoriteProduct();
             var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
-            newFavor.User = userManager.FindByNameAsync(UserName).Result;
+            newFavor.UserId = userManager.FindByNameAsync(UserName).Result.Id;
             newFavor.Product = product;
             dataBaseContext.FavoriteProducts.Add(newFavor);
             dataBaseContext.SaveChanges();
@@ -33,15 +33,15 @@ namespace OnlineShop.DB.Models
             {
                 return null;
             }
-            var user = userManager.FindByNameAsync(UserName).Result;
-            var prods = dataBaseContext.FavoriteProducts.Where(prd => prd.User == user).Select(prd => prd.Product).ToList();
+            var userId = userManager.FindByNameAsync(UserName).Result.Id;
+            var prods = dataBaseContext.FavoriteProducts.Where(prd => prd.UserId == userId).Select(prd => prd.Product).ToList();
             return prods;
         }
 
         public void DeleteFromFavorite(Guid productId, string UserName)
         {
-            var user = userManager.FindByNameAsync(UserName).Result;
-            var prdFav = dataBaseContext.FavoriteProducts.Where(prd => prd.User == user && prd.Product.Id == productId).FirstOrDefault();
+            var userId = userManager.FindByNameAsync(UserName).Result.Id;
+            var prdFav = dataBaseContext.FavoriteProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefault();
             dataBaseContext.FavoriteProducts.Remove(prdFav);
             dataBaseContext.SaveChanges();
         }

@@ -30,8 +30,6 @@ namespace WebApplication1.Controllers
         public IActionResult Adds(Guid productId)
         {
             var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
-            var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
-            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
             var newProd = ProductToProductView.Transform(Prod);
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");

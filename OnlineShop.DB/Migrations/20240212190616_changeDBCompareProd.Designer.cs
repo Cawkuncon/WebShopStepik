@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.DB;
 
@@ -11,9 +12,10 @@ using OnlineShop.DB;
 namespace OnlineShop.DB.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240212190616_changeDBCompareProd")]
+    partial class changeDBCompareProd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,21 +158,21 @@ namespace OnlineShop.DB.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cf129db8-1af5-4206-9274-bd569468f22d"),
+                            Id = new Guid("76cfc063-a119-4f4d-ac28-32de3b376b77"),
                             Cost = 11,
                             Description = "First Product",
                             Name = "First"
                         },
                         new
                         {
-                            Id = new Guid("32fc2acf-cd7d-44f8-8891-da6977feae29"),
+                            Id = new Guid("3693fe24-68de-426c-9382-e4711e72d3fd"),
                             Cost = 22,
                             Description = "Second Product",
                             Name = "Second"
                         },
                         new
                         {
-                            Id = new Guid("c240873f-da13-486d-86ce-811455b9fe1e"),
+                            Id = new Guid("4870599f-285f-424b-a674-561fc62b6eb9"),
                             Cost = 3,
                             Description = "Third Product",
                             Name = "Third"

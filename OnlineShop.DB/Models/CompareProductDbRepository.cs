@@ -22,8 +22,8 @@ namespace OnlineShop.DB.Models
         {
             var newComp = new CompareProduct();
             var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
-            var user = userManager.FindByNameAsync(UserName).Result;
-            newComp.User = user;
+            var userId = userManager.FindByNameAsync(UserName).Result.Id;
+            newComp.UserId = userId;
             newComp.Product = product;
             dataBaseContext.CompareProducts.Add(newComp);
             dataBaseContext.SaveChanges();
@@ -35,15 +35,15 @@ namespace OnlineShop.DB.Models
             {
                 return null;
             }
-            var user = userManager.FindByNameAsync(UserName).Result;
-            var prods = dataBaseContext.CompareProducts.Where(prd => prd.User == user).Select(prd=>prd.Product).ToList();
+            var userId = userManager.FindByNameAsync(UserName).Result.Id;
+            var prods = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(prd=>prd.Product).ToList();
             return prods;
         }
 
         public void DeleteFromComparsion(Guid productId, string UserName)
         {
-            var user = userManager.FindByNameAsync(UserName).Result;
-            var prdComp = dataBaseContext.CompareProducts.Where(prd => prd.User == user && prd.Product.Id == productId).FirstOrDefault();
+            var userId = userManager.FindByNameAsync(UserName).Result.Id;
+            var prdComp = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefault();
             dataBaseContext.CompareProducts.Remove(prdComp);
             dataBaseContext.SaveChanges();
         }
