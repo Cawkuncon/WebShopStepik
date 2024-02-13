@@ -19,6 +19,6 @@ namespace OnlineShop.DB
         {
             Database.Migrate();
         }
-
     }
+   
 }

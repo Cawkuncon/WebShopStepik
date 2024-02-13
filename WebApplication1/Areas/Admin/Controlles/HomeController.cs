@@ -90,6 +90,7 @@ namespace WebApplication1.Area.Controlles
             var prod = productRepository.GetAll().Find(x => x.Id == id);
             return View(prod);
         }
+
         [HttpPost]
         public IActionResult UpdateProduct(Product product, Guid id)
         {
@@ -99,11 +100,20 @@ namespace WebApplication1.Area.Controlles
         }
 
 
-        public IActionResult OrderInfo(Guid id, string name)
+        public IActionResult OrderInfo(Guid id)
         {
             var order = orderRepository.GetOrder(id);
-            var user = UsersRepository.FindByNameAsync(order.Name).Result;
+            var user = new User();
+            if (order.User == null)
+            {
+                user = null;
+            }
+            else
+            {
+                user = UsersRepository.FindByNameAsync(order.User.UserName).Result;
+            }
             OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, user);
+            orderInfo.Products = ProductToProductView.TransformList(orderRepository.GetAllProducts(order.Id));
             return View(orderInfo);
         }
 
@@ -156,12 +166,9 @@ namespace WebApplication1.Area.Controlles
             userViewModel.Email = user.Email;
             userViewModel.Number = user.PhoneNumber;
             userViewModel.Age = user.Age;
-            //userViewModel.UserId = user.Id;
-            //userViewModel.Password = user.Password;
-            //userViewModel.Password2 = user.Password2;
-            var role = new RoleViewModel();
-            
-            //var userRole = rolesRepository.GetRole(user.RoleId);
+            userViewModel.UserId = user.Id;
+            var roles = new RoleViewModel();
+            var usersRoles = UsersRepository.GetRolesAsync(user); ///ПЕРЕДЕЛАТЬ ДОДЛЕАТЬ
             //if (userRole != null)
             //{
             //    role.Name = userRole.Name;

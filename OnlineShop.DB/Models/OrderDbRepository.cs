@@ -6,12 +6,10 @@ namespace OnlineShop.DB.Models
     public class OrderDbRepository : IOrderRepository
     {
         private readonly DataBaseContext dataBaseContext;
-        private readonly UserManager<User> usserManager;
 
-        public OrderDbRepository(DataBaseContext dataBaseContext, UserManager<User> usserManager)
+        public OrderDbRepository(DataBaseContext dataBaseContext)
         {
             this.dataBaseContext = dataBaseContext;
-            this.usserManager = usserManager;
         }
 
         public void Add(Order order)
@@ -36,7 +34,13 @@ namespace OnlineShop.DB.Models
             ord.Status = status;
             dataBaseContext.SaveChanges();
         }
-    }
+
+        public List<Product> GetAllProducts(Guid id)
+        {
+            var prods = dataBaseContext.Carts.Where(cart => cart.OrderId == id).Select(cart => cart.Product).ToList();
+            return prods;
+        }
+    } 
 
     public interface IOrderRepository
     {
@@ -44,8 +48,8 @@ namespace OnlineShop.DB.Models
         public List<Order> GetAll();
         public void Add(Order order);
         public Order GetOrder(Guid id);
-
         public void UpdateStatus(Guid id, int status);
+        public List<Product> GetAllProducts(Guid id);
 
     }
 }

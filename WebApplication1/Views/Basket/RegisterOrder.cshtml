@@ -9,12 +9,12 @@
     @if (ViewBag.user != null)
     {
         <label asp-for="Name">Введите имя и фамилию</label>
-        <input asp-for="Name" value="@ViewBag.user.Name" disabled/>
+        <input asp-for="Name" value="@ViewBag.user.UserName" disabled/>
         <span asp-validation-for="Name"></span>
         <br />
         <br />
         <label asp-for="Number">Введите номер телефона</label>
-        <input asp-for="Number" value="@ViewBag.user.Number" disabled>
+        <input asp-for="Number" value="@ViewBag.user.PhoneNumber" disabled>
         <span asp-validation-for="Number"></span>
         <br />
         <br />
