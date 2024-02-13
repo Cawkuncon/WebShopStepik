@@ -167,15 +167,16 @@ namespace WebApplication1.Area.Controlles
             userViewModel.Number = user.PhoneNumber;
             userViewModel.Age = user.Age;
             userViewModel.UserId = user.Id;
-            var roles = new RoleViewModel();
-            var usersRoles = UsersRepository.GetRolesAsync(user); ///ПЕРЕДЕЛАТЬ ДОДЛЕАТЬ
-            //if (userRole != null)
-            //{
-            //    role.Name = userRole.Name;
-            //    role.Id = userRole.Id;
-            //}
-            //userViewModel.Role = role;
-            //return View(userViewModel);
+            var role = new RoleViewModel();
+            var usersRoles = UsersRepository.GetRolesAsync(user).Result;
+            var firstRole = usersRoles.First();
+            var rol = RolesRepository.FindByNameAsync(firstRole).Result;
+            if (rol != null)
+            {
+                role.Name = rol.Name;
+                role.Id = rol.Id;
+            }
+            userViewModel.Role = role;
             return View(userViewModel);
         }
 

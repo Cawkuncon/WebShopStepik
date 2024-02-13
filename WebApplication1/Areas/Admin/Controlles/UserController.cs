@@ -74,23 +74,31 @@ namespace WebApplication1.Areas.Admin.Controlles
 
         }
 
-        public IActionResult UserRole(Guid Id)
+        public IActionResult UserRole(string Name)
         {
-            //var user = UsersRepository.Get(Id);
-            //ViewBag.Roles = rolesRepository.GetAll();
-            return View(null);
+            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var userRoles = UsersRepository.GetRolesAsync(user).Result;
+            ViewBag.Roles = RolesRepository.Roles;
+            ViewBag.RolesCount = RolesRepository.Roles.Count();
+            ViewBag.UserRole = userRoles.First();
+            return View(user);
         }
 
         [HttpPost]
-        public IActionResult ChangeUserRole(Guid UserId, Guid? UserRole) 
+        public IActionResult ChangeUserRole(string UserName, string UserRole) 
         {
-            //Role role = null;
-            //if (UserRole != null)
-            //{
-            //    role = rolesRepository.GetRole(UserRole);
-            //}
-            //UsersRepository.AddRole(UserId, role);
-            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Id = UserId });
+            var user = UsersRepository.FindByNameAsync(UserName).Result;
+            var role = RolesRepository.FindByNameAsync(UserRole).Result;
+            if (role != null && user != null) 
+            {
+                var userRole = UsersRepository.GetRolesAsync(user).Result.First();
+                UsersRepository.RemoveFromRoleAsync(user, userRole).Wait();
+                UsersRepository.UpdateAsync(user).Wait();
+                UsersRepository.AddToRoleAsync(user, role.Name).Wait();
+                UsersRepository.UpdateAsync(user).Wait();
+            }
+
+            return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name = UserName});
 
         }
 
