@@ -210,5 +210,21 @@ namespace WebApplication1.Area.Controlles
             }
             return View(register);
         }
+
+        public IActionResult EditProductImage(Guid id)
+        {
+            var newPrdView = new CreateImageViewModel();
+            var prod = ProductToProductView.Transform(productRepository.GetProduct(id));
+            newPrdView.Name = prod.Name;
+            newPrdView.Id = prod.Id;
+            return View(newPrdView);
+        }
+
+        [HttpPost]
+        public IActionResult EditProductImage(CreateImageViewModel model)
+        {
+            
+            return RedirectToAction(nameof(Products));
+        }
     }
 }
