@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Migrations;
 using OnlineShop.DB;
 using OnlineShop.DB.Models;
 using System.Data;
@@ -21,12 +22,14 @@ namespace WebApplication1.Area.Controlles
         private RoleManager<IdentityRole> RolesRepository;
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users, RoleManager<IdentityRole> rolesRepository = null)
+        private IWebHostEnvironment webHostEnvironment;
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users, RoleManager<IdentityRole> rolesRepository, IWebHostEnvironment webHostEnvironment)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
             UsersRepository = users;
             RolesRepository = rolesRepository;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -213,17 +216,34 @@ namespace WebApplication1.Area.Controlles
 
         public IActionResult EditProductImage(Guid id)
         {
-            var newPrdView = new CreateImageViewModel();
-            var prod = ProductToProductView.Transform(productRepository.GetProduct(id));
-            newPrdView.Name = prod.Name;
-            newPrdView.Id = prod.Id;
-            return View(newPrdView);
+            var prod = productRepository.GetProduct(id);
+            return View(prod);
         }
 
         [HttpPost]
-        public IActionResult EditProductImage(CreateImageViewModel model)
+        public IActionResult EditProductImage(Guid id, IFormFile formFile)
         {
-            
+            var prod = productRepository.GetProduct(id);
+            var model = new CreateImageViewModel()
+            {
+                Name= prod.Name,
+                Id= prod.Id,
+            };
+            if (model != null && formFile != null)
+            {
+                model.formFile = formFile;
+                string prodPath = Path.Combine(webHostEnvironment.WebRootPath + "/img/products/");
+                if(!Directory.Exists(prodPath))
+                {
+                    Directory.CreateDirectory(prodPath);
+                }
+                var fileName = model.Id.ToString() + "." + model.formFile.FileName.Split(".").Last();
+                using (var fileStream = new FileStream(prodPath + fileName, FileMode.Create))
+                {
+                    model.formFile.CopyTo(fileStream);
+                }
+                productRepository.UpdateProdImage(model.Id, "/img/products/" + fileName);
+            }
             return RedirectToAction(nameof(Products));
         }
     }

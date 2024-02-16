@@ -15,6 +15,7 @@ namespace WebApplication1.Helpers
                 prodView.Name = prod.Name;
                 prodView.Cost = prod.Cost;
                 prodView.Description = prod.Description;
+                prodView.imageProdPath = prod.imageProdPath;
                 listProductView.Add(prodView);
             }
             return listProductView;

@@ -39,6 +39,13 @@ namespace OnlineShop.DB.Models
         {
             return dataBaseContext.Products.FirstOrDefault(x => x.Id == id);
         }
+
+        public void UpdateProdImage(Guid id, string path)
+        {
+            var prod = this.GetProduct(id);
+            prod.imageProdPath = path;
+            dataBaseContext.SaveChanges();
+        }
     }
 
     public interface IProductRepository
@@ -48,5 +55,6 @@ namespace OnlineShop.DB.Models
         public void Delete(Guid id);
         public void AddProd(Product prod);
         public void UpdateProd(Product prod);
+        public void UpdateProdImage(Guid id, string path);
     }
 }

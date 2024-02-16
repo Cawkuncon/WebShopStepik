@@ -17,7 +17,7 @@ namespace WebApplication1.Models
         public int Count { get; set; }
         public bool Compare { get; set; } = false;
         public bool Favorite { get; set; } = false;
-
+        public string imageProdPath { get; set; }
 
         public ProductViewModel()
         {
