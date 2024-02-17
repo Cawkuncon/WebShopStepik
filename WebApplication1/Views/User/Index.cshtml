@@ -1,0 +1,52 @@
+﻿@using OnlineShop.DB.Models
+@model User
+<div class="row">
+    <div class="col-md-3 my-3">
+        <div class="d-flex flex-column mb-2">
+            <form method="post">
+                <div class="d-flex my-1">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Поиск по названию" aria-label="Поиск по названию" aria-describedby="basic-addon2" name="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" asp-controller="Home" asp-action="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex flex-column mb-2">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active" asp-area="" asp-controller="Home" asp-action="Index">
+                    Главная
+                </a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Basket" asp-action="Index">Корзина<sup>@await Component.InvokeAsync("Bask")</sup></a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Compare">Сравнение</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="ShowFavorite">Избранное</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9 my-3">
+        <div text-align: center class="col-md-9">
+            <h4>Личный кабинет @Model.UserName</h4>
+        </div>
+        <div class="col-md-9">
+            <h5>Имя: @Model.UserName</h5>
+            <br />
+            <h5>Email: @Model.Email</h5>
+            <br />
+            <h5>Возраст: @Model.Age</h5>
+            <br />
+            <h5>Номер телефона: @Model.PhoneNumber</h5>
+            <br />
+            <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Действие
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.UserName">Смена пароля</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.UserName">Редактирование данных</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
