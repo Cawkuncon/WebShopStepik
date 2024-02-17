@@ -217,6 +217,7 @@ namespace WebApplication1.Area.Controlles
         public IActionResult EditProductImage(Guid id)
         {
             var prod = productRepository.GetProduct(id);
+            prod.Images = productRepository.GetProductImages(id);
             return View(prod);
         }
 
@@ -237,7 +238,7 @@ namespace WebApplication1.Area.Controlles
                 {
                     Directory.CreateDirectory(prodPath);
                 }
-                var fileName = model.Id.ToString() + "." + model.formFile.FileName.Split(".").Last();
+                var fileName = Guid.NewGuid().ToString() + "." + model.formFile.FileName.Split(".").Last();
                 using (var fileStream = new FileStream(prodPath + fileName, FileMode.Create))
                 {
                     model.formFile.CopyTo(fileStream);
@@ -249,6 +250,12 @@ namespace WebApplication1.Area.Controlles
         public IActionResult DeleteImage(Guid productId, string imgSrc)
         {
             productRepository.DeleteImage(productId, imgSrc);
+            string path = Path.Combine(webHostEnvironment.WebRootPath + imgSrc);
+            FileInfo fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
             return RedirectToAction(nameof(EditProductImage), new { id = productId });
         }
     }

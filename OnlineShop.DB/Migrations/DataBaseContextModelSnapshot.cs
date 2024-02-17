@@ -176,21 +176,21 @@ namespace OnlineShop.DB.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("72c495d4-3e62-4db2-bcf4-eab06f9b86cd"),
+                            Id = new Guid("c51da90a-b7ed-44bf-8731-0e9bf34f5f54"),
                             Cost = 11,
                             Description = "First Product",
                             Name = "First"
                         },
                         new
                         {
-                            Id = new Guid("6aaa1464-93e6-47cf-9bc6-7b46992be537"),
+                            Id = new Guid("feaea7e5-dd99-4c6a-9816-fce2b4311e76"),
                             Cost = 22,
                             Description = "Second Product",
                             Name = "Second"
                         },
                         new
                         {
-                            Id = new Guid("302674e3-7f5e-4262-9335-a0ba8f2bdd22"),
+                            Id = new Guid("331a2e9d-1c5a-4df1-954c-b5e4094d0741"),
                             Cost = 3,
                             Description = "Third Product",
                             Name = "Third"

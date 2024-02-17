@@ -11,7 +11,7 @@
         <button type="submit" asp-area="Admin" asp-controller="Home" asp-action="EditProductImage" asp-route-id="@Model.Id" class="btn btn-success">Изменить</button>
     </div>
 </form>
-@if (@Model.Images != null)
+@if (Model.Images.Count != 0)
 {
     <h6>Текущее изображдение для @Model.Name</h6>
     foreach (Image image in Model.Images)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@model List<ProductViewModel>
 
 @if (Model == null || Model.Count() == 0)
 {   
@@ -44,7 +44,7 @@ else
                             <div class="col-3 mx-1 mb-3 py-0 px-0 card-main">
                                 <div class="card h-100 shadow">
                                     <div class="card-body d-flex flex-column">
-                                <a href="/product/index/@product.Id"><img class="card-img-top" src="@product.Images.First().Path"></a>
+                                        <a href="/product/index/@product.Id"><img class="card-img-top" src="@product.Images.FirstOrDefault()?.Path"></a>
                                         <h3>@product.Name</h3>
                                         <h4>Цена: @product.Cost &#8381</h4>
                                         <div>

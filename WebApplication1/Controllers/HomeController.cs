@@ -122,17 +122,15 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Search(string search)
         {
-            search = search.ToLower();
-            IEnumerable<Product> result;
             if (search == null || search == string.Empty)
             {
-                result = null;
+                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
-            }
-            return View(result);
+            search = search.ToLower();
+            var result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
+            var resultProductViewModel = ProductToProductView.TransformList(result.ToList());
+            resultProductViewModel.ForEach(product => product.Images = productRepository.GetProductImages(product.Id));
+            return View(resultProductViewModel);
         }
     }
 }

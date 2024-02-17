@@ -12,8 +12,8 @@ using OnlineShop.DB;
 namespace OnlineShop.DB.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20240212191731_changeDBFavComp")]
-    partial class changeDBFavComp
+    [Migration("20240217074830_initializeAfterError")]
+    partial class initializeAfterError
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,6 +89,26 @@ namespace OnlineShop.DB.Migrations
                     b.ToTable("FavoriteProducts");
                 });
 
+            modelBuilder.Entity("OnlineShop.DB.Models.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("OnlineShop.DB.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -158,21 +178,21 @@ namespace OnlineShop.DB.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cf129db8-1af5-4206-9274-bd569468f22d"),
+                            Id = new Guid("c51da90a-b7ed-44bf-8731-0e9bf34f5f54"),
                             Cost = 11,
                             Description = "First Product",
                             Name = "First"
                         },
                         new
                         {
-                            Id = new Guid("32fc2acf-cd7d-44f8-8891-da6977feae29"),
+                            Id = new Guid("feaea7e5-dd99-4c6a-9816-fce2b4311e76"),
                             Cost = 22,
                             Description = "Second Product",
                             Name = "Second"
                         },
                         new
                         {
-                            Id = new Guid("c240873f-da13-486d-86ce-811455b9fe1e"),
+                            Id = new Guid("331a2e9d-1c5a-4df1-954c-b5e4094d0741"),
                             Cost = 3,
                             Description = "Third Product",
                             Name = "Third"
@@ -267,6 +287,17 @@ namespace OnlineShop.DB.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("OnlineShop.DB.Models.Image", b =>
+                {
+                    b.HasOne("OnlineShop.DB.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("OnlineShop.DB.Models.Order", b =>
                 {
                     b.HasOne("OnlineShop.DB.Models.User", "User")
@@ -274,6 +305,11 @@ namespace OnlineShop.DB.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineShop.DB.Models.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }
