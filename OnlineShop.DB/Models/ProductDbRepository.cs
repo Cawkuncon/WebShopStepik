@@ -49,7 +49,6 @@ namespace OnlineShop.DB.Models
                 Path = path
             };
             dataBaseContext.Images.Add(image);
-            dataBaseContext.Products.FirstOrDefault();
             dataBaseContext.SaveChanges();
         }
         public void DeleteImage(Guid id, string path)

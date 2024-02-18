@@ -27,7 +27,15 @@
     </div>
     <div class="col-md-9 my-3">
         <div text-align: center class="col-md-9">
-            <h4>Личный кабинет @Model.UserName</h4>
+            <h4>Личный кабинет, @Model.UserName</h4>
+            @if (ViewBag.Image == null)
+            {
+                <img width="100" height="100" src="https://dummyimage.com/100x100/a6a6a6/a6a6a6.jpg"/>
+            }
+            else
+            {
+                <img width="100" height="100" src="@ViewBag.Image.Path"/>
+            }
         </div>
         <div class="col-md-9">
             <h5>Имя: @Model.UserName</h5>
@@ -45,8 +53,71 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditPassword" asp-route-Name="@Model.UserName">Смена пароля</a></li>
                     <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditUserInfo" asp-route-Name="@Model.UserName">Редактирование данных</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditUserImage" asp-route-Name="@Model.UserName">Изменить аватарку</a></li>
                 </ul>
             </div>
         </div>
     </div>
+    @if (ViewBag.Orders.Count != 0)
+    {
+        <div class="col-12">
+        <h2>Список заказов, @Model.UserName</h2>
+        <div class="row">
+            <div class="col-5">№</div>
+            <div class="col-1">Сумма</div>
+            <div class="col-1">Статус</div>
+            <div class="col-2">Пользователь</div>
+            <div class="col-2">Дата</div>
+            <div class="col-1">Время</div>
+        </div>
+        <hr />
+        @foreach (var item in ViewBag.Orders)
+        {
+            <div class="row">
+                <div class="col-5">
+                    @item.Id
+                </div>
+                <div class="col-1">
+                    @item.Total
+                </div>
+                <div class="col-1">
+                    @switch (item.StatusOrder)
+                    {
+                        case Status_Order.Created:
+                            <text>Создан</text>
+                            break;
+                        case Status_Order.Processed:
+                            <text>Обработан</text>
+                            break;
+                        case Status_Order.Delivering:
+                            <text>В пути</text>
+                            break;
+                        case Status_Order.Canceled:
+                            <text>Отменен</text>
+                            break;
+                        case Status_Order.Delivered:
+                            <text>Доставлен</text>
+                            break;
+                        default:
+                            break;
+                    } 
+                </div>
+                <div class="col-2">
+                    @item.Name
+                </div>
+                <div class="col-2">
+                    @item.CreationDate
+                </div>
+                <div class="col-1">
+                    @item.CreationTime
+                </div>
+            </div>
+        }
+        </div>
+    }
+    else
+    {
+        <h4>@Model.UserName, у вас пока нет оформленных заказов.</h4>
+    }
+
 </div>

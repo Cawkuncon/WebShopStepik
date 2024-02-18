@@ -40,6 +40,12 @@ namespace OnlineShop.DB.Models
             var prods = dataBaseContext.Carts.Where(cart => cart.OrderId == id).Select(cart => cart.Product).ToList();
             return prods;
         }
+
+        public List<Order> GetAllUserOrders(string id)
+        {
+            var orders = dataBaseContext.Orders.Where(order => order.User.Id == id);
+            return  orders.ToList();
+        }
     } 
 
     public interface IOrderRepository
@@ -50,6 +56,7 @@ namespace OnlineShop.DB.Models
         public Order GetOrder(Guid id);
         public void UpdateStatus(Guid id, int status);
         public List<Product> GetAllProducts(Guid id);
+        public List<Order> GetAllUserOrders(string id);
 
     }
 }

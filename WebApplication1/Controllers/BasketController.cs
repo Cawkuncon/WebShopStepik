@@ -78,7 +78,7 @@ namespace WebApplication1.Controllers
             var resultBask = bask.GetResultProducts();
             ViewBag.Products = resultBask;
             ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
-            var user = users.GetUserAsync(User).Result;
+            var user = users.FindByNameAsync(User.Identity.Name).Result;
             ViewBag.user = user;
             return View();
         }
@@ -87,7 +87,7 @@ namespace WebApplication1.Controllers
         public IActionResult Success(OrderViewModel order)
         {
             var orderDB = new Order();
-            orderDB.User = users.GetUserAsync(User).Result;
+            orderDB.User = users.FindByNameAsync(User.Identity.Name).Result;
             if (orderDB.User == null)
             {
                 orderDB.Name = order.Name;

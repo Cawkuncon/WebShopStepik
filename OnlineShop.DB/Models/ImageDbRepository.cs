@@ -13,14 +13,26 @@ namespace OnlineShop.DB.Models
         {
             this.dataBaseContext = dataBaseContext;
         }
-        public Image GetImage(string path)
+        public Image GetUserImage(User user)
         {
-            return dataBaseContext.Images.FirstOrDefault(img => img.Path == path);
+            return dataBaseContext.Images.FirstOrDefault(img => img.User.Id == user.Id);
+        }
+
+        public void UpdateUserImage(User user, string Path)
+        {
+            var img = new Image()
+            {
+                User = user,
+                Path = Path,
+            };
+            dataBaseContext.Images.Add(img);
+            dataBaseContext.SaveChanges();
         }
     }
 
     public interface IImageDbRepository
     {
-        public Image GetImage(string path);
+        public Image GetUserImage(User user);
+        public void UpdateUserImage(User user, string Path);
     }
 }

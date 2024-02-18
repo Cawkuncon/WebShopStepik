@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.DB;
 
@@ -11,9 +12,10 @@ using OnlineShop.DB;
 namespace OnlineShop.DB.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240218062604_addUserImage")]
+    partial class addUserImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +109,9 @@ namespace OnlineShop.DB.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Images");
                 });
@@ -181,21 +185,21 @@ namespace OnlineShop.DB.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("40582ce4-2e2d-4c29-8936-086d7560c63d"),
+                            Id = new Guid("c32d80cb-caa3-49c1-a4ea-a5b5d5fc243c"),
                             Cost = 11,
                             Description = "First Product",
                             Name = "First"
                         },
                         new
                         {
-                            Id = new Guid("1b5e4797-3b46-40f9-9123-2e252bcad6e0"),
+                            Id = new Guid("ce0670f4-74b2-4a17-b028-811d61da0749"),
                             Cost = 22,
                             Description = "Second Product",
                             Name = "Second"
                         },
                         new
                         {
-                            Id = new Guid("254a5272-b6b4-4695-a7f8-1ffbd3357a24"),
+                            Id = new Guid("376dddef-c429-419a-a927-50a272d46074"),
                             Cost = 3,
                             Description = "Third Product",
                             Name = "Third"
@@ -297,8 +301,8 @@ namespace OnlineShop.DB.Migrations
                         .HasForeignKey("ProductId");
 
                     b.HasOne("OnlineShop.DB.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithOne("Image")
+                        .HasForeignKey("OnlineShop.DB.Models.Image", "UserId");
 
                     b.Navigation("Product");
 
@@ -317,6 +321,11 @@ namespace OnlineShop.DB.Migrations
             modelBuilder.Entity("OnlineShop.DB.Models.Product", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("OnlineShop.DB.Models.User", b =>
+                {
+                    b.Navigation("Image");
                 });
 #pragma warning restore 612, 618
         }
