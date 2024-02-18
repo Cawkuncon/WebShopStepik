@@ -89,6 +89,7 @@ namespace WebApplication1.Controllers
         public IActionResult EditUserImage(string Name)
         {
             var user = UsersRepository.FindByNameAsync(Name).Result;
+            ViewBag.Image = imageDbRepository.GetUserImage(user);
             return View(user);
         }
 
@@ -124,6 +125,13 @@ namespace WebApplication1.Controllers
                 imageDbRepository.UpdateUserImage(user, "/img/users/" + fileName);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteImage(string name)
+        {
+            var user = UsersRepository.FindByNameAsync(name).Result;
+            imageDbRepository.DeleteImage(user);
+            return RedirectToAction(nameof(EditUserImage), new {Name = name});
         }
     }
 }

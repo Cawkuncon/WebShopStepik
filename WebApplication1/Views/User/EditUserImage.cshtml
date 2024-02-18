@@ -11,23 +11,19 @@
         <button type="submit" asp-area="" asp-controller="User" asp-action="EditUserImage" asp-route-Name="@Model.UserName" class="btn btn-success">Изменить</button>
     </div>
 </form>
-@*@if (Model.Images.Count != 0)
+@if (ViewBag.Image != null)
 {
         <h6>Текущее изображдение для @Model.UserName</h6>
-    foreach (Image image in Model.Images)
-    {
                 <div class="row">
                     <div class="col-3 card shadow">
                         <div class="card-body">
-                            <img class="card-img-top col-3" src="@image.Path">
-                            <a asp-area="Admin" asp-controller="Home" asp-action="DeleteImage" asp-route-productId="@Model.Id" asp-route-imgSrc="@image.Path" class="btn btn-danger">Удалить</a> 
+                            <img class="card-img-top col-3" src="@ViewBag.Image.Path">
+                            <a asp-area="" asp-controller="User" asp-action="DeleteImage" asp-route-name="@Model.UserName" class="btn btn-danger">Удалить</a> 
                         </div>
                     </div>
                 </div>
-
-    }
 }
 else
 {
-                <h2>Нет изображения для @Model.Name</h2>
-}*@
+                <h2>Нет изображения для @Model.UserName</h2>
+}

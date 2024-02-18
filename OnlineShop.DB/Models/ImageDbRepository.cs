@@ -33,11 +33,18 @@ namespace OnlineShop.DB.Models
             dataBaseContext.Images.Add(img);
             dataBaseContext.SaveChanges();
         }
+        public void DeleteImage(User user)
+        {
+            var img = dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
+            dataBaseContext.Images.Remove(img);
+            dataBaseContext.SaveChanges();
+        }
     }
 
     public interface IImageDbRepository
     {
         public Image GetUserImage(User user);
         public void UpdateUserImage(User user, string Path);
+        public void DeleteImage(User user);
     }
 }
