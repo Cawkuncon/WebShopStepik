@@ -1,0 +1,11 @@
+﻿@using OnlineShop.DB.Models
+@model Image
+
+@if (Model.Path != string.Empty)
+{
+	<img width="50" height="50" src="@Model.Path"/>
+}
+else
+{
+	@User.Identity.Name
+}

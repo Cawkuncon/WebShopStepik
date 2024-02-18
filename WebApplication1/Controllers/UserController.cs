@@ -112,6 +112,11 @@ namespace WebApplication1.Controllers
                     Directory.CreateDirectory(userPath);
                 }
                 var fileName = model.Id.ToString() +"." + model.formFile.FileName.Split(".").Last();
+                var file = new FileInfo(webHostEnvironment.WebRootPath + "/img/users/" + fileName);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
                 using (var fileStream = new FileStream(userPath + fileName, FileMode.Create))
                 {
                     model.formFile.CopyTo(fileStream);
