@@ -42,7 +42,7 @@ namespace WebApplication1
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
-                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(60);
                 options.LoginPath = "/Login/Login";
                 options.LogoutPath = "/Login/Logout";
                 options.Cookie = new CookieBuilder

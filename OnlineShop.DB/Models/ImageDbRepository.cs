@@ -15,16 +15,21 @@ namespace OnlineShop.DB.Models
         }
         public Image GetUserImage(User user)
         {
-            return dataBaseContext.Images.FirstOrDefault(img => img.User.Id == user.Id);
+            return dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
         }
 
         public void UpdateUserImage(User user, string Path)
         {
             var img = new Image()
             {
-                User = user,
+                UserId = user.Id,
                 Path = Path,
             };
+            var img2 = dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
+            if (img2 != null)
+            {
+                dataBaseContext.Images.Remove(img2);
+            }
             dataBaseContext.Images.Add(img);
             dataBaseContext.SaveChanges();
         }

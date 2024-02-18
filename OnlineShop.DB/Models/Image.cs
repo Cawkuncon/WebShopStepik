@@ -11,7 +11,7 @@ namespace OnlineShop.DB.Models
         public Guid Id { get; set; }
         public string Path { get; set; }
         public Product? Product { get; set; }
-        public User? User { get; set; }
+        public string UserId { get; set; }
 
     }
 }

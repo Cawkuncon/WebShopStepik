@@ -1,11 +1,11 @@
 ﻿@using OnlineShop.DB.Models
 @model Image
 
-@if (Model.Path != string.Empty)
+@if (Model != null)
 {
-	<img width="50" height="50" src="@Model.Path"/>
+        <img width="50" height="50" src="@Model.Path"/>
 }
 else
 {
-	@User.Identity.Name
+    @User.Identity.Name
 }
