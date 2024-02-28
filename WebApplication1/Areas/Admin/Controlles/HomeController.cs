@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -23,13 +24,15 @@ namespace WebApplication1.Area.Controlles
         private IProductRepository productRepository;
         private IOrderRepository orderRepository;
         private IWebHostEnvironment webHostEnvironment;
-        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users, RoleManager<IdentityRole> rolesRepository, IWebHostEnvironment webHostEnvironment)
+        private readonly IMapper mapper;
+        public HomeController(IProductRepository productRepository, IOrderRepository orderRepository, UserManager<User> users, RoleManager<IdentityRole> rolesRepository, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.orderRepository = orderRepository;
             UsersRepository = users;
             RolesRepository = rolesRepository;
             this.webHostEnvironment = webHostEnvironment;
+            this.mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -67,7 +70,7 @@ namespace WebApplication1.Area.Controlles
         public IActionResult Products()
         {
             var products = productRepository.GetAll();
-            var newProducts = ProductToProductView.TransformList(products);
+            var newProducts = mapper.Map<List<ProductViewModel>>(products);
             return View(newProducts);
         }
 
@@ -116,7 +119,7 @@ namespace WebApplication1.Area.Controlles
                 user = UsersRepository.FindByNameAsync(order.User.UserName).Result;
             }
             OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, user);
-            orderInfo.Products = ProductToProductView.TransformList(orderRepository.GetAllProducts(order.Id));
+            orderInfo.Products = mapper.Map<List<ProductViewModel>>(orderRepository.GetAllProducts(order.Id));
             return View(orderInfo);
         }
 

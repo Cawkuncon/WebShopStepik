@@ -101,7 +101,6 @@ namespace OnlineShop.DB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -180,21 +179,21 @@ namespace OnlineShop.DB.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3bf70530-313f-47ce-9597-0ed05bc49493"),
+                            Id = new Guid("326a590f-5353-4ab1-8b2d-d75a8bed38a6"),
                             Cost = 11,
                             Description = "First Product",
                             Name = "First"
                         },
                         new
                         {
-                            Id = new Guid("84366098-1266-436a-a1e1-c740cd1ba066"),
+                            Id = new Guid("a5515f3b-da36-4d1b-8526-0ff862304c60"),
                             Cost = 22,
                             Description = "Second Product",
                             Name = "Second"
                         },
                         new
                         {
-                            Id = new Guid("01533e21-ee61-4e0b-9dd9-c9d80e8d6c98"),
+                            Id = new Guid("a3bbed7f-612e-426b-a862-7a6b76554e30"),
                             Cost = 3,
                             Description = "Third Product",
                             Name = "Third"

@@ -8,8 +8,7 @@
         <div class="row">
             <div class="col-3 card shadow">
                 <div class="card-body">
-                            <img class="card-img-top col-3" src="@Model.Images.First().Path">
-
+                        <img class="card-img-top col-3" src="@Model.Images.FirstOrDefault()?.Path">
                         <a href="/product/index/@Model.Id">@Model.Name</a>
                         <h2>@Model.Cost</h2>
                         <p id="1" class="cl1">@Model.Description</p>

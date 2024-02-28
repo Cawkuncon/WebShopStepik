@@ -50,6 +50,7 @@ namespace WebApplication1
                     IsEssential= true,
                 };
             });
+            builder.Services.AddAutoMapper(typeof(MapperAuto));
 
             var app = builder.Build();
 

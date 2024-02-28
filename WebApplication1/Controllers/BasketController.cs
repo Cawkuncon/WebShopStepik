@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
@@ -18,19 +19,22 @@ namespace WebApplication1.Controllers
         private readonly ICompareProductDbRepository compareProducts;
         private readonly IFavoriteProductDbRepository favoriteProducts;
         private readonly UserManager<User> users;
+        private readonly IMapper mapper;
 
-        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, ICartItemDbRepository carts, UserManager<User> users)
+        public BasketController(IProductRepository productRepository, IBaskRepository bask, IOrderRepository orderRepository, ICartItemDbRepository carts, UserManager<User> users, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.bask = bask;
             this.orderRepository = orderRepository;
             this.carts = carts;
             this.users = users;
+            this.mapper = mapper;
+            this.mapper = mapper;
         }
         public IActionResult Adds(Guid productId)
         {
             var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
-            var newProd = ProductToProductView.Transform(Prod);
+            var newProd = mapper.Map<ProductViewModel>(Prod);
             newProd.Images = productRepository.GetProductImages(newProd.Id);
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");

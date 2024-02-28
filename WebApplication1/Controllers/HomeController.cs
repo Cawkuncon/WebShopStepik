@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB.Models;
@@ -15,19 +16,21 @@ namespace WebApplication1.Controllers
         private readonly ICompareProductDbRepository prodCompare;
         private readonly ICompareProductDbRepository compareProducts;
         private readonly IFavoriteProductDbRepository favoriteProducts;
+        private readonly IMapper mapper;
 
-        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, ICompareProductDbRepository compareProducts, IFavoriteProductDbRepository favoriteProducts)
+        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, ICompareProductDbRepository compareProducts, IFavoriteProductDbRepository favoriteProducts, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.prodCompare = prodCompare;
             this.compareProducts = compareProducts;
             this.favoriteProducts = favoriteProducts;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var products = productRepository.GetAll();
-            var newProducts = ProductToProductView.TransformList(products);
+            var newProducts = mapper.Map<List<ProductViewModel>>(products);
             newProducts.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             if (User.Identity.IsAuthenticated)
             {
@@ -63,7 +66,7 @@ namespace WebApplication1.Controllers
         public IActionResult Compare()
         {
             var products = compareProducts.GetCompareProducts(User.Identity.Name);
-            var prods = ProductToProductView.TransformList(products);
+            var prods = mapper.Map<List<ProductViewModel>>(products);
             return View(prods);
         }
         [Authorize]
@@ -95,7 +98,7 @@ namespace WebApplication1.Controllers
         public IActionResult ShowFavorite()
         {
             var prodToShow = favoriteProducts.GetFavoriteProducts(User.Identity.Name);
-            var newListProd = ProductToProductView.TransformList(prodToShow);
+            var newListProd = mapper.Map<List<ProductViewModel>>(prodToShow);
             newListProd.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
             var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
@@ -128,7 +131,7 @@ namespace WebApplication1.Controllers
             }
             search = search.ToLower();
             var result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
-            var resultProductViewModel = ProductToProductView.TransformList(result.ToList());
+            var resultProductViewModel = mapper.Map<List<ProductViewModel>>(result.ToList());
             resultProductViewModel.ForEach(product => product.Images = productRepository.GetProductImages(product.Id));
             return View(resultProductViewModel);
         }
