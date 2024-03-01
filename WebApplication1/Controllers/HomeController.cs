@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using OnlineShop.DB;
 using OnlineShop.DB.Models;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 using WebApplication1.Helpers;
 using WebApplication1.Models;
 
@@ -17,19 +20,34 @@ namespace WebApplication1.Controllers
         private readonly ICompareProductDbRepository compareProducts;
         private readonly IFavoriteProductDbRepository favoriteProducts;
         private readonly IMapper mapper;
+        private readonly IMemoryCache memoryCache;
 
-        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, ICompareProductDbRepository compareProducts, IFavoriteProductDbRepository favoriteProducts, IMapper mapper)
+        public HomeController(IProductRepository productRepository, ICompareProductDbRepository prodCompare, ICompareProductDbRepository compareProducts, IFavoriteProductDbRepository favoriteProducts, IMapper mapper, IMemoryCache memoryCache)
         {
             this.productRepository = productRepository;
             this.prodCompare = prodCompare;
             this.compareProducts = compareProducts;
             this.favoriteProducts = favoriteProducts;
             this.mapper = mapper;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
-            var products = productRepository.GetAll();
+            memoryCache.TryGetValue<List<Product>>(Constants.ProductsCache, out var products);
+            if (products == null)
+            {
+                products = productRepository.GetAll();
+                var newCacheOptions = new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                };
+                memoryCache.Set(Constants.ProductsCache, products, newCacheOptions);
+                foreach (var product in products)
+                {
+                    memoryCache.Set(product.Id, product, newCacheOptions);
+                }
+            }
             var newProducts = mapper.Map<List<ProductViewModel>>(products);
             newProducts.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             if (User.Identity.IsAuthenticated)
@@ -130,7 +148,15 @@ namespace WebApplication1.Controllers
                 return RedirectToAction(nameof(Index));
             }
             search = search.ToLower();
-            var result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
+            memoryCache.TryGetValue<IEnumerable<Product>>(Constants.ProductsCache, out var result);
+            if (result == null)
+            {
+                result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
+            }
+            else
+            {
+                result = result.Where(x => x.Name.ToLower().Contains(search));
+            }
             var resultProductViewModel = mapper.Map<List<ProductViewModel>>(result.ToList());
             resultProductViewModel.ForEach(product => product.Images = productRepository.GetProductImages(product.Id));
             return View(resultProductViewModel);

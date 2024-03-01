@@ -26,6 +26,7 @@ namespace WebApplication1
             services.AddTransient<IImageDbRepository, ImageDbRepository>();
 
             string connection = builder.Configuration.GetConnectionString("onlineShop");
+            builder.Services.AddMemoryCache();
             builder.Services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));
             builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connection));
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
@@ -63,7 +64,13 @@ namespace WebApplication1
             }
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Add("Cache-Control", "public,max-age=600");
+                }
+            });
 
             app.UseRouting();
 
