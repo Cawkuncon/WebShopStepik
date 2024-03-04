@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OnlineShop.DB.Models
@@ -12,51 +13,45 @@ namespace OnlineShop.DB.Models
             this.dataBaseContext = dataBaseContext;
         }
 
-        public void Add(Order order)
+        public async Task AddAsync(Order order)
         {
-            dataBaseContext.Orders.Add(order);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.Orders.AddAsync(order);
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public List<Order> GetAll()
-        {
-            return dataBaseContext.Orders.ToList();
-        }
+        public async Task<List<Order>> GetAllAsync() => await dataBaseContext.Orders.ToListAsync();
 
-        public Order GetOrder(Guid id)
-        {
-            return dataBaseContext.Orders.FirstOrDefault(o => o.Id == id);
-        }
+        public async Task<Order> GetOrderAsync(Guid id) => await dataBaseContext.Orders.FirstOrDefaultAsync(o => o.Id == id);
 
-        public void UpdateStatus(Guid id, int status)
+        public async Task UpdateStatusAsync(Guid id, int status)
         {
-            var ord = this.GetOrder(id);
+            var ord = await this.GetOrderAsync(id);
             ord.Status = status;
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public List<Product> GetAllProducts(Guid id)
+        public async Task<List<Product>> GetAllProductsAsync(Guid id)
         {
-            var prods = dataBaseContext.Carts.Where(cart => cart.OrderId == id).Select(cart => cart.Product).ToList();
+            var prods = await dataBaseContext.Carts.Where(cart => cart.OrderId == id).Select(cart => cart.Product).ToListAsync();
             return prods;
         }
 
-        public List<Order> GetAllUserOrders(string id)
+        public async Task<List<Order>> GetAllUserOrdersAsync(string id)
         {
             var orders = dataBaseContext.Orders.Where(order => order.User.Id == id);
-            return  orders.ToList();
+            return await orders.ToListAsync();
         }
     } 
 
     public interface IOrderRepository
     {
 
-        public List<Order> GetAll();
-        public void Add(Order order);
-        public Order GetOrder(Guid id);
-        public void UpdateStatus(Guid id, int status);
-        public List<Product> GetAllProducts(Guid id);
-        public List<Order> GetAllUserOrders(string id);
+        public Task<List<Order>> GetAllAsync();
+        public Task AddAsync(Order order);
+        public Task<Order> GetOrderAsync(Guid id);
+        public Task UpdateStatusAsync(Guid id, int status);
+        public Task<List<Product>> GetAllProductsAsync(Guid id);
+        public Task<List<Order>> GetAllUserOrdersAsync(string id);
 
     }
 }

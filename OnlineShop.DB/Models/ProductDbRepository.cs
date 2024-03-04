@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+
 namespace OnlineShop.DB.Models
 {
     public class ProductDbRepository : IProductRepository
@@ -9,54 +11,53 @@ namespace OnlineShop.DB.Models
         {
             this.dataBaseContext = dataBaseContext;
         }
-        public List<Product> GetAll()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return dataBaseContext.Products.ToList();
+            return await dataBaseContext.Products.ToListAsync();
         }
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var prod = dataBaseContext.Products.FirstOrDefault(x => x.Id == id);
+            var prod = await dataBaseContext.Products.FirstOrDefaultAsync(x => x.Id == id);
             dataBaseContext.Products.Remove(prod);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public void AddProd(Product prod)
+        public async Task AddProdAync(Product prod)
         {
-            dataBaseContext.Products.Add(prod);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.Products.AddAsync(prod);
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public void UpdateProd(Product prod)
+        public async Task UpdateProdAsync(Product prod)
         {
-            var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == prod.Id);
+            var product = await dataBaseContext.Products.FirstOrDefaultAsync(x => x.Id == prod.Id);
             product.Name = prod.Name;
             product.Description = prod.Description;
             product.Cost = prod.Cost;
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public Product GetProduct(Guid id)
-        {
-            return dataBaseContext.Products.FirstOrDefault(x => x.Id == id);
-        }
+        public async Task<Product> GetProductAsync(Guid id) => await dataBaseContext.Products.FirstOrDefaultAsync(x => x.Id == id);
 
-        public void UpdateProdImage(Guid id, string path)
+        public async Task UpdateProdImageAsync(Guid id, string path)
         {
-            var prod = this.GetProduct(id);
+            var prod = await this.GetProductAsync(id);
             var image = new Image()
             {
                 Product = prod,
                 Path = path
             };
-            dataBaseContext.Images.Add(image);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.Images.AddAsync(image);
+            await dataBaseContext.SaveChangesAsync();
         }
-        public void DeleteImage(Guid id, string path)
+        public async Task DeleteImageAsync(Guid id, string path)
         {
-            var image = dataBaseContext.Images.FirstOrDefault(img => img.Path == path && img.Product.Id == id);
+            var image = await dataBaseContext.Images.FirstOrDefaultAsync(img => img.Path == path && img.Product.Id == id);
             dataBaseContext.Images.Remove(image);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
+
+        public async Task<List<Image>> GetProductImagesAsync(Guid id) => await dataBaseContext.Images.Where(img => img.Product.Id == id).ToListAsync();
 
         public List<Image> GetProductImages(Guid id)
         {
@@ -66,13 +67,15 @@ namespace OnlineShop.DB.Models
 
     public interface IProductRepository
     {
-        public List<Product> GetAll();
-        public Product GetProduct(Guid id);
-        public void Delete(Guid id);
-        public void AddProd(Product prod);
-        public void UpdateProd(Product prod);
-        public void UpdateProdImage(Guid id, string path);
-        public void DeleteImage(Guid id, string path);
+        public Task<List<Product>> GetAllAsync();
+        public Task<Product> GetProductAsync(Guid id);
+        public Task DeleteAsync(Guid id);
+        public Task AddProdAync(Product prod);
+        public Task UpdateProdAsync(Product prod);
+        public Task UpdateProdImageAsync(Guid id, string path);
+        public Task DeleteImageAsync(Guid id, string path);
+        public Task<List<Image>> GetProductImagesAsync(Guid id);
         public List<Image> GetProductImages(Guid id);
+
     }
 }

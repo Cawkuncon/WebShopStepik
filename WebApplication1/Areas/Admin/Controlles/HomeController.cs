@@ -69,14 +69,14 @@ namespace WebApplication1.Area.Controlles
         }
         public IActionResult Products()
         {
-            var products = productRepository.GetAll();
+            var products = productRepository.GetAllAsync();
             var newProducts = mapper.Map<List<ProductViewModel>>(products);
             return View(newProducts);
         }
 
         public IActionResult DeleteProduct(Guid id)
         {
-            productRepository.Delete(id);
+            productRepository.DeleteAsync(id);
             return RedirectToAction("Products");
         }
 
@@ -87,13 +87,13 @@ namespace WebApplication1.Area.Controlles
         [HttpPost]
         public IActionResult Add(Product product)
         {
-            productRepository.AddProd(product);
+            productRepository.AddProdAync(product);
             return RedirectToAction("Products");
         }
 
         public IActionResult EditProduct(Guid id)
         {
-            var prod = productRepository.GetAll().Find(x => x.Id == id);
+            var prod = productRepository.GetAllAsync().Find(x => x.Id == id);
             return View(prod);
         }
 
@@ -101,7 +101,7 @@ namespace WebApplication1.Area.Controlles
         public IActionResult UpdateProduct(Product product, Guid id)
         {
             product.Id = id;
-            productRepository.UpdateProd(product);
+            productRepository.UpdateProdAsync(product);
             return RedirectToAction("Products");
         }
 
@@ -219,15 +219,15 @@ namespace WebApplication1.Area.Controlles
 
         public IActionResult EditProductImage(Guid id)
         {
-            var prod = productRepository.GetProduct(id);
+            var prod = productRepository.GetProductAsync(id);
             prod.Images = productRepository.GetProductImages(id);
             return View(prod);
         }
 
         [HttpPost]
-        public IActionResult EditProductImage(Guid id, IFormFile formFile)
+        public async Task<IActionResult> EditProductImage(Guid id, IFormFile formFile)
         {
-            var prod = productRepository.GetProduct(id);
+            var prod = await productRepository.GetProductAsync(id);
             var model = new CreateImageViewModel()
             {
                 Name= prod.Name,
@@ -246,13 +246,13 @@ namespace WebApplication1.Area.Controlles
                 {
                     model.formFile.CopyTo(fileStream);
                 }
-                productRepository.UpdateProdImage(model.Id, "/img/products/" + fileName);
+                productRepository.UpdateProdImageAsync(model.Id, "/img/products/" + fileName);
             }
             return RedirectToAction(nameof(Products));
         }
         public IActionResult DeleteImage(Guid productId, string imgSrc)
         {
-            productRepository.DeleteImage(productId, imgSrc);
+            productRepository.DeleteImageAsync(productId, imgSrc);
             string path = Path.Combine(webHostEnvironment.WebRootPath + imgSrc);
             FileInfo fileInfo = new FileInfo(path);
             if (fileInfo.Exists)

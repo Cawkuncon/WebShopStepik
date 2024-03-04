@@ -32,12 +32,12 @@ namespace WebApplication1.Controllers
             this.memoryCache = memoryCache;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             memoryCache.TryGetValue<List<Product>>(Constants.ProductsCache, out var products);
             if (products == null)
             {
-                products = productRepository.GetAll();
+                products = await productRepository.GetAllAsync();
                 var newCacheOptions = new MemoryCacheEntryOptions()
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
@@ -151,7 +151,7 @@ namespace WebApplication1.Controllers
             memoryCache.TryGetValue<IEnumerable<Product>>(Constants.ProductsCache, out var result);
             if (result == null)
             {
-                result = productRepository.GetAll().Where(x => x.Name.ToLower().Contains(search));
+                result = productRepository.GetAllAsync().Where(x => x.Name.ToLower().Contains(search));
             }
             else
             {

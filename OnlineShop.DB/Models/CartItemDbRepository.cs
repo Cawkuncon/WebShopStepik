@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,33 +15,27 @@ namespace OnlineShop.DB.Models
             this.dataBaseContext = dataBaseContext;
         }
 
-        public void Add(Guid orderId, Guid productId)
+        public async Task AddAsync(Guid orderId, Guid productId)
         {
             var cartItem = new CartItem();
             cartItem.OrderId = orderId;
-            cartItem.Product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
+            cartItem.Product = await dataBaseContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
             if (cartItem.Product != null)
             {
-                dataBaseContext.Carts.Add(cartItem);
-                dataBaseContext.SaveChanges();
+                await dataBaseContext.Carts.AddAsync(cartItem);
+                await dataBaseContext.SaveChangesAsync();
             }
         }
 
-        public CartItem GetCartItem(int CartId)
-        {
-            return dataBaseContext.Carts.FirstOrDefault(x=>x.Id == CartId);
-        }
+        public async Task<CartItem> GetCartItemAsync(int CartId) => await dataBaseContext.Carts.FirstOrDefaultAsync(x => x.Id == CartId);
 
-        public List<CartItem> GetOrdersCarts(Guid orderId)
-        {
-            return dataBaseContext.Carts.Where(cart => cart.OrderId == orderId).ToList();
-        }
+        public async Task<List<CartItem>> GetOrdersCartsAsync(Guid orderId) => await dataBaseContext.Carts.Where(cart => cart.OrderId == orderId).ToListAsync();
     }
 
     public interface ICartItemDbRepository
     {
-        public void Add(Guid orderId, Guid productId);
-        public CartItem GetCartItem(int CartId);
-        public List<CartItem> GetOrdersCarts(Guid orderId);
+        public Task AddAsync(Guid orderId, Guid productId);
+        public Task<CartItem> GetCartItemAsync(int CartId);
+        public Task<List<CartItem>> GetOrdersCartsAsync(Guid orderId);
     }
 }

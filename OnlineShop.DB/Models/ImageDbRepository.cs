@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,38 +14,35 @@ namespace OnlineShop.DB.Models
         {
             this.dataBaseContext = dataBaseContext;
         }
-        public Image GetUserImage(User user)
-        {
-            return dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
-        }
+        public async Task<Image> GetUserImageAsync(User user) => await dataBaseContext.Images.FirstOrDefaultAsync(img => img.UserId == user.Id);
 
-        public void UpdateUserImage(User user, string Path)
+        public async Task UpdateUserImageAsync(User user, string Path)
         {
             var img = new Image()
             {
                 UserId = user.Id,
                 Path = Path,
             };
-            var img2 = dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
+            var img2 = await dataBaseContext.Images.FirstOrDefaultAsync(img => img.UserId == user.Id);
             if (img2 != null)
             {
                 dataBaseContext.Images.Remove(img2);
             }
-            dataBaseContext.Images.Add(img);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.Images.AddAsync(img);
+            await dataBaseContext.SaveChangesAsync();
         }
-        public void DeleteImage(User user)
+        public async Task DeleteImageAsync(User user)
         {
-            var img = dataBaseContext.Images.FirstOrDefault(img => img.UserId == user.Id);
+            var img = await dataBaseContext.Images.FirstOrDefaultAsync(img => img.UserId == user.Id);
             dataBaseContext.Images.Remove(img);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
     }
 
     public interface IImageDbRepository
     {
-        public Image GetUserImage(User user);
-        public void UpdateUserImage(User user, string Path);
-        public void DeleteImage(User user);
+        public Task<Image> GetUserImageAsync(User user);
+        public Task UpdateUserImageAsync(User user, string Path);
+        public Task DeleteImageAsync(User user);
     }
 }

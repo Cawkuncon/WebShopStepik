@@ -18,41 +18,41 @@ namespace OnlineShop.DB.Models
             this.userManager = userManager;
         }
 
-        public void Add(Guid productId, string UserName)
+        public async Task AddAsync(Guid productId, string UserName)
         {
             var newComp = new CompareProduct();
-            var product = dataBaseContext.Products.FirstOrDefault(x => x.Id == productId);
+            var product = await dataBaseContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
             var userId = userManager.FindByNameAsync(UserName).Result.Id;
             newComp.UserId = userId;
             newComp.Product = product;
-            dataBaseContext.CompareProducts.Add(newComp);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.CompareProducts.AddAsync(newComp);
+            await dataBaseContext.SaveChangesAsync();
         }
 
-        public List<Product> GetCompareProducts(string UserName)
+        public async Task<List<Product>> GetCompareProductsAsync(string UserName)
         {
             if (UserName == null)
             {
                 return null;
             }
             var userId = userManager.FindByNameAsync(UserName).Result.Id;
-            var prods = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(prd=>prd.Product).ToList();
+            var prods = await dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId).Select(prd=>prd.Product).ToListAsync();
             return prods;
         }
 
-        public void DeleteFromComparsion(Guid productId, string UserName)
+        public async Task DeleteFromComparsionAsync(Guid productId, string UserName)
         {
             var userId = userManager.FindByNameAsync(UserName).Result.Id;
-            var prdComp = dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefault();
+            var prdComp = await dataBaseContext.CompareProducts.Where(prd => prd.UserId == userId && prd.Product.Id == productId).FirstOrDefaultAsync();
             dataBaseContext.CompareProducts.Remove(prdComp);
-            dataBaseContext.SaveChanges();
+            await dataBaseContext.SaveChangesAsync();
         }
     }
 
     public interface ICompareProductDbRepository
     {
-        public void Add(Guid productId, string UserName);
-        public List<Product> GetCompareProducts(string UserName);
-        public void DeleteFromComparsion(Guid productId, string UserName);
+        public Task AddAsync(Guid productId, string UserName);
+        public Task<List<Product>> GetCompareProductsAsync(string UserName);
+        public Task DeleteFromComparsionAsync(Guid productId, string UserName);
     }
 }

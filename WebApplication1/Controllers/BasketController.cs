@@ -33,7 +33,7 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Adds(Guid productId)
         {
-            var Prod = productRepository.GetAll().Where(x => x.Id == productId).First();
+            var Prod = productRepository.GetAllAsync().Where(x => x.Id == productId).First();
             var newProd = mapper.Map<ProductViewModel>(Prod);
             newProd.Images = productRepository.GetProductImages(newProd.Id);
             bask.AddToCart(newProd);
