@@ -14,12 +14,12 @@ namespace WebApplication1.Views.Shared.Components.UserImage
             this.imageDbRepository = imageDbRepository;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var user = UsersRepository.FindByNameAsync(User.Identity.Name).Result;
-                var image = imageDbRepository.GetUserImage(user);
+                var user = await UsersRepository.FindByNameAsync(User.Identity.Name);
+                var image = await imageDbRepository.GetUserImageAsync(user);
                 return View("UserImage", image);
             }
             return View("UserImage", new Image());

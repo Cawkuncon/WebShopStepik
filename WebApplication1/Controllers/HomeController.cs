@@ -52,8 +52,8 @@ namespace WebApplication1.Controllers
             newProducts.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
             if (User.Identity.IsAuthenticated)
             {
-                var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
-                var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
+                var idCompareProds = (await compareProducts.GetCompareProductsAsync(User.Identity.Name)).Select(pr => pr.Id);
+                var idFavoriteProds = (await favoriteProducts.GetFavoriteProductsAsync(User.Identity.Name)).Select(pr => pr.Id);
                 newProducts.ForEach(prod =>
                 {
                     if (idCompareProds != null)
@@ -75,51 +75,51 @@ namespace WebApplication1.Controllers
             return View(newProducts);
         }
         [Authorize]
-        public IActionResult AddToComparsion(Guid productId)
+        public async Task<IActionResult> AddToComparsionAsync(Guid productId)
         {
-            prodCompare.Add(productId, User.Identity.Name);
+            await prodCompare.AddAsync(productId, User.Identity.Name);
             return RedirectToAction("Index");
         }
         [Authorize]
-        public IActionResult Compare()
+        public async Task<IActionResult> CompareAsync()
         {
-            var products = compareProducts.GetCompareProducts(User.Identity.Name);
+            var products = await compareProducts.GetCompareProductsAsync(User.Identity.Name);
             var prods = mapper.Map<List<ProductViewModel>>(products);
             return View(prods);
         }
         [Authorize]
-        public IActionResult DeleteFromComparsion(Guid productId)
+        public async Task<IActionResult> DeleteFromComparsionAsync(Guid productId)
         {
-            compareProducts.DeleteFromComparsion(productId, User.Identity.Name);
+            await compareProducts.DeleteFromComparsionAsync(productId, User.Identity.Name);
             return RedirectToAction("Index");
         }
 
         [Authorize]
-        public IActionResult AddToFavorite(Guid productId)
+        public async Task<IActionResult> AddToFavoriteAsync(Guid productId)
         {
-            favoriteProducts.AddProdToFavor(productId, User.Identity.Name);
+            await favoriteProducts.AddProdToFavorAsync(productId, User.Identity.Name);
             return RedirectToAction("Index");
         }
         [Authorize]
-        public IActionResult DeleteFromFavoriteIndex(Guid productId)
+        public async Task<IActionResult> DeleteFromFavoriteIndexAsync(Guid productId)
         {
-            favoriteProducts.DeleteFromFavorite(productId, User.Identity.Name);
+            await favoriteProducts.DeleteFromFavoriteAsync(productId, User.Identity.Name);
             return RedirectToAction("Index");
         }
         [Authorize]
-        public IActionResult DeleteFromFavorite(Guid productId)
+        public async Task<IActionResult> DeleteFromFavoriteAsync(Guid productId)
         {
-            favoriteProducts.DeleteFromFavorite(productId, User.Identity.Name);
+            await favoriteProducts.DeleteFromFavoriteAsync(productId, User.Identity.Name);
             return RedirectToAction("ShowFavorite");
         }
         [Authorize]
-        public IActionResult ShowFavorite()
+        public async Task<IActionResult> ShowFavoriteAsync()
         {
-            var prodToShow = favoriteProducts.GetFavoriteProducts(User.Identity.Name);
+            var prodToShow = await favoriteProducts.GetFavoriteProductsAsync(User.Identity.Name);
             var newListProd = mapper.Map<List<ProductViewModel>>(prodToShow);
             newListProd.ForEach(prod => prod.Images = productRepository.GetProductImages(prod.Id));
-            var idCompareProds = compareProducts.GetCompareProducts(User.Identity.Name).Select(pr => pr.Id);
-            var idFavoriteProds = favoriteProducts.GetFavoriteProducts(User.Identity.Name).Select(pr => pr.Id);
+            var idCompareProds = (await compareProducts.GetCompareProductsAsync(User.Identity.Name)).Select(pr => pr.Id);
+            var idFavoriteProds = (await favoriteProducts.GetFavoriteProductsAsync(User.Identity.Name)).Select(pr => pr.Id);
             newListProd.ForEach(prod =>
             {
                 if (idCompareProds != null)
@@ -141,7 +141,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Search(string search)
+        public async Task<IActionResult> SearchAsync(string search)
         {
             if (search == null || search == string.Empty)
             {
@@ -151,7 +151,7 @@ namespace WebApplication1.Controllers
             memoryCache.TryGetValue<IEnumerable<Product>>(Constants.ProductsCache, out var result);
             if (result == null)
             {
-                result = productRepository.GetAllAsync().Where(x => x.Name.ToLower().Contains(search));
+                result = (await productRepository.GetAllAsync()).Where(x => x.Name.ToLower().Contains(search));
             }
             else
             {

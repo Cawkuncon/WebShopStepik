@@ -20,16 +20,16 @@ namespace WebApplication1.Areas.Admin.Controlles
             RolesRepository = rolesRepository;
         }
 
-        public IActionResult DeleteUser(string Name)
+        public async Task<IActionResult> DeleteUserAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
-            UsersRepository.DeleteAsync(user).Wait();
+            var user = await UsersRepository.FindByNameAsync(Name);
+            await UsersRepository.DeleteAsync(user);
             return RedirectToAction("Index", "Home", new { Area = "Admin" });
         }
 
-        public IActionResult EditUserInfo(string Name)
+        public async Task<IActionResult> EditUserInfoAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var user = await UsersRepository.FindByNameAsync(Name);
             var userViewModel = new UserRegViewModel();
             userViewModel.Name = user.UserName;
             userViewModel.Email = user.Email;
@@ -39,13 +39,13 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult EditUserInfo(UserRegViewModel user, string Name)
+        public async Task<IActionResult> EditUserInfoAsync(UserRegViewModel user, string Name)
         {
-            var userDB = UsersRepository.FindByNameAsync(Name).Result;
+            var userDB = await UsersRepository.FindByNameAsync(Name);
             userDB.Age = user.Age;
             userDB.PhoneNumber = user.Number;
             userDB.Email = user.Email;
-            UsersRepository.UpdateAsync(userDB).Wait();
+            await UsersRepository.UpdateAsync(userDB);
             return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name });
         }
 
@@ -56,9 +56,9 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult EditPassword(ChangePassword changePassword)
+        public async Task<IActionResult> EditPasswordAsync(ChangePassword changePassword)
         {
-            var user = UsersRepository.FindByNameAsync(changePassword.Name).Result;
+            var user = await UsersRepository.FindByNameAsync(changePassword.Name);
             if (changePassword.Name == changePassword.Password)
             {
                 ModelState.AddModelError("", "Пароли не должен совпадать с именем");
@@ -67,17 +67,17 @@ namespace WebApplication1.Areas.Admin.Controlles
             {
                 var newPasswordHash = UsersRepository.PasswordHasher.HashPassword(user, changePassword.Password);
                 user.PasswordHash = newPasswordHash;
-                UsersRepository.UpdateAsync(user).Wait();
+                await UsersRepository.UpdateAsync(user);
                 return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", changePassword.Name });
             }
             return View(changePassword);
 
         }
 
-        public IActionResult UserRole(string Name)
+        public async Task<IActionResult> UserRoleAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
-            var userRoles = UsersRepository.GetRolesAsync(user).Result;
+            var user = await UsersRepository.FindByNameAsync(Name);
+            var userRoles = await UsersRepository.GetRolesAsync(user);
             ViewBag.Roles = RolesRepository.Roles;
             ViewBag.RolesCount = RolesRepository.Roles.Count();
             ViewBag.UserRole = userRoles.First();
@@ -85,22 +85,20 @@ namespace WebApplication1.Areas.Admin.Controlles
         }
 
         [HttpPost]
-        public IActionResult ChangeUserRole(string UserName, string UserRole) 
+        public async Task<IActionResult> ChangeUserRoleAsync(string UserName, string UserRole) 
         {
-            var user = UsersRepository.FindByNameAsync(UserName).Result;
-            var role = RolesRepository.FindByNameAsync(UserRole).Result;
+            var user = await UsersRepository.FindByNameAsync(UserName);
+            var role = await RolesRepository.FindByNameAsync(UserRole);
             if (role != null && user != null) 
             {
-                var userRole = UsersRepository.GetRolesAsync(user).Result.First();
-                UsersRepository.RemoveFromRoleAsync(user, userRole).Wait();
-                UsersRepository.UpdateAsync(user).Wait();
-                UsersRepository.AddToRoleAsync(user, role.Name).Wait();
-                UsersRepository.UpdateAsync(user).Wait();
+                var userRole = (await UsersRepository.GetRolesAsync(user)).First();
+                await UsersRepository.RemoveFromRoleAsync(user, userRole);
+                await UsersRepository.UpdateAsync(user);
+                await UsersRepository.AddToRoleAsync(user, role.Name);
+                await UsersRepository.UpdateAsync(user);
             }
 
             return RedirectToAction("UserInfoCheck", "Home", new { Area = "Admin", Name = UserName});
-
         }
-
     }
 }

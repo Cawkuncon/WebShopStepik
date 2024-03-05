@@ -22,7 +22,7 @@ namespace OnlineShop.DB.Models
             await dataBaseContext.SaveChangesAsync();
         }
 
-        public async Task AddProdAync(Product prod)
+        public async Task AddProdAsync(Product prod)
         {
             await dataBaseContext.Products.AddAsync(prod);
             await dataBaseContext.SaveChangesAsync();
@@ -70,7 +70,7 @@ namespace OnlineShop.DB.Models
         public Task<List<Product>> GetAllAsync();
         public Task<Product> GetProductAsync(Guid id);
         public Task DeleteAsync(Guid id);
-        public Task AddProdAync(Product prod);
+        public Task AddProdAsync(Product prod);
         public Task UpdateProdAsync(Product prod);
         public Task UpdateProdImageAsync(Guid id, string path);
         public Task DeleteImageAsync(Guid id, string path);

@@ -38,14 +38,14 @@ namespace WebApplication1.Area.Controlles
         {
             return View();
         }
-        public IActionResult Orders()
+        public async Task<IActionResult> OrdersAsync()
         {
-            var orders = orderRepository.GetAll();
+            var orders = await orderRepository.GetAllAsync();
             var listOrders = new List<OrderViewModel>();
 
             foreach (var order in orders)
             {
-                var user = UsersRepository.FindByNameAsync(order.Name).Result;
+                var user = await UsersRepository.FindByNameAsync(order.Name);
                 OrderViewModel ordView = OrderTransformation.orderDBtoView(order, user);
                 listOrders.Add(ordView);
             }
@@ -67,16 +67,16 @@ namespace WebApplication1.Area.Controlles
             }
             return View(newListUserRegViewModel);
         }
-        public IActionResult Products()
+        public async Task<IActionResult> ProductsAsync()
         {
-            var products = productRepository.GetAllAsync();
+            var products = await productRepository.GetAllAsync();
             var newProducts = mapper.Map<List<ProductViewModel>>(products);
             return View(newProducts);
         }
 
-        public IActionResult DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
-            productRepository.DeleteAsync(id);
+            await productRepository.DeleteAsync(id);
             return RedirectToAction("Products");
         }
 
@@ -85,30 +85,30 @@ namespace WebApplication1.Area.Controlles
             return View();
         }
         [HttpPost]
-        public IActionResult Add(Product product)
+        public async Task<IActionResult> AddAsync(Product product)
         {
-            productRepository.AddProdAync(product);
+            await productRepository.AddProdAsync(product);
             return RedirectToAction("Products");
         }
 
-        public IActionResult EditProduct(Guid id)
+        public async Task<IActionResult> EditProductAsync(Guid id)
         {
-            var prod = productRepository.GetAllAsync().Find(x => x.Id == id);
+            var prod = (await productRepository.GetAllAsync()).Find(x => x.Id == id);
             return View(prod);
         }
 
         [HttpPost]
-        public IActionResult UpdateProduct(Product product, Guid id)
+        public async Task<IActionResult> UpdateProductAsync(Product product, Guid id)
         {
             product.Id = id;
-            productRepository.UpdateProdAsync(product);
+            await productRepository.UpdateProdAsync(product);
             return RedirectToAction("Products");
         }
 
 
-        public IActionResult OrderInfo(Guid id)
+        public async Task<IActionResult> OrderInfoAsync(Guid id)
         {
-            var order = orderRepository.GetOrder(id);
+            var order = await orderRepository.GetOrderAsync(id);
             var user = new User();
             if (order.User == null)
             {
@@ -116,18 +116,18 @@ namespace WebApplication1.Area.Controlles
             }
             else
             {
-                user = UsersRepository.FindByNameAsync(order.User.UserName).Result;
+                user = await UsersRepository.FindByNameAsync(order.User.UserName);
             }
             OrderViewModel orderInfo = OrderTransformation.orderDBtoView(order, user);
-            orderInfo.Products = mapper.Map<List<ProductViewModel>>(orderRepository.GetAllProducts(order.Id));
+            orderInfo.Products = mapper.Map<List<ProductViewModel>>(await orderRepository.GetAllProductsAsync(order.Id));
             return View(orderInfo);
         }
 
 
         [HttpPost]
-        public IActionResult ChangeStatus(Guid idOrder, Status_Order Status)
+        public async Task<IActionResult> ChangeStatusAsync(Guid idOrder, Status_Order Status)
         {
-            orderRepository.UpdateStatus(idOrder, (int)Status);
+            await orderRepository.UpdateStatusAsync(idOrder, (int)Status);
             return RedirectToAction("OrderInfo", new { id = idOrder });
         }
 
@@ -145,10 +145,10 @@ namespace WebApplication1.Area.Controlles
             return View(listRoles);
         }
 
-        public IActionResult DeleteRole(string Id)
+        public async Task<IActionResult> DeleteRoleAsync(string Id)
         {
             var role = RolesRepository.Roles.Where(role => role.Id == Id).FirstOrDefault();
-            RolesRepository.DeleteAsync(role).Wait();
+            await RolesRepository.DeleteAsync(role);
             return RedirectToAction("Roles");
         }
 
@@ -158,15 +158,15 @@ namespace WebApplication1.Area.Controlles
         }
 
         [HttpPost]
-        public IActionResult AddToRepository(RoleViewModel role)
+        public async Task<IActionResult> AddToRepositoryAsync(RoleViewModel role)
         {
-            RolesRepository.CreateAsync(new IdentityRole(role.Name)).Wait();
+            await RolesRepository.CreateAsync(new IdentityRole(role.Name));
             return RedirectToAction("Roles");
         }
 
-        public IActionResult UserInfoCheck(string Name)
+        public async Task<IActionResult> UserInfoCheckAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var user = await UsersRepository.FindByNameAsync(Name);
             var userViewModel = new UserRegViewModel();
             userViewModel.Name = user.UserName;
             userViewModel.Email = user.Email;
@@ -174,9 +174,9 @@ namespace WebApplication1.Area.Controlles
             userViewModel.Age = user.Age;
             userViewModel.UserId = user.Id;
             var role = new RoleViewModel();
-            var usersRoles = UsersRepository.GetRolesAsync(user).Result;
+            var usersRoles = await UsersRepository.GetRolesAsync(user);
             var firstRole = usersRoles.First();
-            var rol = RolesRepository.FindByNameAsync(firstRole).Result;
+            var rol = await RolesRepository.FindByNameAsync(firstRole);
             if (rol != null)
             {
                 role.Name = rol.Name;
@@ -192,7 +192,7 @@ namespace WebApplication1.Area.Controlles
         }
 
         [HttpPost]
-        public IActionResult AddUser(UserRegViewModel register)
+        public async Task<IActionResult> AddUserAsync(UserRegViewModel register)
         {
             if (register.Name == register.Password)
             {
@@ -201,7 +201,7 @@ namespace WebApplication1.Area.Controlles
             if (ModelState.IsValid)
             {
                 User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number, Age = register.Age };
-                var result = UsersRepository.CreateAsync(user, register.Password).Result;
+                var result = await UsersRepository.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Users");
@@ -217,27 +217,27 @@ namespace WebApplication1.Area.Controlles
             return View(register);
         }
 
-        public IActionResult EditProductImage(Guid id)
+        public async Task<IActionResult> EditProductImageAsync(Guid id)
         {
-            var prod = productRepository.GetProductAsync(id);
+            var prod = await productRepository.GetProductAsync(id);
             prod.Images = productRepository.GetProductImages(id);
             return View(prod);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditProductImage(Guid id, IFormFile formFile)
+        public async Task<IActionResult> EditProductImageAsync(Guid id, IFormFile formFile)
         {
             var prod = await productRepository.GetProductAsync(id);
             var model = new CreateImageViewModel()
             {
-                Name= prod.Name,
-                Id= prod.Id,
+                Name = prod.Name,
+                Id = prod.Id,
             };
             if (model != null && formFile != null)
             {
                 model.formFile = formFile;
                 string prodPath = Path.Combine(webHostEnvironment.WebRootPath + "/img/products/");
-                if(!Directory.Exists(prodPath))
+                if (!Directory.Exists(prodPath))
                 {
                     Directory.CreateDirectory(prodPath);
                 }
@@ -246,20 +246,20 @@ namespace WebApplication1.Area.Controlles
                 {
                     model.formFile.CopyTo(fileStream);
                 }
-                productRepository.UpdateProdImageAsync(model.Id, "/img/products/" + fileName);
+                await productRepository.UpdateProdImageAsync(model.Id, "/img/products/" + fileName);
             }
-            return RedirectToAction(nameof(Products));
+            return RedirectToAction(nameof(ProductsAsync));
         }
-        public IActionResult DeleteImage(Guid productId, string imgSrc)
+        public async Task<IActionResult> DeleteImageAsync(Guid productId, string imgSrc)
         {
-            productRepository.DeleteImageAsync(productId, imgSrc);
+            await productRepository.DeleteImageAsync(productId, imgSrc);
             string path = Path.Combine(webHostEnvironment.WebRootPath + imgSrc);
             FileInfo fileInfo = new FileInfo(path);
             if (fileInfo.Exists)
             {
                 fileInfo.Delete();
             }
-            return RedirectToAction(nameof(EditProductImage), new { id = productId });
+            return RedirectToAction(nameof(EditProductImageAsync), new { id = productId });
         }
     }
 }

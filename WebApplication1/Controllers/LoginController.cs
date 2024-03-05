@@ -24,11 +24,11 @@ namespace WebApplication1.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Login(UserInfo login)
+		public async Task<IActionResult> LoginAsync(UserInfo login)
 		{
             if (ModelState.IsValid)
             {
-                var result = _signInManager.PasswordSignInAsync(login.Name, login.Password, login.SaveUserInfo, false).Result;
+                var result = await _signInManager.PasswordSignInAsync(login.Name, login.Password, login.SaveUserInfo, false);
                 if (result.Succeeded)
                 {
                     return Redirect(login.ReturnUrl ?? "/Home");
@@ -43,11 +43,11 @@ namespace WebApplication1.Controllers
 
         public IActionResult Register(string? ReturnUrl)
         {
-            return View(new UserRegViewModel() { ReturnUrl = ReturnUrl});
+            return View(new UserRegViewModel() { ReturnUrl = ReturnUrl });
         }
 
         [HttpPost]
-        public IActionResult Register(UserRegViewModel register)
+        public async Task<IActionResult> RegisterAsync(UserRegViewModel register)
         {
             if (register.Name == register.Password)
             {
@@ -56,11 +56,11 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                 User user = new User { Email = register.Email, UserName = register.Name, PhoneNumber = register.Number, Age = register.Age };
-                var result = _usersManager.CreateAsync(user, register.Password).Result;
+                var result = await _usersManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
-                    _signInManager.SignInAsync(user, false).Wait();
-                    _usersManager.AddToRoleAsync(user, Constants.UserRoleName).Wait();
+                    await _signInManager.SignInAsync(user, false);
+                    await _usersManager.AddToRoleAsync(user, Constants.UserRoleName);
                     return Redirect(register.ReturnUrl ?? "/Home");
                 }
                 else
@@ -75,9 +75,9 @@ namespace WebApplication1.Controllers
         }
 
         [Authorize]
-        public IActionResult Logout()
+        public async Task<IActionResult> LogoutAsync()
         {
-            _signInManager.SignOutAsync().Wait();
+            await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }

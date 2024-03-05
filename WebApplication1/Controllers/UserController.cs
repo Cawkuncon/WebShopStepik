@@ -24,11 +24,11 @@ namespace WebApplication1.Controllers
             this.webHostEnvironment = webHostEnvironment;
             this.imageDbRepository = imageDbRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            var user = UsersRepository.FindByNameAsync(User.Identity.Name).Result;
-            var orders = ordersRepository.GetAllUserOrders(user.Id);
-            var image = imageDbRepository.GetUserImage(user);
+            var user = await UsersRepository.FindByNameAsync(User.Identity.Name);
+            var orders = await ordersRepository.GetAllUserOrdersAsync(user.Id);
+            var image = await imageDbRepository.GetUserImageAsync(user);
             var listOrders = new List<OrderViewModel>();
             foreach (var order in orders)
             {
@@ -47,9 +47,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPassword(ChangePassword changePassword)
+        public async Task<IActionResult> EditPasswordAsync(ChangePassword changePassword)
         {
-            var user = UsersRepository.FindByNameAsync(changePassword.Name).Result;
+            var user = await UsersRepository.FindByNameAsync(changePassword.Name);
             if (changePassword.Name == changePassword.Password)
             {
                 ModelState.AddModelError("", "Пароли не должен совпадать с именем");
@@ -58,15 +58,15 @@ namespace WebApplication1.Controllers
             {
                 var newPasswordHash = UsersRepository.PasswordHasher.HashPassword(user, changePassword.Password);
                 user.PasswordHash = newPasswordHash;
-                UsersRepository.UpdateAsync(user).Wait();
+                await UsersRepository.UpdateAsync(user);
                 return RedirectToAction("Index", "Home");
             }
             return View(changePassword);
         }
 
-        public IActionResult EditUserInfo(string Name)
+        public async Task<IActionResult> EditUserInfoAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var user = await UsersRepository.FindByNameAsync(Name);
             var userViewModel = new UserRegViewModel();
             userViewModel.Name = user.UserName;
             userViewModel.Email = user.Email;
@@ -76,9 +76,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditUserInfo(UserRegViewModel user, string Name)
+        public async Task<IActionResult> EditUserInfoAsync(UserRegViewModel user, string Name)
         {
-            var userDB = UsersRepository.FindByNameAsync(Name).Result;
+            var userDB = await UsersRepository.FindByNameAsync(Name);
             userDB.Age = user.Age;
             userDB.PhoneNumber = user.Number;
             userDB.Email = user.Email;
@@ -86,17 +86,17 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index", "User");
         }
 
-        public IActionResult EditUserImage(string Name)
+        public async Task<IActionResult> EditUserImageAsync(string Name)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
-            ViewBag.Image = imageDbRepository.GetUserImage(user);
+            var user = await UsersRepository.FindByNameAsync(Name);
+            ViewBag.Image = await imageDbRepository.GetUserImageAsync(user);
             return View(user);
         }
 
         [HttpPost]
-        public IActionResult EditUserImage(string Name, IFormFile formFile)
+        public async Task<IActionResult> EditUserImageAsync(string Name, IFormFile formFile)
         {
-            var user = UsersRepository.FindByNameAsync(Name).Result;
+            var user = await UsersRepository.FindByNameAsync(Name);
             var id = Guid.NewGuid();
             Guid.TryParse(user.Id, out id);
             var model = new CreateImageViewModel()
@@ -106,13 +106,13 @@ namespace WebApplication1.Controllers
             };
             if (model != null && formFile != null)
             {
-                model.formFile= formFile;
+                model.formFile = formFile;
                 string userPath = Path.Combine(webHostEnvironment.WebRootPath + "/img/users/");
                 if (!Directory.Exists(userPath))
                 {
                     Directory.CreateDirectory(userPath);
                 }
-                var fileName = model.Id.ToString() +"." + model.formFile.FileName.Split(".").Last();
+                var fileName = model.Id.ToString() + "." + model.formFile.FileName.Split(".").Last();
                 var file = new FileInfo(webHostEnvironment.WebRootPath + "/img/users/" + fileName);
                 if (file.Exists)
                 {
@@ -122,16 +122,16 @@ namespace WebApplication1.Controllers
                 {
                     model.formFile.CopyTo(fileStream);
                 }
-                imageDbRepository.UpdateUserImage(user, "/img/users/" + fileName);
+                await imageDbRepository.UpdateUserImageAsync(user, "/img/users/" + fileName);
             }
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult DeleteImage(string name)
+        public async Task<IActionResult> DeleteImageAsync(string name)
         {
-            var user = UsersRepository.FindByNameAsync(name).Result;
-            imageDbRepository.DeleteImage(user);
-            return RedirectToAction(nameof(EditUserImage), new {Name = name});
+            var user = await UsersRepository.FindByNameAsync(name);
+            await imageDbRepository.DeleteImageAsync(user);
+            return RedirectToAction(nameof(EditUserImageAsync), new { Name = name });
         }
     }
 }

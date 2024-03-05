@@ -31,11 +31,11 @@ namespace WebApplication1.Controllers
             this.mapper = mapper;
             this.mapper = mapper;
         }
-        public IActionResult Adds(Guid productId)
+        public async Task<IActionResult> AddsAsync(Guid productId)
         {
-            var Prod = productRepository.GetAllAsync().Where(x => x.Id == productId).First();
+            var Prod = (await productRepository.GetAllAsync()).Where(x => x.Id == productId).First();
             var newProd = mapper.Map<ProductViewModel>(Prod);
-            newProd.Images = productRepository.GetProductImages(newProd.Id);
+            newProd.Images = await productRepository.GetProductImagesAsync(newProd.Id);
             bask.AddToCart(newProd);
             return RedirectToAction("Index", "Home");
         }
@@ -77,21 +77,21 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult RegisterOrder()
+        public async Task<IActionResult> RegisterOrderAsync()
         {
             var resultBask = bask.GetResultProducts();
             ViewBag.Products = resultBask;
             ViewBag.ResultsCost = resultBask.Select(x => x.Cost * x.Count).Sum();
-            var user = users.FindByNameAsync(User.Identity.Name).Result;
+            var user = await users.FindByNameAsync(User.Identity.Name);
             ViewBag.user = user;
             return View();
         }
 
         [HttpPost]
-        public IActionResult Success(OrderViewModel order)
+        public async Task<IActionResult> SuccessAsync(OrderViewModel order)
         {
             var orderDB = new Order();
-            orderDB.User = users.FindByNameAsync(User.Identity.Name).Result;
+            orderDB.User = await users.FindByNameAsync(User.Identity.Name);
             if (orderDB.User == null)
             {
                 orderDB.Name = order.Name;
@@ -112,14 +112,14 @@ namespace WebApplication1.Controllers
             orderDB.CreationDate = order.CreationDate;
             orderDB.CreationTime = order.CreationTime;
             orderDB.Status = order.Status;
-            orderRepository.Add(orderDB);
+            await orderRepository.AddAsync(orderDB);
             foreach (var product in cart)
             {
-                carts.Add(orderDB.Id, product.Id);
+                await carts.AddAsync(orderDB.Id, product.Id);
             }
             bask.ClearResultProducts();
             bask.ClearCart();
-            ViewBag.Products = carts.GetOrdersCarts(orderDB.Id);
+            ViewBag.Products = await carts.GetOrdersCartsAsync(orderDB.Id);
             return View(orderDB);
         }
     }
