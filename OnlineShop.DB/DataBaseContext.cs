@@ -28,6 +28,10 @@ namespace OnlineShop.DB
                 new Product(name:"Second", cost: 22, description:"Second Product"),
                 new Product(name:"Third", cost: 3, description:"Third Product"),
             });
+            modelBuilder.Entity<Product>()
+                .HasMany(prod => prod.Images)
+                .WithOne(prod => prod.Product)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

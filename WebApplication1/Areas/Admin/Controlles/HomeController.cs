@@ -248,7 +248,7 @@ namespace WebApplication1.Area.Controlles
                 }
                 await productRepository.UpdateProdImageAsync(model.Id, "/img/products/" + fileName);
             }
-            return RedirectToAction(nameof(ProductsAsync));
+            return RedirectToAction("Products");
         }
         public async Task<IActionResult> DeleteImageAsync(Guid productId, string imgSrc)
         {
@@ -259,7 +259,7 @@ namespace WebApplication1.Area.Controlles
             {
                 fileInfo.Delete();
             }
-            return RedirectToAction(nameof(EditProductImageAsync), new { id = productId });
+            return RedirectToAction("EditProductImage", new { id = productId });
         }
     }
 }
