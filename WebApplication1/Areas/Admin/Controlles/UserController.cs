@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.DB;
@@ -14,15 +15,27 @@ namespace WebApplication1.Areas.Admin.Controlles
     {
         private UserManager<User> UsersRepository;
         private RoleManager<IdentityRole> RolesRepository;
-        public UserController(UserManager<User> users, RoleManager<IdentityRole> rolesRepository)
+        private IImageDbRepository imageDbRepository;
+        private IWebHostEnvironment webHostEnvironment;
+        public UserController(UserManager<User> users, RoleManager<IdentityRole> rolesRepository, IImageDbRepository imageDbRepository, IWebHostEnvironment webHostEnvironment)
         {
             UsersRepository = users;
             RolesRepository = rolesRepository;
+            this.imageDbRepository = imageDbRepository;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> DeleteUserAsync(string Name)
         {
             var user = await UsersRepository.FindByNameAsync(Name);
+            var image = await imageDbRepository.GetUserImageAsync(user);
+            string path = Path.Combine(webHostEnvironment.WebRootPath + image.Path);
+            FileInfo fileInfo = new FileInfo(path);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
+            await imageDbRepository.DeleteImageAsync(user);
             await UsersRepository.DeleteAsync(user);
             return RedirectToAction("Index", "Home", new { Area = "Admin" });
         }

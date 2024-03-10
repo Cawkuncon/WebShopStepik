@@ -42,7 +42,6 @@ namespace WebApplication1.Area.Controlles
         {
             var orders = await orderRepository.GetAllAsync();
             var listOrders = new List<OrderViewModel>();
-
             foreach (var order in orders)
             {
                 var user = await UsersRepository.FindByNameAsync(order.Name);
@@ -76,6 +75,17 @@ namespace WebApplication1.Area.Controlles
 
         public async Task<IActionResult> DeleteProductAsync(Guid id)
         {
+            Product product = await productRepository.GetProductAsync(id);
+
+            foreach (var image in product.Images)
+            {
+                string path = Path.Combine(webHostEnvironment.WebRootPath + image.Path);
+                FileInfo fileInfo = new FileInfo(path);
+                if (fileInfo.Exists)
+                {
+                    fileInfo.Delete();
+                }
+            }
             await productRepository.DeleteAsync(id);
             return RedirectToAction("Products");
         }
